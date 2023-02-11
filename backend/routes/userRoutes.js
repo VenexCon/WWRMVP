@@ -1,12 +1,16 @@
 const express = require("express");
 const router = express.Router();
+const { registerUser, loginUser } = require("../controllers/userController");
 
 //@To-do create protect function to check JWT
 router.post("/", (req, res) => {
-  res.status(200).json({ message: "Placer register route here" });
+  res.send("Register Route");
 });
 
 router.post("/login", loginUser);
-router.get("/me", getMe);
+
+router.get("/me", (req, res) => {
+  res.status(201).json({ message: "Get me once logged in!" });
+});
 
 module.exports = router;

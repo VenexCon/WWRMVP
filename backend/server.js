@@ -9,6 +9,9 @@ app.get("/", (req, res) => {
   res.status(201).json({ message: "who wants rubbish api!" });
 });
 
+/* Routes */
+app.use("/api/users", require("./routes/userRoutes"));
+
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
