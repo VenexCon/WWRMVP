@@ -8,9 +8,7 @@ const {
 
 //@To-do create protect function to check JWT
 router.post("/", registerUser);
-
 router.post("/login", loginUser);
-
-/* router.get("/me", getMe); */
+router.get("/me", getMe);
 
 module.exports = router;
