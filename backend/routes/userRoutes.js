@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser, getMe } = require("../controllers/userController");
+const {
+  registerUser,
+  loginUser,
+  getMe,
+} = require("../controllers/userController");
 
 //@To-do create protect function to check JWT
 router.post("/", registerUser);
