@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 
 /* Routes */
 app.use("/users", require("./routes/userRoutes"));
+app.use("/business", require("./routes/businessRoutes"));
 //errorhandler
 app.use(errorHandler);
 
