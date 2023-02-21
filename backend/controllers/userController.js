@@ -9,6 +9,11 @@ const jwt = require("jsonwebtoken");
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
+  if (name.includes(" ") || email.includes(" ") || password.includes(" ")) {
+    res.status(404);
+    throw new Error("Name, Email and Password cannot contain empty spaces");
+  }
+
   //generate token
   const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -21,7 +26,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Please include all fields");
   }
-
+  //password must match regex
   if (
     !password.match(
       "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
@@ -48,8 +53,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //create user in DB
   const user = await User.create({
-    name: name.trim(),
-    email: email.trim(),
+    name: name,
+    email: email,
     password: hashedPassword,
   });
 
@@ -73,7 +78,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!email || !password) {
-    throw new Error("Please include all name and detaikls!");
+    throw new Error("Please include all name and details!");
   } else {
     return res.status(200).send("Logged in!");
   }
