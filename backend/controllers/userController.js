@@ -2,7 +2,6 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const { body, validationResult } = require("express-validator");
 
 //@desc Register new User
 //@route /users
@@ -21,6 +20,17 @@ const registerUser = asyncHandler(async (req, res) => {
   if (!name || !email || !password) {
     res.status(404);
     throw new Error("Please include all fields");
+  }
+
+  if (
+    !password.match(
+      "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+    )
+  ) {
+    res.status(404);
+    throw new Error(
+      "Password must contain 8 characters, and one uppercase, lowercase and one special character"
+    );
   }
 
   //find if user already exists
