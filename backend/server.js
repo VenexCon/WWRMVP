@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5000;
 const { errorHandler } = require("./middleware/errorMiddleware");
 
 //connect to DB
-//connectDB(); // disabled due to flight mode
+connectDB(); // disabled due to flight mode
 const app = express();
 
 //allows express to red JSON & requests.
