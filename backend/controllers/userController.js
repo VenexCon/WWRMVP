@@ -3,6 +3,14 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 
+//generate jwt token
+//generate token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "360d",
+  });
+};
+
 //@desc Register new User
 //@route /users
 //@access public
@@ -13,13 +21,6 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Name, Email and Password cannot contain empty spaces");
   }
-
-  //generate token
-  const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-      expiresIn: "360d",
-    });
-  };
 
   // validate body
   if (!name || !email || !password) {
@@ -34,7 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
   ) {
     res.status(404);
     throw new Error(
-      "Password must contain 8 characters, and one uppercase, lowercase and one special character"
+      "Password must contain 8 characters, one uppercase, lowercase and one special character"
     );
   }
 
@@ -75,12 +76,21 @@ const registerUser = asyncHandler(async (req, res) => {
 //@route /users/login
 //@access private
 const loginUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!email || !password) {
-    throw new Error("Please include all name and details!");
+  const user = await User.findOne({ email });
+
+  //check if passwords match
+  if (user && (await bcrypt.compare(password, user.password))) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
+    });
   } else {
-    return res.status(200).send("Logged in!");
+    res.status(401);
+    throw new Error("Invalid Credentials");
   }
 });
 
