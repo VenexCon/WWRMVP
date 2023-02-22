@@ -98,7 +98,12 @@ const loginUser = asyncHandler(async (req, res) => {
 //@route /users/me
 //@access private
 const getMe = (req, res) => {
-  res.send("Your profile");
+  const user = {
+    id: req.user._id, // because of the mongoose schema storing id as ._id
+    email: req.user.email,
+    name: req.user.name,
+  };
+  res.status(200).json(user);
 };
 
 module.exports = {
