@@ -34,6 +34,14 @@ export const authSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase()
+        builder
+        .addCase(register.pending, (state) => {
+            state.isPending = true; 
+        })
+        .addCase(register.fulfilled, (state) => {
+            state.isPending = false, 
+            state.isSuccess = true, 
+            state.user = action.payload
+        })
     }
 })
