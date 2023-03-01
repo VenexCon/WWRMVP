@@ -1,13 +1,20 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
+import { ToastContainer } from "react-toastify";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Register from "./pages/Register";
 
 function App() {
   return (
     <>
-      <Navbar />
-      <h1 className="text-3xl font-bold underline">
-        Here is the MVP for WWWMVP
-      </h1>
+      <div className="Container">
+        <Navbar />
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </div>
+
+      <ToastContainer />
     </>
   );
 }
