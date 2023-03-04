@@ -1,14 +1,16 @@
 import { Fragment, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
+import { FaUser } from 'react-icons/fa'
 
 const navigation = [
 
   { name: 'Home', href: '/', current: false },
   { name: 'Listings', href: '/listings', current: false },
   { name: 'About', href: '/about', current: false },
-  {name: 'Register', href:'/register', current: false}
+  { name: 'Register', href:'/register', current: false}
 ]
 
 function classNames(...classes) {
@@ -17,7 +19,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
 
-  const [loggedIn, setLoggedIn] = useState(false)
+  const {user} =useSelector((state)=> state.auth)
 
 
   return (
@@ -57,9 +59,16 @@ export default function Navbar() {
                         {item.name}
                       </Link>
                     ))}
-
                   </div>
                 </div>
+                {!user && (
+                  <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  <Link to ='/login' className='flex h-full items-center space-x-2' >
+                    <FaUser />
+                    <p>Login</p>
+                  </Link>
+                </div>
+                )}
               </div>
             </div>
           </div>
@@ -67,10 +76,8 @@ export default function Navbar() {
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
+                <Link to={item.href} key={item.name}>
                 <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block px-3 py-2 rounded-md text-base font-medium'
@@ -79,12 +86,16 @@ export default function Navbar() {
                 >
                   {item.name}
                 </Disclosure.Button>
+                </Link>
               ))}
-              {!loggedIn && (
-                <div className="space-y-1 px-2 pt-2 pb-3">
-                      
-                </div>
-                    )}
+              {!user && (
+                <Link to='/login' className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'>
+                  <Disclosure.Button className='flex items-center space-x-2'>
+                    <FaUser />
+                    <p>Login</p>
+                  </Disclosure.Button>
+              </Link>
+              )}
             </div>
           </Disclosure.Panel>
         </>
