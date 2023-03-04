@@ -1,12 +1,14 @@
 import { Fragment, useState } from 'react'
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Link } from 'react-router-dom'
 
 const navigation = [
 
-  { name: 'Profile', href: '#', current: true },
-  { name: 'Listings', href: '#', current: false },
-  { name: 'About', href: '#', current: false },
+  { name: 'Home', href: '/', current: false },
+  { name: 'Listings', href: '/listings', current: false },
+  { name: 'About', href: '/about', current: false },
+  {name: 'Register', href:'/register', current: false}
 ]
 
 function classNames(...classes) {
@@ -43,9 +45,9 @@ export default function Navbar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'px-3 py-2 rounded-md text-sm font-medium'
@@ -53,7 +55,7 @@ export default function Navbar() {
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
 
                   </div>
