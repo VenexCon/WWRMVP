@@ -32,7 +32,12 @@ export const registerUser = createAsyncThunk(
 // we create an action as the reducer creates a list of actions, and this is an action
 export const logout = createAction("auth/logout", () => {
   authService.logout();
-  return {};
+  return {
+    payload: {
+      user: null,
+      isPending: false,
+    },
+  };
 });
 
 export const authSlice = createSlice({
@@ -50,6 +55,11 @@ export const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state) => {
         state.isPending = false;
+      })
+      .addCase(logout, (state, action) => {
+        console.log(state, action);
+        state.user = action.payload.user;
+        state.isPending = action.payload.isPending;
       });
   },
 });
