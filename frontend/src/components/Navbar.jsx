@@ -10,7 +10,7 @@ const navigation = [
 
   { name: 'Home', href: '/', current: false },
   { name: 'Listings', href: '/listings', current: false },
-  { name: 'About', href: '/about', current: false },
+  { name: 'Profile', href: '/users/me', current: false },
   { name: 'Register', href:'/users/register', current: false}
 ]
 
@@ -112,6 +112,14 @@ export default function Navbar() {
                   </Disclosure.Button>
               </Link>
               )}
+              {user && (
+                  <div className="space-x-4 w-fit align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  <button onClick={logoutUser} className='flex h-full items-center space-x-2' >
+                    <FaArrowCircleRight />
+                    <p>Log out</p>
+                  </button>
+                </div>
+                )}
             </div>
           </Disclosure.Panel>
         </>
