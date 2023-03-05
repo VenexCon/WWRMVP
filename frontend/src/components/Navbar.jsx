@@ -11,7 +11,7 @@ const navigation = [
   { name: 'Home', href: '/', current: false },
   { name: 'Listings', href: '/listings', current: false },
   { name: 'About', href: '/about', current: false },
-  { name: 'Register', href:'/register', current: false}
+  { name: 'Register', href:'/users/register', current: false}
 ]
 
 function classNames(...classes) {
@@ -22,7 +22,6 @@ export default function Navbar() {
 
   const {user} =useSelector((state)=> state.auth)
   const dispatch = useDispatch()
-
   const navigate = useNavigate()
 
   const logoutUser = () => {
@@ -72,7 +71,7 @@ export default function Navbar() {
                 </div>
                 {!user && (
                   <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  <Link to ='/login' className='flex h-full items-center space-x-2' >
+                  <Link to ='/users/login' className='flex h-full items-center space-x-2' >
                     <FaUser />
                     <p>Login</p>
                   </Link>
@@ -106,7 +105,7 @@ export default function Navbar() {
                 </Link>
               ))}
               {!user && (
-                <Link to='/login' className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'>
+                <Link to='/users/login' className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'>
                   <Disclosure.Button className='flex items-center space-x-2'>
                     <FaUser />
                     <p>Login</p>

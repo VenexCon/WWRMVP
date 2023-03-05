@@ -37,7 +37,7 @@ function Register() {
   }
 
   //submit user for registration
-  const onSubmit = (e)=> {
+  const onSubmit = async (e)=> {
 
     const {email, name, password, password2, terms} = registerData
 
@@ -55,11 +55,15 @@ function Register() {
         email,
         password
       }
-      
-      dispatch(registerUser(userData)).unwrap().then((user) => {
+
+      try {
+        const user = await dispatch(registerUser(userData)).unwrap()
         toast.success(`Registered new user - ${user.name}`)
         navigate('/')
-      }).catch(toast.error)
+      } catch (error) {
+        toast.error(error)
+      }
+      
     }
   }
 
@@ -108,7 +112,7 @@ function Register() {
                       </div>
                   </div>
                   {/* button for form submission here once completed  */}
-                  <button className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
+                  <button className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                       Already have an account? <a href="/" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
                   </p>
