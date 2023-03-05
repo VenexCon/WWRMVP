@@ -27,7 +27,7 @@ export default function Navbar() {
 
   const logoutUser = () => {
     dispatch(logout())
-    navigate('/login')
+    navigate('/')
   }
 
 
