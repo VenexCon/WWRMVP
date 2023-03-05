@@ -2,6 +2,7 @@ import {
   createSlice,
   createAsyncThunk,
   isRejectedWithValue,
+  createAction,
 } from "@reduxjs/toolkit";
 import authService from "./authService";
 
@@ -25,6 +26,14 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+
+//logout user
+//NOTE: we do not need the asyncThunk as we are not doing any async code
+// we create an action as the reducer creates a list of actions, and this is an action
+export const logout = createAction("auth/logout", () => {
+  authService.logout();
+  return {};
+});
 
 export const authSlice = createSlice({
   name: "auth",

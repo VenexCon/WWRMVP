@@ -1,9 +1,10 @@
 import { Fragment, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import {logout} from '../features/auth/authSlice.js'
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
-import { FaUser } from 'react-icons/fa'
+import { FaUser, FaArrowCircleRight } from 'react-icons/fa'
 
 const navigation = [
 
@@ -20,6 +21,7 @@ function classNames(...classes) {
 export default function Navbar() {
 
   const {user} =useSelector((state)=> state.auth)
+  const dispatch = useDispatch()
 
 
   return (
@@ -67,6 +69,14 @@ export default function Navbar() {
                     <FaUser />
                     <p>Login</p>
                   </Link>
+                </div>
+                )}
+                {user && (
+                  <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  <button onClick={logout} className='flex h-full items-center space-x-2' >
+                    <FaArrowCircleRight />
+                    <p>Log out</p>
+                  </button>
                 </div>
                 )}
               </div>
