@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -18,7 +19,14 @@ function App() {
             <Route path="/*" element={<Home />} />
             <Route path="/users/register" element={<Register />} />
             <Route path="/users/login" element={<Login />} />
-            <Route path="/users/me" element={<Profile />} />
+            <Route
+              path="/users/me"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </div>
       </Router>

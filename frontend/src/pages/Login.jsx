@@ -26,8 +26,11 @@ function Login() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        dispatch(login(loginData))
-        navigate('/')
+        dispatch(login(loginData)).unwrap().then((user) => {
+          toast.success(`Logged in as ${user.name}`)
+          navigate('/')
+        }).catch(toast.error)
+        
 
     }
 
