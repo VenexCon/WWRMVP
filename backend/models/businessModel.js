@@ -2,22 +2,35 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const businessSchema = new Schema({
-  BusinessName: {
+  businessName: {
     type: "string",
     required: [true, "Please include your name"],
   },
-  BusinessEmail: {
+  businessEmail: {
     type: "string",
     required: [true, "Please Include your Email Address"],
   },
-  BusinessPassword: {
+  businessPassword: {
     type: "string",
     required: [true, "Please Include a Password"],
   },
-  BusinessRegistrationNumber: {
-    Type: "number",
-    required: ["true", "Please include your business registration number"],
+  businessAddress: {
+    type: "string",
+    required: true,
+  },
+  businessGeolocation: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
   },
 });
+
+businessSchema.index({ BusinessGeolocation: "2dsphere" });
 
 module.exports = mongoose.model("Business", businessSchema);

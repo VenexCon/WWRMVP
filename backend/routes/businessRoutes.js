@@ -1,10 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { registerBusiness } = require("../controllers/businessController");
 
-router.post("/", (req, res) => {
-  res.status(201);
-  res.send("Business registered");
-});
+router.post("/", registerBusiness);
 
 router.post("/login", (req, res) => {
   res.status(200);
