@@ -129,6 +129,21 @@ const getProfile = (req, res) => {
   res.status(200).json(business);
 };
 
+//@desc Delete User Profile
+//@route /users/me
+//@access Private
+const deleteBusiness = asyncHandler(async (req, res) => {
+  try {
+    const deleted = await Business.deleteOne({ id: req.business._id });
+    res.status(200).json({
+      message: "Business Account Deleted",
+    });
+  } catch (error) {
+    res.status(400);
+    throw new Error("Unable to delete business");
+  }
+});
+
 module.exports = {
   registerBusiness,
   loginBusiness,
