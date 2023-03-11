@@ -83,12 +83,39 @@ const registerBusiness = asyncHandler(async (req, res) => {
       name: newBusiness.businessName,
       address: newBusiness.businessAddress,
       geolocation: newBusiness.businessGeolocation,
+      token: generateToken(newBusiness._id),
     });
   } else {
     throw new Error("Invalid business data");
   }
 });
 
+//@desc login business account
+//@route /business/login
+//@access public
+
+const loginBusiness = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const business = await Business.findOne({ email });
+
+  //check if passwords match
+  if (business && (await bcrypt.compare(password, business.businessPassword))) {
+    res.status(200).json({
+      _id: business._id,
+      name: business.businessName,
+      email: business.businessEmail,
+      address: business.businessAddress,
+      geolocation: business.businessGeolocation,
+      token: generateToken(business._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error("Invalid Credentials");
+  }
+});
+
 module.exports = {
   registerBusiness,
+  loginBusiness,
 };
