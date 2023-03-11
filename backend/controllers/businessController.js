@@ -110,7 +110,7 @@ const loginBusiness = asyncHandler(async (req, res) => {
       token: generateToken(business._id),
     });
   } else {
-    res.status(401);
+    res.status(400);
     throw new Error("Invalid Credentials");
   }
 });
@@ -132,4 +132,5 @@ const getProfile = (req, res) => {
 module.exports = {
   registerBusiness,
   loginBusiness,
+  getProfile,
 };

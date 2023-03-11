@@ -106,8 +106,24 @@ const getMe = (req, res) => {
   res.status(200).json(user);
 };
 
+//@desc Delete User Profile
+//@route /users/me
+//@access Private
+const deleteMe = asyncHandler(async (req, res) => {
+  try {
+    const deleted = await User.deleteOne({ id: req.user._id });
+    res.status(200).json({
+      message: "User Deleted",
+    });
+  } catch (error) {
+    res.status(400);
+    throw new Error("Unable to delete user");
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
   getMe,
+  deleteMe,
 };
