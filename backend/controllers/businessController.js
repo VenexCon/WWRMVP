@@ -71,7 +71,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
     businessEmail: businessEmail,
     businessPassword: hashedPassword,
     businessAddress: businessAddress,
-    businessGeolocation: {
+    businessCoordinates: {
       type: "Point",
       coordinates: [longitude, latitude],
     },
@@ -82,7 +82,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
       _id: newBusiness._id,
       name: newBusiness.businessName,
       address: newBusiness.businessAddress,
-      geolocation: newBusiness.businessGeolocation,
+      businessCoordinates: newBusiness.businessGeolocation,
       token: generateToken(newBusiness._id),
     });
   } else {
@@ -106,7 +106,7 @@ const loginBusiness = asyncHandler(async (req, res) => {
       name: business.businessName,
       email: business.businessEmail,
       address: business.businessAddress,
-      geolocation: business.businessGeolocation,
+      businessCoordinates: business.businessCoordinates,
       token: generateToken(business._id),
     });
   } else {
@@ -114,6 +114,20 @@ const loginBusiness = asyncHandler(async (req, res) => {
     throw new Error("Invalid Credentials");
   }
 });
+
+//@desc Return business profile
+//@route /business/profile
+//@access private
+const getProfile = (req, res) => {
+  const business = {
+    id: req.business._id, // because of the mongoose schema storing id as ._id
+    email: req.business.businessEmail,
+    name: req.business.businessName,
+    address: req.body.business.businessAddress,
+    businessCoordinates: req.body.business.businessCoordinates,
+  };
+  res.status(200).json(business);
+};
 
 module.exports = {
   registerBusiness,

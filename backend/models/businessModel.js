@@ -18,7 +18,7 @@ const businessSchema = new Schema({
     type: "string",
     required: true,
   },
-  businessGeolocation: {
+  businessCoordinates: {
     type: {
       type: String,
       enum: ["Point"],
@@ -31,6 +31,6 @@ const businessSchema = new Schema({
   },
 });
 
-businessSchema.index({ BusinessGeolocation: "2dsphere" });
+businessSchema.index({ BusinessCoordinates: "2dsphere" });
 
 module.exports = mongoose.model("Business", businessSchema);
