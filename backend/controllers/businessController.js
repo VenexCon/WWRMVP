@@ -58,7 +58,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
   const businessExists = await Business.findOne({ businessEmail });
 
   if (businessExists) {
-    res.statusCode(400);
+    res.status(400);
     throw new Error("Business already exists");
   }
 
@@ -123,8 +123,8 @@ const getProfile = (req, res) => {
     id: req.business._id, // because of the mongoose schema storing id as ._id
     email: req.business.businessEmail,
     name: req.business.businessName,
-    address: req.body.business.businessAddress,
-    businessCoordinates: req.body.business.businessCoordinates,
+    address: req.business.businessAddress,
+    businessCoordinates: req.business.businessCoordinates,
   };
   res.status(200).json(business);
 };
@@ -148,4 +148,5 @@ module.exports = {
   registerBusiness,
   loginBusiness,
   getProfile,
+  deleteBusiness,
 };
