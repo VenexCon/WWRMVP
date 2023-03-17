@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import UserRegister from '../components/UserRegister.jsx'
+import BusinessRegister from '../components/BusinessRegister.jsx'
 
 
 function Register() {
@@ -11,6 +12,11 @@ function Register() {
     user:true,
     business:false
   })
+
+  //we load either the user, or business page. Once loaded we then use the redux to dispatch the register funcs to the relevant end point
+  //i.e. load UserRegister.jsx, then subscribe to the User State. 
+  // dispatch relevant action to releavnt endpoint etc 
+
 
 
 
@@ -23,10 +29,12 @@ function Register() {
             Create an Account
           </h1>
           <h2>Choose from either a User or Business account</h2>
-             <div className="flex flex-col">
-              <button className='btn btn-primary'>User</button>
-              <button className='btn btn-primary'>Button</button>
+             <div className="flex flex-col justify-around md:flex-row lg:flex-row">
+              <button className='text-white bg-blue-600 hover:bg-white hover:text-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 '>User</button>
+              <button className='text-white bg-blue-600 hover:bg-white hover:text-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 '>Business</button>
              </div>
+
+             {page.user ? <UserRegister /> : <BusinessRegister />}
         </div>
       </div>
     </section>
