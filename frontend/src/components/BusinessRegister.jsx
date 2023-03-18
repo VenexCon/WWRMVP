@@ -12,11 +12,12 @@ function BusinessRegister() {
   const {isPending} = useSelector((state) => state.auth)
   
   const [registerData, setRegisterData] = useState({
-    email:'',
-    password:'',
-    Password2:'',
-    name:'',
-    terms:false, 
+    businessEmail:'',
+    businessPassword:'',
+    businessPassword2:'',
+    businessName:'',
+    businessAddress:'',
+    businessTerms:false, 
   })
 
    const onMutate = (e) => {

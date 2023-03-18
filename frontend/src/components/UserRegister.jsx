@@ -53,7 +53,8 @@ function UserRegister() {
       const userData = {
         name,
         email,
-        password
+        password,
+        terms
       }
 
       try {
