@@ -11,11 +11,26 @@ const initialState = {
   isPending: false,
 };
 
+//register business
+//business register
 export const registerBusiness = createAsyncThunk(
   "business/register",
   async (business, thunkAPI) => {
     try {
       return await businessService.registerBusiness(business);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
+//login business
+//return token to front-end
+export const loginBusiness = createAsyncThunk(
+  "business/login",
+  async (business, thunkAPI) => {
+    try {
+      return await businessService.loginBusiness(business);
     } catch (error) {
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
     }
@@ -35,7 +50,17 @@ export const businessSlice = createSlice({
         state.isPending = false;
         state.business = action.payload;
       })
-      .addCase("rejected", (state) => {
+      .addCase(registerBusiness.rejected, (state) => {
+        state.isPending = false;
+      })
+      .addCase(loginBusiness.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(loginBusiness.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.business = action.payload;
+      })
+      .addCase(loginBusiness.rejected, (state) => {
         state.isPending = false;
       });
   },

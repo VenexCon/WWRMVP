@@ -15,7 +15,7 @@ const generateToken = (id) => {
 //@route /users
 //@access public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, terms } = req.body;
 
   if (name.includes(" ") || email.includes(" ") || password.includes(" ")) {
     res.status(404);
@@ -57,6 +57,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name: name,
     email: email,
     password: hashedPassword,
+    agreedTerms: terms,
   });
 
   if (user) {
@@ -64,6 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id, //mongoose assigns a unique id number, if one isn't specified. This grabs that number
       name: user.name,
       email: user.email,
+      terms: user.agreedTerms,
       token: generateToken(user._id),
     });
   } else {
