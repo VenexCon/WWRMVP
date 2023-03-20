@@ -17,8 +17,6 @@ function BusinessRegister() {
     businessPassword2:'',
     businessName:'',
     businessAddress:'',
-    latitude: 0,
-    longitude: 0,
     businessTerms:false, 
   })
 
@@ -40,16 +38,25 @@ function BusinessRegister() {
   //submit user for registration
   const onSubmit = async (e)=> {
 
-    const {businessEmail, businessName, businessPassword, businessPassword2, businessTerms, businessAddress} = registerData
+    const {businessEmail, businessName, businessPassword,  businessPassword2, businessTerms, businessAddress} = registerData
 
     e.preventDefault()
     
 
     if(!businessTerms) return toast.error('You must agree to the Terms and Conditions')
+    if(!businessAddress || businessAddress.includes('undefined')){toast.error('Please enter correct address')}
     
     if(businessPassword !== businessPassword2) {
       toast.error('Passwords do not match')
     } else {
+
+        
+    const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${businessAddress}&key=${process.env.REACT_APP_GEOCODING_API}`)
+    const data =await response.json()
+    let latitude = data.results[0]?.geometry.location.lat ?? 0
+    let longitude = data.results[0]?.geometry.location.lng ?? 0
+
+
 
       const businessData = {
         businessEmail,
@@ -57,6 +64,8 @@ function BusinessRegister() {
         businessAddress,
         businessPassword,
         businessTerms,
+        latitude,
+        longitude
       }
 
       try {
