@@ -53,6 +53,7 @@ function BusinessRegister() {
         
     const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${businessAddress}&key=${process.env.REACT_APP_GEOCODING_API}`)
     const data =await response.json()
+    console.log(data)
     let latitude = data.results[0]?.geometry.location.lat ?? 0
     let longitude = data.results[0]?.geometry.location.lng ?? 0
 
@@ -89,23 +90,27 @@ function BusinessRegister() {
      <>
         <form onSubmit={onSubmit} className="space-y-4 md:space-y-6 bg-blue-600 rounded">
                   <div>
-                      <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
-                      <input type="name" name="name" id="name" onChange={onMutate}  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required="" />
+                      <label htmlFor="businessName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
+                      <input type="name" name="businessName" id="businessName" onChange={onMutate}  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required="" />
                   </div>
                   <div>
-                      <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                      <input type="email" name="email" id="email" onChange={onMutate} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="" />
+                      <label htmlFor="businessAddress" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business Address</label>
+                      <textarea  name="businessAddress" id="businessAddress" onChange={onMutate}  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="10 downing street, london" required="" />
                   </div>
                   <div>
-                      <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                      <input type="password" name="password" id="password" onChange={onMutate} placeholder="••••••••" pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$' minLength={8}
+                      <label htmlFor="businessEmail" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                      <input type="businessEmail" name="businessEmail" id="BusinessEmail" onChange={onMutate} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="" />
+                  </div>
+                  <div>
+                      <label htmlFor="businessPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                      <input type="password" name="businessPassword" id="businessPassword" onChange={onMutate} placeholder="••••••••" pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$' minLength={8}
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  valid:border-green-500 invalid:border-red-500  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
                       <span className='font-style: italic font-size: 0.75rem display: block mt-4  text-gray-900 md:text-2xl dark:text-white'>
                         Password must contain 8 characters, one uppercase and one special character</span>
                   </div>
                   <div>
-                      <label htmlFor="password2" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-                      <input type="password" name="password2" id="password2" onChange={onMutate} minLength={8} placeholder="••••••••" pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
+                      <label htmlFor="businessPassword2" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
+                      <input type="password" name="businessPassword2" id="businessPassword2" onChange={onMutate} minLength={8} placeholder="••••••••" pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg valid:border-green-500 invalid:border-red-500 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
                   </div>
                   <div className="flex items-start">
