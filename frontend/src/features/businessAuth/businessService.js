@@ -28,9 +28,14 @@ const loginBusiness = async (businessData) => {
   }
 };
 
+const logout = () => {
+  localStorage.removeItem("business");
+};
+
 const businessService = {
   registerBusiness,
   loginBusiness,
+  logout,
 };
 
 export default businessService;
