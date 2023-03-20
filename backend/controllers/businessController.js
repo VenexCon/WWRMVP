@@ -12,7 +12,7 @@ const generateToken = (id) => {
 };
 
 //@desc Register new business
-//@route /business
+//@route /register - shared path with user register, due to component load.
 //@access public
 
 const registerBusiness = asyncHandler(async (req, res) => {
@@ -23,6 +23,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
     businessAddress,
     longitude,
     latitude,
+    businessTerms,
   } = req.body;
 
   if (businessEmail.includes(" ") || businessPassword.includes(" ")) {
@@ -36,7 +37,8 @@ const registerBusiness = asyncHandler(async (req, res) => {
     !businessAddress ||
     !businessName ||
     !longitude ||
-    !latitude
+    !latitude ||
+    !businessTerms
   ) {
     res.status(404);
     throw new Error("All fields must be completed");
@@ -75,6 +77,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
       type: "Point",
       coordinates: [longitude, latitude],
     },
+    businessTerms: businessTerms,
   });
 
   if (newBusiness) {
@@ -82,6 +85,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
       _id: newBusiness._id,
       name: newBusiness.businessName,
       address: newBusiness.businessAddress,
+      email: newBusiness.businessEmail,
       businessCoordinates: newBusiness.businessGeolocation,
       token: generateToken(newBusiness._id),
     });

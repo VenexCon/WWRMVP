@@ -3,7 +3,6 @@ import businessService from "./businessService";
 
 //allows us to use the redux Async life cycles with sync code.
 import { extractErrorMessage } from "../../utils";
-import { logout } from "../auth/authSlice";
 
 const business = JSON.parse(localStorage.getItem("business"));
 
@@ -41,7 +40,7 @@ export const loginBusiness = createAsyncThunk(
 //logout business
 //return new payload of business: null
 
-export const logoutBusiness = createAsyncThunk(
+export const logoutBusiness = createAction(
   "business/logout",
   (business, thunkAPI) => {
     businessService.logout();
@@ -57,7 +56,6 @@ export const logoutBusiness = createAsyncThunk(
 export const businessSlice = createSlice({
   name: "business",
   initialState,
-
   extraReducers: (builder) => {
     builder
       .addCase(registerBusiness.pending, (state) => {
