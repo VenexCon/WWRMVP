@@ -35,6 +35,7 @@ function BusinessRegister() {
     }))
   }
 
+
   //submit user for registration
   const onSubmit = async (e)=> {
 
@@ -51,12 +52,11 @@ function BusinessRegister() {
     } else {
 
         
-    const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${businessAddress}&key=${process.env.REACT_APP_GEOCODING_API}`)
+    const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${businessAddress}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
     const data =await response.json()
     console.log(data)
     let latitude = data.results[0]?.geometry.location.lat ?? 0
     let longitude = data.results[0]?.geometry.location.lng ?? 0
-
 
 
       const businessData = {
@@ -74,7 +74,7 @@ function BusinessRegister() {
         toast.success(`Registered new business - ${business.name}`)
         navigate('/')
       } catch (error) {
-        toast.error(error)
+        return toast.error(error)
       }
       
     }

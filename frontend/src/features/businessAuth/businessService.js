@@ -1,5 +1,4 @@
 import axios from "axios";
-import businessSlice from "./businessSlice";
 
 //API endpoint fo registering user accounts
 const API_URL = "/business";
