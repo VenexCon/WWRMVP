@@ -10,7 +10,7 @@ function BusinessLogin() {
 
 const navigate = useNavigate()
     const dispatch = useDispatch()
-    const {isPending} = useSelector((state) => state.auth)
+    const {isPending} = useSelector((state) => state.businessAuth)
 
     const [loginData, setLoginData] = useState({
         email:'',
@@ -27,7 +27,8 @@ const navigate = useNavigate()
     const onSubmit = (e) => {
         e.preventDefault()
         dispatch(loginBusiness(loginData)).unwrap().then((business) => {
-          toast.success(`Logged in as ${business.businessName}`)
+          console.log(business)
+          toast.success(`Logged in as ${business.name}`)
           navigate('/')
         }).catch(toast.error)
 
