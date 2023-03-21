@@ -21,6 +21,7 @@ function classNames(...classes) {
 export default function Navbar() {
 
   const {user} =useSelector((state)=> state.auth)
+  const {business} = useSelector((state)=>state.businessAuth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -69,15 +70,15 @@ export default function Navbar() {
                     ))}
                   </div>
                 </div>
-                {!user && (
+                {(!user && !business) && (
                   <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  <Link to ='/users/login' className='flex h-full items-center space-x-2' >
+                  <Link to ='/login' className='flex h-full items-center space-x-2' >
                     <FaUser />
                     <p>Login</p>
                   </Link>
                 </div>
                 )}
-                {user && (
+                {(user || business) && (
                   <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   <button onClick={logoutUser} className='flex h-full items-center space-x-2' >
                     <FaArrowCircleRight />
@@ -104,7 +105,7 @@ export default function Navbar() {
                 </Disclosure.Button>
                 </Link>
               ))}
-              {!user && (
+              {(!user && !business) && (
                 <Link to='/users/login' className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'>
                   <Disclosure.Button className='flex items-center space-x-2'>
                     <FaUser />
@@ -112,7 +113,7 @@ export default function Navbar() {
                   </Disclosure.Button>
               </Link>
               )}
-              {user && (
+              {(user || business) && (
                   <div className="space-x-4 w-fit align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   <button onClick={logoutUser} className='flex h-full items-center space-x-2' >
                     <FaArrowCircleRight />

@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
+const Business = require("../models/businessModel");
 const jwt = require("jsonwebtoken");
 
 //generate jwt token
@@ -46,6 +47,14 @@ const registerUser = asyncHandler(async (req, res) => {
   if (userExists) {
     res.status(400);
     throw new Error("User already exists");
+  }
+
+  //check to see if a business is already registered with that email address
+  const businessExists = await Business.findOne({ businessEmail });
+
+  if (businessExists) {
+    res.status(400);
+    throw new Error("Business account already exists with that E-Mail");
   }
 
   //Hash password - recommended 10 salts
