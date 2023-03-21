@@ -18,13 +18,15 @@ const registerBusiness = async (businessData) => {
 //login business
 //public route for logging in.
 const loginBusiness = async (businessData) => {
-  const LOGIN_URL = "business/login";
+  const LOGIN_URL = "/business/login";
 
   const response = await axios.post(LOGIN_URL, businessData);
   /* @ToDo - change for cookies when going live. */
-  if (response) {
+  if (response.data) {
     localStorage.setItem("business", JSON.stringify(response.data));
   }
+
+  return response.data;
 };
 
 const logout = () => {
