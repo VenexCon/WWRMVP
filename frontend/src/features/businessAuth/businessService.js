@@ -29,14 +29,14 @@ const loginBusiness = async (businessData) => {
   return response.data;
 };
 
-const logout = () => {
+const logoutBusiness = () => {
   localStorage.removeItem("business");
 };
 
 const businessService = {
   registerBusiness,
   loginBusiness,
-  logout,
+  logoutBusiness,
 };
 
 export default businessService;

@@ -1,10 +1,12 @@
 import { Fragment, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {logout} from '../features/auth/authSlice.js'
+import {logoutBusiness} from '../features/businessAuth/businessSlice.js'
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
-import { FaUser, FaArrowCircleRight } from 'react-icons/fa'
+import { FaUser, FaArrowCircleRight, FaWarehouse } from 'react-icons/fa'
+import navBarBanner from '../assets/png/navBarBanner.png'
 
 const navigation = [
 
@@ -30,6 +32,13 @@ export default function Navbar() {
     navigate('/')
   }
 
+  const logoutBus = () => {
+    dispatch(logoutBusiness())
+    navigate('/')
+  }
+
+
+
 
   return (
     <Disclosure as="nav" className="bg-cyan-600">
@@ -48,10 +57,10 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <h2 className="block h-8 w-auto lg:hidden">WWWMVP Logo</h2>
-                  <h2 className="hidden h-8 w-auto lg:block">WWWMVP</h2>
+              <div className="flex  flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <div className="flex flex-shrink-0 items-center align-middle">
+                  <img className=" h-10 w-auto hidden lg:block rounded" src ={navBarBanner} alt ='Who Wants Rubbish Banner' />
+                  <FaWarehouse className='h-12 auto lg:hidden sm:block text-white text-4xl'  />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -70,17 +79,28 @@ export default function Navbar() {
                     ))}
                   </div>
                 </div>
+                {/* Login component displayed if both accs are null */}
                 {(!user && !business) && (
-                  <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  <div className="space-x-4 hidden align items-center  sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   <Link to ='/login' className='flex h-full items-center space-x-2' >
                     <FaUser />
                     <p>Login</p>
                   </Link>
                 </div>
                 )}
-                {(user || business) && (
+                {/* If there is a user and no business then call logout User */}
+                {(user && !business) && (
                   <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   <button onClick={logoutUser} className='flex h-full items-center space-x-2' >
+                    <FaArrowCircleRight />
+                    <p>Log out</p>
+                  </button>
+                </div>
+                )}
+                {/* If there is a business account then show the logoutBusiness */}
+                  {(!user && business) && (
+                  <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  <button onClick={logoutBus} className='flex h-full items-center space-x-2' >
                     <FaArrowCircleRight />
                     <p>Log out</p>
                   </button>

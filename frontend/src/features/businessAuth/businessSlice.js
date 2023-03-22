@@ -7,7 +7,7 @@ import { extractErrorMessage } from "../../utils";
 const business = JSON.parse(localStorage.getItem("business"));
 
 const initialState = {
-  user: business ? business : null,
+  business: business ? business : null,
   isPending: false,
 };
 
@@ -40,22 +40,20 @@ export const loginBusiness = createAsyncThunk(
 //logout business
 //return new payload of business: null
 
-export const logoutBusiness = createAction(
-  "business/logout",
-  (business, thunkAPI) => {
-    businessService.logout();
-    return {
-      payload: {
-        business: null,
-        isPending: false,
-      },
-    };
-  }
-);
+export const logoutBusiness = createAction("business/logout", () => {
+  businessService.logoutBusiness();
+  return {
+    payload: {
+      business: null,
+      isPending: false,
+    },
+  };
+});
 
 export const businessSlice = createSlice({
   name: "business",
   initialState,
+
   extraReducers: (builder) => {
     builder
       .addCase(registerBusiness.pending, (state) => {
@@ -79,6 +77,7 @@ export const businessSlice = createSlice({
         state.isPending = false;
       })
       .addCase(logoutBusiness, (state, action) => {
+        console.log(state, action);
         state.isPending = action.payload.isPending;
         state.business = action.payload.business;
       });
