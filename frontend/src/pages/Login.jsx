@@ -23,7 +23,7 @@ const [page, setPage] = useState({
       navigate('/')
     } 
     return
-  },[])
+  },[business, user])
 
   
 
