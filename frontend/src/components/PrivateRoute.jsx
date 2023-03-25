@@ -3,10 +3,10 @@ import {useSelector} from 'react-redux'
 
 const PrivateRoute = ({children}) => {
     const {user} =useSelector((state) => state.auth)
+    const {business} = useSelector((state) => state.businessAuth)
+    if(user || business) return children
 
-    if(user) return children
-
-    return <Navigate to='/users/login' />
+    return <Navigate to='/login'/>
 }
 
 export default PrivateRoute

@@ -21,7 +21,7 @@ function App() {
             {/* Instead of having /users/register & /business/register */}
             <Route path="/login" element={<Login />} />
             <Route
-              path="/users/me"
+              path="/profile"
               element={
                 <PrivateRoute>
                   <Profile />
