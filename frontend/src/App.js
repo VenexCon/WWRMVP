@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
+import Listings from "./pages/Listings";
+import NewListing from "./pages/NewListing";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="/new-listing" element={<NewListing />} />
+            <Route path="/listings" element={<Listings />} />
           </Routes>
         </div>
       </Router>
