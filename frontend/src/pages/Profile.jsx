@@ -20,7 +20,8 @@ const {business} = useSelector((state)=>state.businessAuth)
       <div className=" flex flex-col mx-auto sm:h-full md:min-h-full lg:py-0 items-center justify-center w-full bg-rounded rounded-lg shadow sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 ">
           <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
-            Your Profile
+            
+            Profile Page
           </h1>
           {user && (<UserProfile />) }
           {business && (<BusinessProfile />)}

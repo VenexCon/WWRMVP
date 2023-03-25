@@ -10,9 +10,21 @@ function BusinessProfile() {
 
 
   return (
-    <div>
-        <h1>{business.name}</h1>
+   <>
+   <div className="text-white">
+    <h1 className='text-xl'>Business Profile</h1>
+    <h2>{business.name}</h2>
+    <div className="container text-lg text-white">
+        <p>{business.address}</p>
+        <p>{business.email}</p>
     </div>
+
+    <div className="listings text-xl text-white mt-10">
+        Your listings here!
+    </div>
+
+   </div>
+   </>
   )
 }
 
