@@ -100,7 +100,7 @@ function BusinessProfile() {
               <FaArrowCircleRight className="mr-2" /> Browse Listings
             </button>
           </Link>
-          <Link to="/new-listing" className="w-full">
+          <Link to="/listing/new" className="w-full">
             <button className="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 transition-colors duration-300">
               <FaPlusCircle className="mr-2" /> Create New Listing
             </button>

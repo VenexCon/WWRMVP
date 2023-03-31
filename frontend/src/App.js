@@ -30,7 +30,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/new-listing" element={<NewListing />} />
+            <Route path="/listing/new" element={<NewListing />} />
             <Route path="/listings" element={<Listings />} />
           </Routes>
         </div>
