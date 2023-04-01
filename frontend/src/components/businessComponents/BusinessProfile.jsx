@@ -2,17 +2,29 @@ import React, {useState, useEffect} from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
+import { getMyListings } from '../../features/listings/listingSlice'
 import { FaUserAlt, FaEnvelope, FaPhoneAlt, FaGlobe, FaWarehouse, FaPlusCircle, FaArrowCircleRight } from 'react-icons/fa'
 
 
 function BusinessProfile() {
+    
+    const dispatch = useDispatch()
     const {business} = useSelector((state)=>state.businessAuth)
+    const {accountsListings} = useSelector((state)=>state.listing)
 
     const [edit, setEdit] =useState(true)
 
     const selectEdit = () => {
       setEdit((prevState) => !prevState)
     }
+
+    useEffect(() => {
+      const fetchListings = async () => {
+        const response = await dispatch(getMyListings())
+        console.log(response)
+      }
+      fetchListings()
+    }, [dispatch])
 
     const [registerData, setRegisterData] = useState({
     businessEmail:'',

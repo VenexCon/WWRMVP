@@ -13,9 +13,16 @@ const createListing = async (listingData, token) => {
 const getBusinessListings = async (token) => {
   const config = {
     headers: {
-      Authorization: `bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   };
   const response = await axios.get("/listing/myListings", config);
   return response.data;
 };
+
+const listingService = {
+  createListing,
+  getBusinessListings,
+};
+
+export default listingService;

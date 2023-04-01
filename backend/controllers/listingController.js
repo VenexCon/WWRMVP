@@ -32,6 +32,9 @@ const createListing = asyncHandler(async (req, res) => {
 // @access  Private
 const getListings = asyncHandler(async (req, res) => {
   const listings = await Listing.find({ business: req.business._id });
+  if (listings.length === 0) {
+    return;
+  }
 
   res.status(200).json(listings);
 });
