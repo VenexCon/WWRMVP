@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { getMyListings } from '../../features/listings/listingSlice'
+import ListingItem from '../sharedComponents/ListingItem'
 import { FaUserAlt, FaEnvelope, FaPhoneAlt, FaGlobe, FaWarehouse, FaPlusCircle, FaArrowCircleRight } from 'react-icons/fa'
 
 
@@ -21,7 +22,7 @@ function BusinessProfile() {
     useEffect(() => {
       const fetchListings = async () => {
         const response = await dispatch(getMyListings())
-        console.log(response)
+        console.log(accountsListings)
       }
       fetchListings()
     }, [dispatch])
@@ -118,6 +119,10 @@ function BusinessProfile() {
             </button>
           </Link>
         </div>
+    )}
+    {accountsListings.map((listing) => (
+      <ListingItem key={listing._id} listing = {listing}  />
+    )
     )}
     </>
   )
