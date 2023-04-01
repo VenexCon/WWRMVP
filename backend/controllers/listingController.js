@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 //@desc create a new listing
 //@route /listing/new
 //@access private
-const createTicket = asyncHandler(async (req, res) => {
+const createListing = asyncHandler(async (req, res) => {
   const { businessCoordinates, id, businessAddress } = req.business;
   const { title, description } = req.body;
 
@@ -27,4 +27,32 @@ const createTicket = asyncHandler(async (req, res) => {
   res.status(201).json(newListing);
 });
 
-module.exports = { createTicket };
+// @desc    Get business listings
+// @route   GET /listing/mylistings
+// @access  Private
+const getListings = asyncHandler(async (req, res) => {
+  const listings = await Listing.find({ business: req.business._id });
+
+  res.status(200).json(listings);
+});
+
+// @desc    Get user ticket
+// @route   GET /api/tickets/:id
+// @access  Private
+const getTicket = asyncHandler(async (req, res) => {
+  const ticket = await Ticket.findById(req.params.id);
+
+  if (!ticket) {
+    res.status(404);
+    throw new Error("Ticket not found");
+  }
+
+  if (ticket.user.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error("Not Authorized");
+  }
+
+  res.status(200).json(ticket);
+});
+
+module.exports = { createListing, getListings };

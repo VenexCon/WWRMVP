@@ -1,8 +1,12 @@
 const express = require("express");
 const { businessProtect } = require("../middleware/businessAuthMiddleware");
 const router = express.Router();
-const { createTicket } = require("../controllers/listingController");
+const {
+  createListing,
+  getListings,
+} = require("../controllers/listingController");
 
-router.post("/new", businessProtect, createTicket);
+router.post("/new", businessProtect, createListing);
+router.get("/myListings", businessProtect, getListings);
 
 module.exports = router;

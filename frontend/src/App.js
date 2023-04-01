@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
+import BusinessRoute from "./components/BusinessRoute";
 import Listings from "./pages/Listings";
 import NewListing from "./pages/NewListing";
 
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/*" element={<Home />} />
             <Route path="/register" element={<Register />} />{" "}
+            <Route path="/listings" element={<Listings />} />
             {/* Instead of having /users/register & /business/register */}
             <Route path="/login" element={<Login />} />
             <Route
@@ -30,8 +32,15 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/listing/new" element={<NewListing />} />
-            <Route path="/listings" element={<Listings />} />
+            {/* Business acc only routes */}
+            <Route
+              path="/listing/new"
+              element={
+                <BusinessRoute>
+                  <NewListing />
+                </BusinessRoute>
+              }
+            />
           </Routes>
         </div>
       </Router>

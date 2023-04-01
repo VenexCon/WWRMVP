@@ -9,3 +9,13 @@ const createListing = async (listingData, token) => {
   const response = await axios.post("/listing/new", listingData, config);
   return response.data;
 };
+
+const getBusinessListings = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+  };
+  const response = await axios.get("/listing/myListings", config);
+  return response.data;
+};
