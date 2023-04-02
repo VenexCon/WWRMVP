@@ -29,6 +29,7 @@ export const registerBusiness = createAsyncThunk(
 export const loginBusiness = createAsyncThunk(
   "business/login",
   async (business, thunkAPI) => {
+    console.log(business);
     try {
       return await businessService.loginBusiness(business);
     } catch (error) {

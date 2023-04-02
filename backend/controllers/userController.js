@@ -52,7 +52,7 @@ const registerUser = asyncHandler(async (req, res) => {
   //check to see if a business is already registered with that email address
   const businessExists = await Business.findOne({ businessEmail });
 
-  if (businessExists) {
+  if (businessExists.length > 1) {
     res.status(400);
     throw new Error("Business account already exists with that E-Mail");
   }

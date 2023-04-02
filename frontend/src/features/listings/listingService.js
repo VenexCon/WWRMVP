@@ -1,5 +1,6 @@
 import axios from "axios";
 
+//creates new listing, stores info in mongodb
 const createListing = async (listingData, token) => {
   const config = {
     headers: {
@@ -10,6 +11,7 @@ const createListing = async (listingData, token) => {
   return response.data;
 };
 
+//get listings only specific to the logged in business
 const getBusinessListings = async (token) => {
   const config = {
     headers: {

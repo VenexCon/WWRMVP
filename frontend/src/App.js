@@ -9,8 +9,8 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/PrivateRoute";
 import BusinessRoute from "./components/BusinessRoute";
-import Listings from "./pages/Listings";
 import NewListing from "./pages/NewListing";
+import ListingsPage from "./pages/ListingsPage";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
           <Routes>
             <Route path="/*" element={<Home />} />
             <Route path="/register" element={<Register />} />{" "}
-            <Route path="/listings" element={<Listings />} />
+            <Route path="/listings" element={<ListingsPage />} />
             {/* Instead of having /users/register & /business/register */}
             <Route path="/login" element={<Login />} />
             <Route
