@@ -120,10 +120,9 @@ function BusinessProfile() {
           </Link>
         </div>
     )}
-    {accountsListings.map((listing) => (
+    {accountsListings.length > 1 ? (accountsListings.map((listing) => (
       <ListingItem key={listing._id} listing = {listing}  />
-    )
-    )}
+    ))) : (<p className='text-white w-full items-center flex bg-gray-700 border border-purple-600 p-4 rounded-md'>You have no listings</p>)}
     </>
   )
 }
