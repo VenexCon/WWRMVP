@@ -39,6 +39,20 @@ const getListings = asyncHandler(async (req, res) => {
   res.status(200).json(listings);
 });
 
+//@desc get 10 listings
+//route @ GET listings
+//@access Public
+const getAllListings = asyncHandler(async (req, res) => {
+  try {
+    const listings = await Listing.find({}).limit(10).exec();
+    res.status(200).json(listings);
+  } catch (error) {
+    res.status(404);
+    throw new Error("No listings found");
+  }
+});
+
+/* Change to get a specific listing!  */
 // @desc    Get user ticket
 // @route   GET /api/tickets/:id
 // @access  Private
@@ -58,4 +72,4 @@ const getTicket = asyncHandler(async (req, res) => {
   res.status(200).json(ticket);
 });
 
-module.exports = { createListing, getListings };
+module.exports = { createListing, getListings, getAllListings };

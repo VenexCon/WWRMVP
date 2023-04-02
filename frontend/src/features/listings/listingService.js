@@ -22,9 +22,16 @@ const getBusinessListings = async (token) => {
   return response.data;
 };
 
+//get every listing (current has a limit of 10)
+const getAllListings = async () => {
+  const response = await axios.get("/listing");
+  return response.data;
+};
+
 const listingService = {
   createListing,
   getBusinessListings,
+  getAllListings,
 };
 
 export default listingService;

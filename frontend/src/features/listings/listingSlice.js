@@ -36,6 +36,17 @@ export const getMyListings = createAsyncThunk(
   }
 );
 
+export const getAllListings = createAsyncThunk(
+  "listing/allListings",
+  async (_, thunkAPI) => {
+    try {
+      return await listingService.getAllListings();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
 export const listingSlice = createSlice({
   name: "listing",
   initialState,
@@ -55,6 +66,13 @@ export const listingSlice = createSlice({
       .addCase(getMyListings.fulfilled, (state, action) => {
         state.accountsListings = action.payload;
         state.isPending = false;
+      })
+      .addCase(getAllListings.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(getAllListings.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.allListings = action.payload;
       });
   },
 });

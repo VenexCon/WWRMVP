@@ -11,7 +11,7 @@ import navBarBanner from '../assets/png/navBarBanner.png'
 const navigation = [
 
   { name: 'Home', href: '/', current: false },
-  { name: 'Listings', href: '/listings', current: false },
+  { name: 'Listings', href: '/listing', current: false },
   { name: 'Profile', href: '/profile', current: false },
   { name: 'Register', href:'/register', current: false}
 ]

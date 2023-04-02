@@ -142,7 +142,7 @@ const getProfile = (req, res) => {
   res.status(200).json(business);
 };
 
-//@desc Delete User Profile
+//@desc Delete Business Profile
 //@route /users/me
 //@access Private
 const deleteBusiness = asyncHandler(async (req, res) => {
