@@ -25,7 +25,7 @@ function BusinessProfile() {
         console.log(accountsListings)
       }
       fetchListings()
-    }, [dispatch, business, accountsListings])
+    }, [business])
 
     const [registerData, setRegisterData] = useState({
     businessEmail:'',
