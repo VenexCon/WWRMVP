@@ -114,6 +114,7 @@ const loginBusiness = asyncHandler(async (req, res) => {
 
   //check if passwords match
   if (business && (await bcrypt.compare(password, business.businessPassword))) {
+    console.log(business);
     res.status(200).json({
       _id: business._id,
       name: business.businessName,

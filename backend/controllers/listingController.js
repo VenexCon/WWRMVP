@@ -30,7 +30,7 @@ const createListing = asyncHandler(async (req, res) => {
 // @desc    Get business listings
 // @route   GET /listing/mylistings
 // @access  Private
-const getListings = asyncHandler(async (req, res) => {
+const getMyListings = asyncHandler(async (req, res) => {
   const listings = await Listing.find({ business: req.business._id });
   if (listings.length === 0) {
     return;
@@ -56,20 +56,20 @@ const getAllListings = asyncHandler(async (req, res) => {
 // @desc    Get user ticket
 // @route   GET /api/tickets/:id
 // @access  Private
-const getTicket = asyncHandler(async (req, res) => {
-  const ticket = await Ticket.findById(req.params.id);
+const getSpecificListing = asyncHandler(async (req, res) => {
+  const listing = await Listing.findById(req.params.id);
 
-  if (!ticket) {
+  if (!listing) {
     res.status(404);
-    throw new Error("Ticket not found");
+    throw new Error("Listing not found");
   }
 
-  if (ticket.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error("Not Authorized");
-  }
-
-  res.status(200).json(ticket);
+  res.status(200).json(listing);
 });
 
-module.exports = { createListing, getListings, getAllListings };
+module.exports = {
+  createListing,
+  getMyListings,
+  getAllListings,
+  getSpecificListing,
+};

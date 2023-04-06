@@ -22,10 +22,9 @@ function BusinessProfile() {
     useEffect(() => {
       const fetchListings = async () => {
         const response = await dispatch(getMyListings())
-        console.log(accountsListings)
       }
       fetchListings()
-    }, [business, dispatch])
+    }, [])
 
     const [registerData, setRegisterData] = useState({
     businessEmail:'',
