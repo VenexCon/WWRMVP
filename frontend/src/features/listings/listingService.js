@@ -28,9 +28,9 @@ const getAllListings = async () => {
   return response.data;
 };
 
-const getSpecificListing = async (ticketId) => {
+const getSpecificListing = async (listingId) => {
   const url = "/listing/";
-  const response = await axios.get(url + ticketId);
+  const response = await axios.get(url + listingId);
   return response.data;
 };
 

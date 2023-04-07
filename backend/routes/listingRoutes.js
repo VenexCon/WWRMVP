@@ -9,9 +9,9 @@ const {
   getSpecificListing,
 } = require("../controllers/listingController");
 
-router.get(":id", protect, getSpecificListing);
 router.get("/", getAllListings);
 router.post("/new", businessProtect, createListing);
 router.get("/myListings", businessProtect, getMyListings);
+router.get("/:id", getSpecificListing);
 
 module.exports = router;

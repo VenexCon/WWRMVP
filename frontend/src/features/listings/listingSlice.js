@@ -50,9 +50,9 @@ export const getAllListings = createAsyncThunk(
 
 export const getSpecificListing = createAsyncThunk(
   "listing/specificListing",
-  async (ticketId, thunkAPI) => {
+  async (listingId, thunkAPI) => {
     try {
-      return await listingService.getSpecificListing(ticketId);
+      return await listingService.getSpecificListing(listingId);
     } catch (error) {
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
     }
@@ -85,14 +85,14 @@ export const listingSlice = createSlice({
       .addCase(getAllListings.fulfilled, (state, action) => {
         state.isPending = false;
         state.allListings = action.payload;
-      });
-    /*  .addCase(getSpecificListing.pending, (state) => {
+      })
+      .addCase(getSpecificListing.pending, (state) => {
         state.isPending = true;
       })
       .addCase(getSpecificListing.fulfilled, (state, action) => {
         state.isPending = false;
         state.specificListing = action.payload;
-      }); */
+      });
   },
 });
 

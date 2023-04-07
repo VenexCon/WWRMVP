@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
-import { getSingleListing } from '../features/listings/listingSlice'
+import { getSpecificListing} from '../features/listings/listingSlice'
 
 
 const Listing = () => {
   const { listingId } = useParams();
   const dispatch = useDispatch()
-  const {singleListing} = useSelector((state) => state.listing)
+  const {specificListing} = useSelector((state) => state.listing)
 
   useEffect(() => {
     const fetchListing = async () => {
-      const response = await dispatch(getSingleListing(listingId))
+      const response = await dispatch(getSpecificListing(listingId))
     }
 
     fetchListing()
@@ -37,10 +37,10 @@ const Listing = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      {singleListing ?
+      {specificListing ?
         <div className="bg-white rounded-lg shadow-md px-8 py-6 my-8 w-full max-w-3xl">
-          <h1 className="text-4xl font-bold mb-4">{singleListing.listingTitle}</h1>
-          <p className="text-gray-700 text-lg mb-4">{singleListing.listingDescription}</p>
+          <h1 className="text-4xl font-bold mb-4">{specificListing.listingTitle}</h1>
+          <p className="text-gray-700 text-lg mb-4">{specificListing.listingDescription}</p>
           <div className="relative w-full h-0 overflow-hidden pb-56">
             {/* <iframe
               title="listing-location"
@@ -50,7 +50,7 @@ const Listing = () => {
               onLoad={handleLoad}
             ></iframe> */}
           </div>
-          <p className="text-gray-700 text-lg mt-4">Location: {singleListing.listingLocation}</p>
+          <p className="text-gray-700 text-lg mt-4">Location: {specificListing.listingLocation}</p>
         </div>
       :
         <p>Loading...</p>

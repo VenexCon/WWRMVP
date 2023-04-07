@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import BusinessRoute from "./components/BusinessRoute";
 import NewListing from "./pages/NewListing";
 import ListingsPage from "./pages/ListingsPage";
+import Listing from "./pages/Listing";
 
 function App() {
   return (
@@ -29,6 +30,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Profile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/listing/:listingId"
+              element={
+                <PrivateRoute>
+                  <Listing />
                 </PrivateRoute>
               }
             />
