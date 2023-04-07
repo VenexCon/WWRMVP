@@ -10,6 +10,7 @@ const CreateListing = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    address: ''
   });
 
   const handleChange = (e) => {
@@ -56,6 +57,19 @@ const CreateListing = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="description"
             placeholder="Description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+            Address
+          </label>
+          <textarea
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="address"
+            placeholder="10 downing street"
             name="description"
             value={formData.description}
             onChange={handleChange}

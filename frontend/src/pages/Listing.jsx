@@ -7,6 +7,8 @@ const Listing = () => {
   const { listingId } = useParams();
   const dispatch = useDispatch();
   const { specificListing } = useSelector((state) => state.listing);
+  const { business } = useSelector((state) => state.businessAuth);
+  const { user } = useSelector((state) => state.auth);
   const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
@@ -36,29 +38,35 @@ const Listing = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-fit bg-gray-100">
       {specificListing ? (
         <div className="bg-white rounded-lg shadow-md px-8 py-6 my-8 w-full max-w-3xl">
           <h1 className="text-4xl font-bold mb-4">{specificListing.listingTitle}</h1>
-          <p className="text-gray-700 text-lg mb-4">{specificListing.listingDescription}</p>
-          <button
-            className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2 mb-4"
-            onClick={() => setShowMap(!showMap)}
-          >
-            {showMap ? 'Hide Map' : 'Show Map'}
-          </button>
-          {showMap && (
+          <p className="text-gray-700 text-lg mb-4">Description: {specificListing.listingDescription}</p>
+          <div className="flex justify-between border-b-2 pb-4 mb-4">
+            <div>
+              <p className="text-gray-700 text-lg">{specificListing.listingLocation}</p>
+              <p className="text-gray-700 text-lg mt-2">Phone: {specificListing.listingPhone}</p>
+              <p className="text-gray-700 text-lg">Email: {specificListing.listingEmail}</p>
+            </div>
+            <button
+              className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2"
+              onClick={() => setShowMap(!showMap)}
+            >
+              {showMap ? 'Hide Map' : 'Show Map'}
+            </button>
+          </div>
+          {(showMap && (user || business)) && (
             <div className="relative w-full h-0 overflow-hidden pb-56">
               <iframe
                 title="listing-location"
                 src={`https://www.google.com/maps/embed/v1/place?q=${address}&key=${process.env.REACT_APP_GEOCODING_KEY}`}
                 frameBorder="0"
-                className="absolute top-0 left-0 w-full h-full"
+                className="absolute bottom-0 right-0 w-full h-full"
                 onLoad={handleLoad}
               ></iframe>
             </div>
           )}
-          <p className="text-gray-700 text-lg mt-4">Location: {specificListing.listingLocation}</p>
         </div>
       ) : (
         <p>Loading...</p>

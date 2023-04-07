@@ -26,7 +26,7 @@ const ListingsPage = () => {
         <SearchBar />
       </div>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {listings.length > 1 ? (listings.map((listing) => (
+        {listings.length > 0 ? (listings.map((listing) => (
           <ListingItem key={listing._id} listing={listing} />
         ))) : (<p className='text-white w-full items-center flex bg-gray-700 border border-purple-600 p-4 rounded-md'>There is no listings</p>)}
       </div>

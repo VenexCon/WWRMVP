@@ -47,29 +47,21 @@ function BusinessRegister() {
     if(!businessTerms) return toast.error('You must agree to the Terms and Conditions')
     if(!businessAddress || businessAddress.includes('undefined')){toast.error('Please enter correct address')}
     
-    if(businessPassword !== businessPassword2) {
-      toast.error('Passwords do not match')
-    } else {
-
-        
-    const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${businessAddress}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
-    const data =await response.json()
-    console.log(data)
-    let latitude = data.results[0]?.geometry.location.lat ?? 0
-    let longitude = data.results[0]?.geometry.location.lng ?? 0
+    if(businessPassword !== businessPassword2) {toast.error('Passwords do not match')}  
 
 
-      const businessData = {
+      try {
+        let businessData = {
         businessEmail,
         businessName,
         businessAddress,
         businessPassword,
         businessTerms,
-        latitude,
-        longitude
       }
-
-      try {
+       const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${businessAddress}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
+       const data =await response.json()
+       businessData.latitude = data.results[0]?.geometry.location.lat ?? 0
+       businessData.longitude = data.results[0]?.geometry.location.lng ?? 0
         const business = await dispatch(registerBusiness(businessData)).unwrap()
         toast.success(`Registered new business - ${business.name}`)
         navigate('/')
@@ -77,7 +69,7 @@ function BusinessRegister() {
         return toast.error(error)
       }
       
-    }
+    
   }
 
   if(isPending) {

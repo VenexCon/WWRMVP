@@ -1,6 +1,7 @@
 import axios from "axios";
 
 //creates new listing, stores info in mongodb
+//API routes are kept internally within functions.
 const createListing = async (token, listingData) => {
   const config = {
     headers: {

@@ -24,7 +24,7 @@ function BusinessProfile() {
         const response = await dispatch(getMyListings())
       }
       fetchListings()
-    }, [])
+    }, [business, dispatch])
 
     const [registerData, setRegisterData] = useState({
     businessEmail:'',
@@ -107,7 +107,7 @@ function BusinessProfile() {
      )}
     {edit && (
       <div className="mt-10 flex flex-col space-y-4 w-full">
-          <Link to="/listings" className="w-full">
+          <Link to="/listing" className="w-full">
             <button className="w-full flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300">
               <FaArrowCircleRight className="mr-2" /> Browse Listings
             </button>
@@ -119,7 +119,7 @@ function BusinessProfile() {
           </Link>
         </div>
     )}
-    {accountsListings.length > 1 ? (accountsListings.map((listing) => (
+    {accountsListings.length > 0 ? (accountsListings.map((listing) => (
       <ListingItem key={listing._id} listing = {listing}  />
     ))) : (<p className='text-white w-full items-center flex bg-gray-700 border border-purple-600 p-4 rounded-md'>You have no listings</p>)}
     </>
