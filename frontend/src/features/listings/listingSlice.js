@@ -17,7 +17,8 @@ export const createNewListing = createAsyncThunk(
   "listing/create",
   async (listingData, thunkAPI) => {
     try {
-      return await listingService.createListing(listingData);
+      const token = thunkAPI.getState().businessAuth.business.token;
+      return await listingService.createListing(token, listingData);
     } catch (error) {
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
     }
@@ -68,9 +69,8 @@ export const listingSlice = createSlice({
       .addCase(createNewListing.pending, (state) => {
         state.isPending = true;
       })
-      .addCase(createNewListing.fulfilled, (state, action) => {
+      .addCase(createNewListing.fulfilled, (state) => {
         state.isPending = false;
-        state.fulfilled = action.payload;
       })
       .addCase(getMyListings.pending, (state) => {
         state.isPending = true;

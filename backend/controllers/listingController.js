@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 const createListing = asyncHandler(async (req, res) => {
   const { businessCoordinates, id, businessAddress } = req.business;
   const { title, description } = req.body;
+  console.log(req.body);
 
   if (!title || !description) {
     res.status(404);
@@ -35,7 +36,7 @@ const getMyListings = asyncHandler(async (req, res) => {
   if (listings.length === 0) {
     return;
   }
-
+  console.log(req.body);
   res.status(200).json(listings);
 });
 

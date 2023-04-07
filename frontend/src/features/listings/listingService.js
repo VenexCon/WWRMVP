@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //creates new listing, stores info in mongodb
-const createListing = async (listingData, token) => {
+const createListing = async (token, listingData) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

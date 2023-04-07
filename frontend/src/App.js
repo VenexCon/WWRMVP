@@ -12,6 +12,7 @@ import BusinessRoute from "./components/BusinessRoute";
 import NewListing from "./pages/NewListing";
 import ListingsPage from "./pages/ListingsPage";
 import Listing from "./pages/Listing";
+import CreateListing from "./pages/CreateListing";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/listing" element={<ListingsPage />} />
             {/* Instead of having /users/register & /business/register */}
             <Route path="/login" element={<Login />} />
+            <Route path="/listing/new" element={<CreateListing />} />
             <Route
               path="/profile"
               element={
