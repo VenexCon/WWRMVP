@@ -18,7 +18,7 @@ const getBusinessListings = async (token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get("/listing/myListings", config);
+  const response = await axios.get("/listing/mylistings", config);
   return response.data;
 };
 
@@ -28,10 +28,17 @@ const getAllListings = async () => {
   return response.data;
 };
 
+const getSpecificListing = async (ticketId) => {
+  const url = "/listing/";
+  const response = await axios.get(url + ticketId);
+  return response.data;
+};
+
 const listingService = {
   createListing,
   getBusinessListings,
   getAllListings,
+  getSpecificListing,
 };
 
 export default listingService;
