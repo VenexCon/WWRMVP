@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpecificListing } from '../features/listings/listingSlice';
+import { FaPhone, FaEnvelope } from 'react-icons/fa';
 
 const Listing = () => {
   const { listingId } = useParams();
@@ -37,6 +38,14 @@ const Listing = () => {
     };
   };
 
+    const handlePhoneClick = () => {
+    window.location.href = `tel:${specificListing.listingPhone}`;
+  };
+
+  const handleEmailClick = () => {
+    window.location.href = `mailto:${specificListing.listingEmail}`;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-fit bg-gray-100">
       {specificListing ? (
@@ -45,9 +54,15 @@ const Listing = () => {
           <p className="text-gray-700 text-lg mb-4">Description: {specificListing.listingDescription}</p>
           <div className="flex justify-between border-b-2 pb-4 mb-4">
             <div>
-              <p className="text-gray-700 text-lg">{specificListing.listingLocation}</p>
-              <p className="text-gray-700 text-lg mt-2">Phone: {specificListing.listingPhone}</p>
-              <p className="text-gray-700 text-lg">Email: {specificListing.listingEmail}</p>
+              <p className="text-gray-700 text-lg">Location: {specificListing.listingLocation}</p>
+                <p className="text-gray-700 text-lg mt-2">
+                <FaPhone className="inline mr-2 cursor-pointer" onClick={handlePhoneClick} />
+                {specificListing.listingPhone}
+              </p>
+              <p className="text-gray-700 text-lg">
+                <FaEnvelope className="inline cursor-pointer mr-2" onClick={handleEmailClick} />
+                {specificListing.listingEmail}
+              </p>
             </div>
             <button
               className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2"
