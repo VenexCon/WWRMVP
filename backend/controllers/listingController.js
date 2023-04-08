@@ -11,27 +11,47 @@ const createListing = asyncHandler(async (req, res) => {
   try {
     const { businessCoordinates, id, businessAddress, businessEmail } =
       req.business;
-    const { title, description, phoneNumber, address } = req.body;
+    const {
+      title,
+      description,
+      phoneNumber,
+      address,
+      useBusAddress,
+      latitude,
+      longitude,
+    } = req.body;
     console.log(req.body);
 
-    if (!title || !description) {
+    if (!title || !description || !phoneNumber) {
       res.status(404);
       throw new Error("Please ensure all fields are completed.");
     }
-
-    // currently the location is === to the same as the businesses who creates the listing
-    //This needs to change to geo-locate the listing from the address put in for the listing.
-    const newListing = await Listing.create({
-      listingTitle: title,
-      listingDescription: description,
-      listingLocation: businessAddress,
-      listingCoordinates: businessCoordinates,
-      listingEmail: businessEmail,
-      listingPhone: phoneNumber,
-      business: id,
-    });
-
-    res.status(201).json(newListing);
+    if (useBusAddress) {
+      const newListing = await Listing.create({
+        listingTitle: title,
+        listingDescription: description,
+        listingLocation: businessAddress,
+        listingCoordinates: businessCoordinates,
+        listingEmail: businessEmail,
+        listingPhone: phoneNumber,
+        business: id,
+      });
+      res.status(201).json(newListing);
+    } else {
+      const newListing = await Listing.create({
+        listingTitle: title,
+        listingDescription: description,
+        listingLocation: address,
+        listingCoordinates: {
+          type: "Point",
+          coordinates: [longitude, latitude],
+        },
+        listingEmail: businessEmail,
+        listingPhone: phoneNumber,
+        business: id,
+      });
+      res.status(201).json(newListing);
+    }
   } catch (error) {
     res.status(500);
     throw new Error(`Error creating listing: ${error.message}`);

@@ -7,10 +7,13 @@ import {useNavigate} from 'react-router-dom'
 const CreateListing = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    phoneNumber:''
+    phoneNumber:'',
+    useBusAddress: true,
+    address:''
   });
 
   const handleChange = (e) => {
@@ -21,15 +24,37 @@ const CreateListing = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const onSelect = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      useBusAddress: !formData.useBusAddress,
+    }))
+  }
+
+  /* Backend will deal with the data, i.e. if the useBusAddress is false, then it will use the sent address
+  This will be sent in the request */
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const {title, description, phoneNumber} = formData
+    const {title, description, phoneNumber, useBusAddress, address} = formData
     if(!title || !description || !phoneNumber || title.length < 5 || description.length < 5) {
         return toast.error('Please complete all fields')
     }
-    dispatch(createNewListing(formData));
-    setFormData({ title: "", description: "" });
-    navigate('/listing')
+
+    try {
+      let listingData = {title, description, phoneNumber, useBusAddress, address}
+      const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
+      const data =await response.json()
+      console.log(data)
+      listingData.latitude = data.results[0]?.geometry.location.lat ?? 0
+      listingData.longitude = data.results[0]?.geometry.location.lng ?? 0
+      listingData.address = data.results[0]?.formatted_address
+      const listing = await dispatch(createNewListing(listingData));
+      toast.success(`Created new listing -${listing.title}`)
+      setFormData({ title: "", description: "", address:'', useBusAddress:true, phoneNumber:'' });
+      navigate('/listing')
+    } catch (error) {
+      return toast.error(error.message)
+    }
   };
 
   return (
@@ -76,8 +101,20 @@ const CreateListing = () => {
             onChange={handleChange}
           />
         </div>
-        {/* This needs to geo-locate the coordinates for the listing and not use the businesses coordinates. */}
-        {/* <div className="mb-4">
+        {/* User can either use the same address as the logged in business, or choose to enter a new address */}
+         <div className="flex items-start mt-4 mb-4">
+            <div className="flex items-center h-5">
+              <input id="useBusAddress" aria-describedby="useSameAddressAsBusiness" type="checkbox" onChange={onSelect} defaultChecked ={formData.useBusAddress} className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
+            </div>
+            <div className="ml-3 text-sm">
+              <label htmlFor="useBusAddress" className="font-light text-gray-500 dark:text-gray-300">
+                <p className="text-gray-700">Use same address as your business</p>
+                </label>
+            </div>
+        </div>
+         {/* This needs to geo-locate the coordinates for the listing and not use the businesses coordinates. */}
+        {!formData.useBusAddress && (
+          <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
             Address
           </label>
@@ -86,10 +123,11 @@ const CreateListing = () => {
             id="address"
             placeholder="10 downing street"
             name="address"
-            value={formData.description}
+            value={formData.address}
             onChange={handleChange}
           ></textarea>
-        </div> */}
+        </div>
+        )}
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
