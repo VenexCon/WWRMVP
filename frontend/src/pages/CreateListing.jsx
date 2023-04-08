@@ -10,7 +10,7 @@ const CreateListing = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    address: ''
+    phoneNumber:''
   });
 
   const handleChange = (e) => {
@@ -23,8 +23,8 @@ const CreateListing = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const {title, description} = formData
-    if(!title || !description || title.length < 5 || description.length < 5) {
+    const {title, description, phoneNumber} = formData
+    if(!title || !description || !phoneNumber || title.length < 5 || description.length < 5) {
         return toast.error('Please complete all fields')
     }
     dispatch(createNewListing(formData));
@@ -63,6 +63,21 @@ const CreateListing = () => {
           ></textarea>
         </div>
         <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">
+            Phone Number
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="phoneNumber"
+            type="text"
+            placeholder="+44 1234 56789"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+          />
+        </div>
+        {/* This needs to geo-locate the coordinates for the listing and not use the businesses coordinates. */}
+        {/* <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
             Address
           </label>
@@ -70,11 +85,11 @@ const CreateListing = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="address"
             placeholder="10 downing street"
-            name="description"
+            name="address"
             value={formData.description}
             onChange={handleChange}
           ></textarea>
-        </div>
+        </div> */}
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

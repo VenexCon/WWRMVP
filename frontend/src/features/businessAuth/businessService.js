@@ -8,6 +8,12 @@ const API_URL = "/business";
 const registerBusiness = async (businessData) => {
   const response = await axios.post(API_URL, businessData);
 
+  if (localStorage.getItem("business") !== null) {
+    localStorage.removeItem("business");
+  }
+  if (localStorage.getItem("user") !== null) {
+    localStorage.removeItem("user");
+  }
   if (response.data) {
     localStorage.setItem("business", JSON.stringify(response.data));
   }

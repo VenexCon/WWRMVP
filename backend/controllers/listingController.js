@@ -8,24 +8,34 @@ const jwt = require("jsonwebtoken");
 //@route /listing/new
 //@access private
 const createListing = asyncHandler(async (req, res) => {
-  const { businessCoordinates, id, businessAddress } = req.business;
-  const { title, description } = req.body;
-  console.log(req.body);
+  try {
+    const { businessCoordinates, id, businessAddress, businessEmail } =
+      req.business;
+    const { title, description, phoneNumber, address } = req.body;
+    console.log(req.body);
 
-  if (!title || !description) {
-    res.status(404);
-    throw new Error("Please ensure all fields are completed.");
+    if (!title || !description) {
+      res.status(404);
+      throw new Error("Please ensure all fields are completed.");
+    }
+
+    // currently the location is === to the same as the businesses who creates the listing
+    //This needs to change to geo-locate the listing from the address put in for the listing.
+    const newListing = await Listing.create({
+      listingTitle: title,
+      listingDescription: description,
+      listingLocation: businessAddress,
+      listingCoordinates: businessCoordinates,
+      listingEmail: businessEmail,
+      listingPhone: phoneNumber,
+      business: id,
+    });
+
+    res.status(201).json(newListing);
+  } catch (error) {
+    res.status(500);
+    throw new Error(`Error creating listing: ${error.message}`);
   }
-
-  const newListing = await Listing.create({
-    listingTitle: title,
-    listingDescription: description,
-    listingLocation: businessAddress,
-    listingCoordinates: businessCoordinates,
-    business: id,
-  });
-
-  res.status(201).json(newListing);
 });
 
 // @desc    Get business listings
@@ -34,7 +44,7 @@ const createListing = asyncHandler(async (req, res) => {
 const getMyListings = asyncHandler(async (req, res) => {
   const listings = await Listing.find({ business: req.business._id });
   if (listings.length === 0) {
-    return;
+    return res.status(200).json(listings);
   }
   console.log(req.body);
   res.status(200).json(listings);
