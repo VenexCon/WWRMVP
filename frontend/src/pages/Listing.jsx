@@ -52,9 +52,10 @@ const Listing = () => {
         <div className="bg-white rounded-lg shadow-md px-8 py-6 my-8 w-full max-w-3xl">
           <h1 className="text-4xl font-bold mb-4">{specificListing.listingTitle}</h1>
           <p className="text-gray-700 text-lg mb-4">Description: {specificListing.listingDescription}</p>
-          <div className="flex justify-between border-b-2 pb-4 mb-4">
+          <div className="flex flex-col justify-between border-b-2 pb-4 mb-4">
             <div>
               <p className="text-gray-700 text-lg">Location: {specificListing.listingLocation}</p>
+              <p className='text-gray-700 text-lg mt-3'>Click the Links below to contact the creator</p>
                 <p className="text-gray-700 text-lg mt-2">
                 <FaPhone className="inline mr-2 cursor-pointer" onClick={handlePhoneClick} />
                 {specificListing.listingPhone}
@@ -65,7 +66,7 @@ const Listing = () => {
               </p>
             </div>
             <button
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2"
+              className="bg-purple-600 hover:bg-purple-700 mt-5 w-1/4 text-white rounded-lg px-4 py-2"
               onClick={() => setShowMap(!showMap)}
             >
               {showMap ? 'Hide Map' : 'Show Map'}
