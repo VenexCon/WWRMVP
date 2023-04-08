@@ -9,7 +9,15 @@ const listingSchema = new Schema(
     },
     listingDescription: {
       type: "string",
+      required: [true, "Please Include a description"],
+    },
+    listingEmail: {
+      type: "string",
       required: [true, "Please Include your Email Address"],
+    },
+    listingPhone: {
+      type: "string",
+      required: [true, "Please Include a contact for this listing"],
     },
     listingLocation: {
       type: "string",

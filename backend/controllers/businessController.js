@@ -22,6 +22,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
     businessEmail,
     businessPassword,
     businessAddress,
+    businessPhone,
     longitude,
     latitude,
     businessTerms,
@@ -39,6 +40,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
     !businessName ||
     !longitude ||
     !latitude ||
+    !businessPhone ||
     !businessTerms
   ) {
     res.status(404);
@@ -58,16 +60,18 @@ const registerBusiness = asyncHandler(async (req, res) => {
   }
 
   //find if the business already exists
-  const businessExists = await Business.findOne({ businessEmail });
+  const businessExists = await Business.findOne({
+    businessEmail: businessEmail,
+  });
 
   if (businessExists) {
     res.status(400);
     throw new Error("Business already exists");
   }
 
-  const userExists = await User.findOne({ businessEmail });
+  const userExists = await User.findOne({ email: businessEmail });
   console.log(userExists);
-  if (userExists.length > 1) {
+  if (userExists) {
     res.status(400);
     throw new Error("User already registered with that E-Mail address");
   }
@@ -81,6 +85,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
     businessEmail: businessEmail,
     businessPassword: hashedPassword,
     businessAddress: businessAddress,
+    businessPhone: businessPhone.replace(/\s/g, ""),
     businessCoordinates: {
       type: "Point",
       coordinates: [longitude, latitude],
@@ -93,6 +98,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
       _id: newBusiness._id,
       name: newBusiness.businessName,
       address: newBusiness.businessAddress,
+      phone: newBusiness.businessPhone,
       email: newBusiness.businessEmail,
       businessCoordinates: newBusiness.businessGeolocation,
       token: generateToken(newBusiness._id),
@@ -120,6 +126,7 @@ const loginBusiness = asyncHandler(async (req, res) => {
       name: business.businessName,
       email: business.businessEmail,
       address: business.businessAddress,
+      phone: business.businessPhone,
       businessCoordinates: business.businessCoordinates,
       token: generateToken(business._id),
     });
@@ -137,6 +144,7 @@ const getProfile = (req, res) => {
     id: req.business._id, // because of the mongoose schema storing id as ._id
     email: req.business.businessEmail,
     name: req.business.businessName,
+    phone: req.business.businessPhone,
     address: req.business.businessAddress,
     businessCoordinates: req.business.businessCoordinates,
   };

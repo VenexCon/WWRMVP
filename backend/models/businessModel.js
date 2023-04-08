@@ -10,6 +10,10 @@ const businessSchema = new Schema({
     type: "string",
     required: [true, "Please Include your Email Address"],
   },
+  businessPhone: {
+    type: "string",
+    required: [true, "Please Include your phone number"],
+  },
   businessPassword: {
     type: "string",
     required: [true, "Please Include a Password"],
