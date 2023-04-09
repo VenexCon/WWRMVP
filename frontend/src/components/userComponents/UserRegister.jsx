@@ -9,7 +9,8 @@ function UserRegister() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const {isPending} = useSelector((state) => state.auth)
+  const {isPending, user} = useSelector((state) => state.auth)
+  const {business} = useSelector((state) => state.businessAuth)
   
   const [registerData, setRegisterData] = useState({
     email:'',
@@ -38,11 +39,9 @@ function UserRegister() {
 
   //submit user for registration
   const onSubmit = async (e)=> {
-
-    const {email, name, password, password2, terms} = registerData
-
     e.preventDefault()
-    
+    const {email, name, password, password2, terms} = registerData
+    if(user || business) {return toast.error('Cannot register a business whilst logged in')}
 
     if(!terms) return toast.error('You must agree to the Terms and Conditions')
     

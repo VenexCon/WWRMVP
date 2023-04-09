@@ -22,20 +22,22 @@ const Listing = () => {
 
   const address = specificListing ? `${specificListing.listingLocation}` : '';
 
-  const handleLoad = (event) => {
+  const handleLoad = async (event) => {
     const iframe = event.target;
     const doc = iframe.contentDocument || iframe.contentWindow.document;
     const script = doc.createElement('script');
     script.type = 'text/javascript';
     script.src = `https://maps.google.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
     doc.head.appendChild(script);
-    script.onload = () => {
-      new window.google.maps.Map(doc.getElementById('map'), {
+    script.onload = async () => {
+      const {Map} = await window.google.maps.Map
+      new Map(doc.getElementById('map'), {
         center: { lat: specificListing.listingCoordinates.coordinates[1], lng: specificListing.listingCoordinates.coordinates[0] },
         zoom: 15,
         mapTypeId: 'roadmap',
       });
     };
+    console.log(script)
   };
 
     const handlePhoneClick = () => {

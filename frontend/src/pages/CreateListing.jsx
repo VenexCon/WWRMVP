@@ -49,7 +49,7 @@ const CreateListing = () => {
       listingData.longitude = data.results[0]?.geometry.location.lng ?? 0
       listingData.address = data.results[0]?.formatted_address
       const listing = await dispatch(createNewListing(listingData));
-      toast.success(`Created new listing -${listing.title}`)
+      toast.success(`Created new listing`)
       setFormData({ title: "", description: "", address:'', useBusAddress:true, phoneNumber:'' });
       navigate('/listing')
     } catch (error) {

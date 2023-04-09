@@ -9,7 +9,8 @@ function BusinessRegister() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const {isPending} = useSelector((state) => state.businessAuth)
+  const {isPending, business} = useSelector((state) => state.businessAuth)
+  const {user} = useSelector((state)=> state.auth)
   
   const [registerData, setRegisterData] = useState({
     businessEmail:'',
