@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpecificListing } from '../features/listings/listingSlice';
-import { FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaPencilAlt, FaTrash } from 'react-icons/fa';
+import {toast} from 'react-toastify'
+
 
 const Listing = () => {
   const { listingId } = useParams();
@@ -11,10 +13,14 @@ const Listing = () => {
   const { business } = useSelector((state) => state.businessAuth);
   const { user } = useSelector((state) => state.auth);
   const [showMap, setShowMap] = useState(false);
+  const [ownTicket, setOwnTicket] =useState(false)
 
   useEffect(() => {
     const fetchListing = async () => {
-      await dispatch(getSpecificListing(listingId));
+      const response=  await dispatch(getSpecificListing(listingId));
+      if(response.payload.business === business._id) {
+        setOwnTicket(true)
+      } 
     };
 
     fetchListing();
@@ -22,7 +28,8 @@ const Listing = () => {
 
   const address = specificListing ? `${specificListing.listingLocation}` : '';
 
-  const handleLoad = async (event) => {
+  
+    const handleLoad = async (event) => {
     const iframe = event.target;
     const doc = iframe.contentDocument || iframe.contentWindow.document;
     const script = doc.createElement('script');
@@ -37,8 +44,9 @@ const Listing = () => {
         mapTypeId: 'roadmap',
       });
     };
-    console.log(script)
   };
+  
+  
 
     const handlePhoneClick = () => {
     window.location.href = `tel:${specificListing.listingPhone}`;
@@ -49,9 +57,19 @@ const Listing = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-fit bg-gray-100">
+    <div className=" flex flex-col items-center justify-center min-h-fit bg-gray-100">
       {specificListing ? (
         <div className="bg-white rounded-lg shadow-md px-8 py-6 my-8 w-full max-w-3xl">
+          {ownTicket && (
+            <div className=" flex gap-5 w-full justify-end mt-3 mb-3">
+            <Link className=' ' to={`/editListing/${specificListing._id}`}>
+        <FaPencilAlt className='text-gray-700 text-xl mr-2 hover:text-green-600'/>
+      </Link>
+      <button className='' onClick={() => console.log("Delete button clicked")}>
+        <FaTrash className='text-gray-700 text-xl hover:text-red-600'/>
+      </button>
+      </div>
+          )}
           <h1 className="text-4xl font-bold mb-4">{specificListing.listingTitle}</h1>
           <p className="text-gray-700 text-lg mb-4">Description: {specificListing.listingDescription}</p>
           <div className="flex flex-col justify-between border-b-2 pb-4 mb-4">
