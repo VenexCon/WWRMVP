@@ -14,15 +14,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-//not required when launched live
-app.get("/", (req, res) => {
-  res.status(201).json({ message: "who wants rubbish api!" });
-});
-
 /* Routes */
-app.use("/users", require("./routes/userRoutes"));
-app.use("/business", require("./routes/businessRoutes"));
-app.use("/listing", require("./routes/listingRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/business", require("./routes/businessRoutes"));
+app.use("/api/listing", require("./routes/listingRoutes"));
 //errorhandler
 app.use(errorHandler);
 

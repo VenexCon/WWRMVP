@@ -8,7 +8,7 @@ const createListing = async (token, listingData) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.post("/listing/new", listingData, config);
+  const response = await axios.post("/api/listing/new", listingData, config);
   return response.data;
 };
 
@@ -19,18 +19,18 @@ const getBusinessListings = async (token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get("/listing/mylistings", config);
+  const response = await axios.get("/api/listing/mylistings", config);
   return response.data;
 };
 
 //get every listing (current has a limit of 10)
 const getAllListings = async () => {
-  const response = await axios.get("/listing");
+  const response = await axios.get("/api/listing");
   return response.data;
 };
 
 const getSpecificListing = async (listingId) => {
-  const url = "/listing/";
+  const url = "/api/listing/";
   const response = await axios.get(url + listingId);
   return response.data;
 };

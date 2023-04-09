@@ -1,12 +1,12 @@
 import axios from "axios";
 
 //API endpoint fo registering user accounts
-const API_URL = "/business";
+const API_URL = "/api/business";
 
 //register business
 
 const registerBusiness = async (businessData) => {
-  const response = await axios.post(API_URL, businessData);
+  const response = await axios.post("/api/business", businessData);
 
   localStorage.removeItem("business");
   localStorage.removeItem("user");
@@ -21,7 +21,7 @@ const registerBusiness = async (businessData) => {
 //login business
 //public route for logging in.
 const loginBusiness = async (businessData) => {
-  const LOGIN_URL = "/business/login";
+  const LOGIN_URL = "/api/business/login";
 
   const response = await axios.post(LOGIN_URL, businessData);
   /* @ToDo - change for cookies when going live. */

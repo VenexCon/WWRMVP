@@ -1,12 +1,9 @@
 import axios from "axios";
 
-//API endpoint fo registering user accounts
-const API_URL = "/users";
-
 //register users
 
 const register = async (userData) => {
-  const response = await axios.post(API_URL, userData);
+  const response = await axios.post("/api/users", userData);
 
   localStorage.removeItem("user");
   localStorage.removeItem("business");
@@ -21,7 +18,7 @@ const register = async (userData) => {
 //public route
 //will need to place token into cookies not frontend
 const login = async (userData) => {
-  const API_LOGIN = "/users/login";
+  const API_LOGIN = "/api/users/login";
 
   const response = await axios.post(API_LOGIN, userData);
 
