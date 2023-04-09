@@ -12,6 +12,7 @@ function BusinessRegister() {
   const {isPending, business} = useSelector((state) => state.businessAuth)
   const {user} = useSelector((state)=> state.auth)
   
+  
   const [registerData, setRegisterData] = useState({
     businessEmail:'',
     businessPassword:'',
@@ -40,10 +41,9 @@ function BusinessRegister() {
 
   //submit user for registration
   const onSubmit = async (e)=> {
-
+     e.preventDefault()
+    if(user || business) {return toast.error('Cannot register an account whilst logged in') }
     const {businessEmail, businessPhone, businessName, businessPassword,  businessPassword2, businessTerms, businessAddress} = registerData
-    e.preventDefault()
-    
     if(businessPhone < 12  ) {return toast.error('Invalid phone number')}
     if(!businessTerms) return toast.error('You must agree to the Terms and Conditions')
     if(!businessAddress || businessAddress.includes('undefined')){toast.error('Please enter correct address')}
