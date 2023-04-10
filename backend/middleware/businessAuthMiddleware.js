@@ -15,7 +15,6 @@ const businessProtect = asyncHandler(async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       //get user from token - remove password from returned object.
       req.business = await Business.findById(decoded.id).select("-password");
-      console.log(req.business);
 
       next();
     } catch (error) {

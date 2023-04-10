@@ -7,11 +7,12 @@ const {
   getMyListings,
   getAllListings,
   getSpecificListing,
+  editListing,
 } = require("../controllers/listingController");
 
 router.get("/", getAllListings);
 router.post("/new", businessProtect, createListing);
 router.get("/myListings", businessProtect, getMyListings);
-router.get("/:id", getSpecificListing);
+router.route("/:id").get(getSpecificListing).post(businessProtect, editListing);
 
 module.exports = router;

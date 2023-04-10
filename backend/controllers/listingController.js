@@ -82,8 +82,8 @@ const getAllListings = asyncHandler(async (req, res) => {
 });
 
 /* Change to get a specific listing!  */
-// @desc    Get user ticket
-// @route   GET /api/tickets/:id
+// @desc    Get specific Listing
+// @route   GET /api/listing/:id
 // @access  Private
 const getSpecificListing = asyncHandler(async (req, res) => {
   const listing = await Listing.findById(req.params.id);
@@ -96,9 +96,40 @@ const getSpecificListing = asyncHandler(async (req, res) => {
   res.status(200).json(listing);
 });
 
+// @desc    Edit a Specific Listing
+// @route   post /api/editListing/:id
+// @access  Private
+const editListing = asyncHandler(async (req, res) => {
+  const {
+    title,
+    description,
+    phoneNumber,
+    address,
+    latitude,
+    longitude,
+    business,
+  } = req.body;
+  const listingOwner = req.business;
+  const { id } = req.params.id;
+
+  if (listingOwner._id.toString() !== business) {
+    console.log(listingOwner._id.toString());
+    console.log(business);
+    res.status(404);
+    throw new Error("You are not authorized to edit this listing");
+  }
+
+  if (listingOwner._id.toString() === business) {
+    res.status(200).json({ message: "You can edit this listing" });
+  }
+
+  const updatedListing = await Listing.findByIdAndUpdate();
+});
+
 module.exports = {
   createListing,
   getMyListings,
   getAllListings,
   getSpecificListing,
+  editListing,
 };

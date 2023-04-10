@@ -13,6 +13,7 @@ import NewListing from "./pages/NewListing";
 import ListingsPage from "./pages/ListingsPage";
 import Listing from "./pages/Listing";
 import CreateListing from "./pages/CreateListing";
+import EditListing from "./pages/EditListing";
 
 function App() {
   return (
@@ -49,6 +50,14 @@ function App() {
               element={
                 <BusinessRoute>
                   <NewListing />
+                </BusinessRoute>
+              }
+            />
+            <Route
+              path="/editlisting/:id"
+              element={
+                <BusinessRoute>
+                  <EditListing />
                 </BusinessRoute>
               }
             />
