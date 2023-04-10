@@ -62,7 +62,7 @@ const Listing = () => {
         <div className="bg-white rounded-lg shadow-md px-8 py-6 my-8 w-full max-w-3xl">
           {ownTicket && (
             <div className=" flex gap-5 w-full justify-end mt-3 mb-3">
-            <Link className=' ' to={`/${specificListing._id}/edit`}>
+            <Link className=' ' to={`/listing/${specificListing._id}/edit`}>
         <FaPencilAlt className='text-gray-700 text-xl mr-2 hover:text-green-600'/>
       </Link>
       <button className='' onClick={() => console.log("Delete button clicked")}>

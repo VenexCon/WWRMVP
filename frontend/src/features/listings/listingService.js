@@ -35,11 +35,23 @@ const getSpecificListing = async (listingId) => {
   return response.data;
 };
 
+const editSpecificListing = async (listingId, listingData, token) => {
+  const url = `/api/listing/${listingId}/edit`;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.post(url, listingData, config);
+  return response.data;
+};
+
 const listingService = {
   createListing,
   getBusinessListings,
   getAllListings,
   getSpecificListing,
+  editSpecificListing,
 };
 
 export default listingService;

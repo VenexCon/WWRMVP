@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createAction,
+  isPending,
+} from "@reduxjs/toolkit";
 import listingService from "./listingService";
 
 import { extractErrorMessage } from "../../utils";
@@ -60,6 +65,24 @@ export const getSpecificListing = createAsyncThunk(
   }
 );
 
+//Allows editing of the specific Listing axs this is gotten upon page load.
+export const editSpecificListing = createAsyncThunk(
+  "listing/editSpecificListing",
+  async ({ listingData, listingId }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().businessAuth.business.token;
+      return await listingService.editSpecificListing(
+        listingId,
+        listingData,
+        token
+      );
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
 export const listingSlice = createSlice({
   name: "listing",
   initialState,
@@ -90,6 +113,13 @@ export const listingSlice = createSlice({
         state.isPending = true;
       })
       .addCase(getSpecificListing.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.specificListing = action.payload;
+      })
+      .addCase(editSpecificListing.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(editSpecificListing.fulfilled, (state, action) => {
         state.isPending = false;
         state.specificListing = action.payload;
       });

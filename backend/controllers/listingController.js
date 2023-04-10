@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const Business = require("../models/businessModel");
 const Listing = require("../models/listingModel");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 //@desc create a new listing
 //@route /listing/new
@@ -106,43 +107,40 @@ const editListing = asyncHandler(async (req, res) => {
     phoneNumber,
     address,
     latitude,
-    email,
     longitude,
     business,
   } = req.body;
-  const listingOwner = req.business;
+  const { _id } = req.business;
+
+  if (_id.toString() !== business) {
+    res.status(400);
+    throw new Error("You are not allowed to edit this listing");
+  }
+
   const { listingId } = req.params;
-
-  if (listingOwner._id.toString() !== business) {
-    res.status(404);
-    throw new Error("You are not authorized to edit this listing");
-  }
-
-  try {
-    const updatedListing = await Listing.findByIdAndUpdate(
-      listingId,
-      {
-        listingTitle: title,
-        listingDescription: description,
-        listingLocation: address,
-        listingCoordinates: {
-          type: "Point",
-          coordinates: [longitude, latitude],
-        },
-        listingPhone: phoneNumber,
+  const updatedListing = await Listing.findOneAndUpdate(
+    { _id: listingId },
+    {
+      listingTitle: title,
+      listingDescription: description,
+      listingLocation: address,
+      listingCoordinates: {
+        type: "Point",
+        coordinates: [longitude, latitude],
       },
-      { new: true }
-    );
+      listingPhone: phoneNumber,
+    },
+    { new: true }
+  );
 
-    if (!updatedListing) {
-      res.status(404);
-      throw new Error("Listing could not be updated, please try later");
-      return;
-    }
-  } catch (error) {
+  if (!updatedListing) {
     res.status(404);
-    throw new Error(error);
+    throw new Error("Listing could not be updated, please try later");
   }
+
+  console.log(updatedListing);
+
+  res.status(200).json(updatedListing);
 });
 
 module.exports = {

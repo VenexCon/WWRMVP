@@ -54,7 +54,7 @@ function App() {
               }
             />
             <Route
-              path="/:id/edit"
+              path="/listing/:listingId/edit"
               element={
                 <BusinessRoute>
                   <EditListing />

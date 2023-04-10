@@ -14,6 +14,6 @@ router.get("/", getAllListings);
 router.post("/new", businessProtect, createListing);
 router.get("/myListings", businessProtect, getMyListings);
 router.route("/:id").get(getSpecificListing).post(businessProtect, editListing);
-router.post("/:id/edit", businessProtect, editListing);
+router.post("/:listingId/edit", businessProtect, editListing);
 
 module.exports = router;
