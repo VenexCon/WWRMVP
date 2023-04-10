@@ -106,24 +106,43 @@ const editListing = asyncHandler(async (req, res) => {
     phoneNumber,
     address,
     latitude,
+    email,
     longitude,
     business,
   } = req.body;
   const listingOwner = req.business;
-  const { id } = req.params.id;
+  const { listingId } = req.params;
 
   if (listingOwner._id.toString() !== business) {
-    console.log(listingOwner._id.toString());
-    console.log(business);
     res.status(404);
     throw new Error("You are not authorized to edit this listing");
   }
 
-  if (listingOwner._id.toString() === business) {
-    res.status(200).json({ message: "You can edit this listing" });
-  }
+  try {
+    const updatedListing = await Listing.findByIdAndUpdate(
+      listingId,
+      {
+        listingTitle: title,
+        listingDescription: description,
+        listingLocation: address,
+        listingCoordinates: {
+          type: "Point",
+          coordinates: [longitude, latitude],
+        },
+        listingPhone: phoneNumber,
+      },
+      { new: true }
+    );
 
-  const updatedListing = await Listing.findByIdAndUpdate();
+    if (!updatedListing) {
+      res.status(404);
+      throw new Error("Listing could not be updated, please try later");
+      return;
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
 });
 
 module.exports = {
