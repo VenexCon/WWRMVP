@@ -1,12 +1,29 @@
-import React from "react";
+import React, {useState} from "react";
 import { FaSearch } from "react-icons/fa";
+import { useSelector, useDispatch } from 'react-redux';
+import {toast} from 'react-toastify'
 
 const SearchBar = () => {
+
+  const {allListings, isPending} = useSelector((state) => state.listing)
+
+  const [postcode, setPostcode] = useState("");
+  const [distance, setDistance] = useState(10); // default distance is 10 km
+  const [query, setQuery] = useState("");
+
+
+
+
+
   return (
     <div className="flex items-center justify-center">
       <div className="relative w-2/3 mr-2">
         <input
           type="text"
+          id="query"
+          name="query"
+          value={query}
+          onChange={(e)=>{setQuery(e.target.value)}}
           placeholder="Search..."
           className="py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
         />
@@ -18,18 +35,25 @@ const SearchBar = () => {
         <input
           type="text"
           placeholder="Postcode"
+          id="postcode"
+          name="postcode"
+          value={postcode}
+          onChange={(e)=>{setPostcode(e.target.value)}}
           className="py-2 px-4 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
         />
       </div>
       <div className="relative w-1/6">
         <select
           className="block w-full py-2 px-4 pr-8 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+          onChange={(e) => setDistance(e.target.value)}
+          id="distance"
+          value={distance}
         >
-          <option value="10km">10km</option>
-          <option value="15km">15km</option>
-          <option value="20km">20km</option>
-          <option value="50km">50km</option>
-          <option value="national">National</option>
+          <option value={10}>10km</option>
+          <option value={15}>15km</option>
+          <option value={20}>20km</option>
+          <option value={50}>50km</option>
+          <option value={100}>100km</option>
         </select>
         <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
           <svg
