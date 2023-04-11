@@ -110,6 +110,7 @@ const editListing = asyncHandler(async (req, res) => {
     longitude,
     business,
   } = req.body;
+
   const { _id } = req.business;
 
   if (_id.toString() !== business) {
@@ -118,29 +119,26 @@ const editListing = asyncHandler(async (req, res) => {
   }
 
   const { listingId } = req.params;
-  const updatedListing = await Listing.findOneAndUpdate(
-    { _id: listingId },
-    {
-      listingTitle: title,
-      listingDescription: description,
-      listingLocation: address,
-      listingCoordinates: {
-        type: "Point",
-        coordinates: [longitude, latitude],
-      },
-      listingPhone: phoneNumber,
-    },
-    { new: true }
-  );
+
+  const updatedListing = await Listing.findById(listingId);
 
   if (!updatedListing) {
     res.status(404);
-    throw new Error("Listing could not be updated, please try later");
+    throw new Error("Listing not found");
   }
 
-  console.log(updatedListing);
+  updatedListing.listingTitle = title;
+  updatedListing.listingDescription = description;
+  updatedListing.listingLocation = address;
+  updatedListing.listingCoordinates = {
+    type: "Point",
+    coordinates: [longitude, latitude],
+  };
+  updatedListing.listingPhone = phoneNumber;
 
-  res.status(200).json(updatedListing);
+  const savedListing = await updatedListing.save();
+
+  res.status(200).json(savedListing);
 });
 
 module.exports = {

@@ -9,7 +9,7 @@ const EditListing = () => {
  const dispatch = useDispatch()
  const navigate = useNavigate()
 
- const { listingId } = useParams();console.log(listingId)
+ const { listingId } = useParams()
 
  useEffect(() => {
     const fetchListing = async () => {
@@ -32,9 +32,6 @@ const EditListing = () => {
   }, [dispatch, listingId]);
 
  const {specificListing, isPending} = useSelector((state) => state.listing)
- 
- 
-
   const [formData, setFormData] = useState({
     _id:'',
     title:'' ,
@@ -45,8 +42,6 @@ const EditListing = () => {
     longitude: 0,
     latitude:0
   });
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,8 +72,8 @@ const EditListing = () => {
       }
 
       const updatedListing = await dispatch(editSpecificListing({listingData, listingId}));
-      /* toast.success(`Listing Edited`)
-      navigate(`/listing/${updatedListing._id}`) */
+      toast.success(`Listing Edited`)
+      navigate(`/listing/${listingId}`)
     } catch (error) {
       return toast.error(error.message)
     }
