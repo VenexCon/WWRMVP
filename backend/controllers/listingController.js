@@ -141,10 +141,39 @@ const editListing = asyncHandler(async (req, res) => {
   res.status(200).json(savedListing);
 });
 
+// @desc    Filter Listings by user input
+// @route   Get /api/listing/search,{params here}
+// @access  Public
+
+const searchListings = asyncHandler(async (req, res) => {
+  const { latitude, longitude, distance } = req.params;
+  const maxDistanceMeters = distance * 1000; //distance in km
+
+  try {
+    const listings = await Listing.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+          },
+          distanceField: "distance",
+          maxDistance: maxDistanceMeters,
+          spherical: true,
+        },
+      },
+    ]);
+    res.status(200).json(listings);
+  } catch (error) {
+    res.status(500).json({ error: "server Error" });
+  }
+});
+
 module.exports = {
   createListing,
   getMyListings,
   getAllListings,
   getSpecificListing,
   editListing,
+  searchListings,
 };
