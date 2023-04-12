@@ -44,14 +44,19 @@ const CreateListing = () => {
       let listingData = {title, description, phoneNumber, useBusAddress, address}
       const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
       const data =await response.json()
-      console.log(data)
+      if(data.results.length === 0) {return toast.error('Address not found')}
       listingData.latitude = data.results[0]?.geometry.location.lat ?? 0
       listingData.longitude = data.results[0]?.geometry.location.lng ?? 0
       listingData.address = data.results[0]?.formatted_address
       const listing = await dispatch(createNewListing(listingData));
-      toast.success(`Created new listing`)
-      setFormData({ title: "", description: "", address:'', useBusAddress:true, phoneNumber:'' });
-      navigate('/listing')
+
+      if(listing.payload) {
+        toast.success('Listing Created')
+        navigate('/')
+      } else {
+        toast.error('Listing could not be created')
+      }
+      
     } catch (error) {
       return toast.error(error.message)
     }
