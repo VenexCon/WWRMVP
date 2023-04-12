@@ -2,9 +2,11 @@ import React, {useState} from "react";
 import { FaSearch } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import {toast} from 'react-toastify'
+import { searchListings } from '../../features/listings/listingSlice'
+import axios from "axios";
 
 const SearchBar = () => {
-
+  const dispatch = useDispatch()
   const {allListings, isPending} = useSelector((state) => state.listing)
   const {user} =useSelector((state) => state.auth)
   const {business} =useSelector((state) => state.businessAuth)
@@ -13,15 +15,22 @@ const SearchBar = () => {
   const [distance, setDistance] = useState(10); // default distance is 10 km
   const [query, setQuery] = useState("");
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if(!user && !business) {return toast.error('Create an account to filter listings')}
     let searchParams = {
       postcode,
       distance,
       query
     }
-
-    console.log(searchParams)
+    try {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
+      const data = response.data
+      searchParams.latitude = data.results[0]?.geometry.location.lat ?? 0
+      searchParams.longitude = data.results[0]?.geometry.location.lng ?? 0
+      return await dispatch(searchListings(searchParams))
+    } catch (error) {
+      return toast.error(error.message)
+    }
   }
 
 

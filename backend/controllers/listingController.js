@@ -146,9 +146,8 @@ const editListing = asyncHandler(async (req, res) => {
 // @access  Public
 
 const searchListings = asyncHandler(async (req, res) => {
-  const { latitude, longitude, distance } = req.params;
+  const { latitude, longitude, distance } = req.query;
   const maxDistanceMeters = distance * 1000; //distance in km
-
   try {
     const listings = await Listing.aggregate([
       {
@@ -163,6 +162,7 @@ const searchListings = asyncHandler(async (req, res) => {
         },
       },
     ]);
+    console.log(listings);
     res.status(200).json(listings);
   } catch (error) {
     res.status(500).json({ error: "server Error" });

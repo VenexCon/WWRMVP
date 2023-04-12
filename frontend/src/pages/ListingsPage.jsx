@@ -12,7 +12,6 @@ const ListingsPage = () => {
   useEffect(()=> {
     const fetchAllListings = async () => {
       const response = await dispatch(getAllListings())
-      console.log(response)
     }
     fetchAllListings()
   }, [])

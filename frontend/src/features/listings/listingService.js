@@ -47,10 +47,10 @@ const editSpecificListing = async (listingId, listingData, token) => {
 };
 
 export const searchListings = async (searchParams) => {
-  const { lat, lng, query, distance } = searchParams;
+  const { latitude, longitude, distance } = searchParams;
   try {
     const response = await axios.get(
-      `/api/listings/search?lat=${lat}&lng=${lng}&maxDistance=${distance}&query=${query}`
+      `/api/listing/search?latitude=${latitude}&longitude=${longitude}&distance=${distance}`
     );
     return response.data;
   } catch (error) {
