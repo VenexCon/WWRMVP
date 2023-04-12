@@ -43,6 +43,7 @@ export const getMyListings = createAsyncThunk(
   }
 );
 
+//get every listing, currently limited to 10 on the backend
 export const getAllListings = createAsyncThunk(
   "listing/allListings",
   async (_, thunkAPI) => {
@@ -54,6 +55,7 @@ export const getAllListings = createAsyncThunk(
   }
 );
 
+//gets the listing relating to the id in the query params.
 export const getSpecificListing = createAsyncThunk(
   "listing/specificListing",
   async (listingId, thunkAPI) => {
@@ -65,7 +67,7 @@ export const getSpecificListing = createAsyncThunk(
   }
 );
 
-//Allows editing of the specific Listing axs this is gotten upon page load.
+//Allows editing of the specific Listing as this is gotten upon page load.
 export const editSpecificListing = createAsyncThunk(
   "listing/editSpecificListing",
   async ({ listingData, listingId }, thunkAPI) => {
@@ -78,6 +80,17 @@ export const editSpecificListing = createAsyncThunk(
       );
     } catch (error) {
       console.log(error);
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
+export const searchListings = createAsyncThunk(
+  "listing/searchListings",
+  async (searchParams, thunkAPI) => {
+    try {
+      return await listingService.searchListings(searchParams);
+    } catch (error) {
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
     }
   }
@@ -122,6 +135,13 @@ export const listingSlice = createSlice({
       .addCase(editSpecificListing.fulfilled, (state, action) => {
         state.isPending = false;
         state.specificListing = action.payload;
+      })
+      .addCase(searchListings.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(searchListings.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.allListings = action.payload;
       });
   },
 });

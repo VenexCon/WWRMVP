@@ -15,7 +15,7 @@ const ListingsPage = () => {
       console.log(response)
     }
     fetchAllListings()
-  }, [dispatch])
+  }, [])
 
 
   return (

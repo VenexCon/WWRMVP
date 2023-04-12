@@ -6,11 +6,23 @@ import {toast} from 'react-toastify'
 const SearchBar = () => {
 
   const {allListings, isPending} = useSelector((state) => state.listing)
+  const {user} =useSelector((state) => state.auth)
+  const {business} =useSelector((state) => state.businessAuth)
 
   const [postcode, setPostcode] = useState("");
   const [distance, setDistance] = useState(10); // default distance is 10 km
   const [query, setQuery] = useState("");
 
+  const handleSearch = () => {
+    if(!user && !business) {return toast.error('Create an account to filter listings')}
+    let searchParams = {
+      postcode,
+      distance,
+      query
+    }
+
+    console.log(searchParams)
+  }
 
 
 
@@ -67,6 +79,8 @@ const SearchBar = () => {
           </svg>
         </div>
       </div>
+      <button  onClick={handleSearch}
+      className=" cursor-pointer bg-blue-500 ml-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
     </div>
   );
 };

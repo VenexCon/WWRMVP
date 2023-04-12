@@ -46,12 +46,26 @@ const editSpecificListing = async (listingId, listingData, token) => {
   return response.data;
 };
 
+export const searchListings = async (searchParams) => {
+  const { lat, lng, query, distance } = searchParams;
+  try {
+    const response = await axios.get(
+      `/api/listings/search?lat=${lat}&lng=${lng}&maxDistance=${distance}&query=${query}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error searching listings");
+  }
+};
+
 const listingService = {
   createListing,
   getBusinessListings,
   getAllListings,
   getSpecificListing,
   editSpecificListing,
+  searchListings,
 };
 
 export default listingService;
