@@ -171,11 +171,28 @@ const searchListings = asyncHandler(async (req, res) => {
 
 // @desc    Delete Listing
 // @route   delete /api/listing/search,{params here}
-// @access  Public
+// @access  Private
 
-const deleteListing = asyncHandler(async (req, res) => {
-  const { listingId } = req.params;
-});
+const deleteListing = async (req, res) => {
+  const { id } = req.params;
+  const { business } = req.body;
+  const { _id } = req.business;
+
+  if (_id.toString() !== business) {
+    res.status(400);
+    throw new Error("You are not allowed to edit this listing");
+  }
+
+  try {
+    const deletedListing = await Listing.findByIdAndDelete(id);
+    if (!deletedListing) {
+      return res.status(404).json({ message: "Listing could not be deleted" });
+    }
+    res.status(204).end();
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 module.exports = {
   createListing,
