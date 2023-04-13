@@ -36,13 +36,13 @@ const getSpecificListing = async (listingId) => {
 };
 
 const editSpecificListing = async (listingId, listingData, token) => {
-  const url = `/api/listing/${listingId}/edit`;
+  const url = `/api/listing/${listingId}`;
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.post(url, listingData, config);
+  const response = await axios.put(url, listingData, config);
   return response.data;
 };
 

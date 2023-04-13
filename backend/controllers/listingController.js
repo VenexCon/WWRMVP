@@ -118,9 +118,9 @@ const editListing = asyncHandler(async (req, res) => {
     throw new Error("You are not allowed to edit this listing");
   }
 
-  const { listingId } = req.params;
+  const { id } = req.params;
 
-  const updatedListing = await Listing.findById(listingId);
+  const updatedListing = await Listing.findById(id);
 
   if (!updatedListing) {
     res.status(404);
@@ -169,6 +169,14 @@ const searchListings = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Delete Listing
+// @route   delete /api/listing/search,{params here}
+// @access  Public
+
+const deleteListing = asyncHandler(async (req, res) => {
+  const { listingId } = req.params;
+});
+
 module.exports = {
   createListing,
   getMyListings,
@@ -176,4 +184,5 @@ module.exports = {
   getSpecificListing,
   editListing,
   searchListings,
+  deleteListing,
 };
