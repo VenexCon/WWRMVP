@@ -59,6 +59,18 @@ export const searchListings = async (searchParams) => {
   }
 };
 
+const deleteSpecificListing = async (listingId, token) => {
+  let id = listingId;
+  const url = `/api/listing/${id}`;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(url, config);
+  return response.data;
+};
+
 const listingService = {
   createListing,
   getBusinessListings,
@@ -66,6 +78,7 @@ const listingService = {
   getSpecificListing,
   editSpecificListing,
   searchListings,
+  deleteSpecificListing,
 };
 
 export default listingService;

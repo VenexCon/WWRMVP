@@ -18,9 +18,8 @@ router.get("/myListings", businessProtect, getMyListings);
 router.get("/search", searchListings);
 router
   .route("/:id")
+  .delete(businessProtect, deleteListing)
   .get(getSpecificListing)
-  .put(businessProtect, editListing)
-  .delete(businessProtect, editListing);
-//router.post("/:listingId/edit", businessProtect, editListing);
+  .put(businessProtect, editListing);
 
 module.exports = router;

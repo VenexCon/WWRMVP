@@ -96,6 +96,19 @@ export const searchListings = createAsyncThunk(
   }
 );
 
+//gets the listing relating to the id in the query params.
+export const deleteSpecificListing = createAsyncThunk(
+  "listing/deleteSpecificListing",
+  async (listingId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().businessAuth.business.token;
+      return await listingService.deleteSpecificListing(listingId, token);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
 export const listingSlice = createSlice({
   name: "listing",
   initialState,
@@ -142,6 +155,13 @@ export const listingSlice = createSlice({
       .addCase(searchListings.fulfilled, (state, action) => {
         state.isPending = false;
         state.allListings = action.payload;
+      })
+      .addCase(deleteSpecificListing.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(deleteSpecificListing.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.specificListing = action.payload;
       });
   },
 });

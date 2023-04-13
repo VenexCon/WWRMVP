@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSpecificListing } from '../features/listings/listingSlice';
+import { getSpecificListing, deleteSpecificListing } from '../features/listings/listingSlice';
 import { FaPhone, FaEnvelope, FaPencilAlt, FaTrash } from 'react-icons/fa';
 import {toast} from 'react-toastify'
 
@@ -56,6 +56,12 @@ const Listing = () => {
     window.location.href = `mailto:${specificListing.listingEmail}`;
   };
 
+  const handleDeleteClick = async () => {
+    console.log(specificListing.business)
+   const deleted = await dispatch(deleteSpecificListing(listingId))
+   //console.log(deleted)
+  }
+
   return (
     <div className=" flex flex-col items-center justify-center min-h-fit bg-gray-100">
       {specificListing ? (
@@ -65,7 +71,7 @@ const Listing = () => {
             <Link className=' ' to={`/listing/${specificListing._id}/edit`}>
         <FaPencilAlt className='text-gray-700 text-xl mr-2 hover:text-green-600'/>
       </Link>
-      <button className='' onClick={() => console.log("Delete button clicked")}>
+      <button className='' onClick={handleDeleteClick}>
         <FaTrash className='text-gray-700 text-xl hover:text-red-600'/>
       </button>
       </div>

@@ -170,18 +170,18 @@ const searchListings = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete Listing
-// @route   delete /api/listing/search,{params here}
+// @route   delete /api/listing/:id
 // @access  Private
 
 const deleteListing = async (req, res) => {
   const { id } = req.params;
-  const { business } = req.body;
-  const { _id } = req.business;
+  /*  const { business._id } = req.body;
+  const { _id } = req.business; */
 
-  if (_id.toString() !== business) {
+  /*   if (_id.toString() !== business) {
     res.status(400);
     throw new Error("You are not allowed to edit this listing");
-  }
+  } */
 
   try {
     const deletedListing = await Listing.findByIdAndDelete(id);
