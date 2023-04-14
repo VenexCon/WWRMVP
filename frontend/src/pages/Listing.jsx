@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSpecificListing, deleteSpecificListing } from '../features/listings/listingSlice';
 import { FaPhone, FaEnvelope, FaPencilAlt, FaTrash } from 'react-icons/fa';
@@ -7,6 +8,7 @@ import {toast} from 'react-toastify'
 
 
 const Listing = () => {
+  const navigate = useNavigate()
   const { listingId } = useParams();
   const dispatch = useDispatch();
   const { specificListing } = useSelector((state) => state.listing);
@@ -17,12 +19,11 @@ const Listing = () => {
 
   useEffect(() => {
     const fetchListing = async () => {
-      const response=  await dispatch(getSpecificListing(listingId));
+      const response =  await dispatch(getSpecificListing(listingId));
       if(response.payload.business === business._id) {
         setOwnTicket(true)
       } 
     };
-
     fetchListing();
   }, []);
 
@@ -57,9 +58,19 @@ const Listing = () => {
   };
 
   const handleDeleteClick = async () => {
-    console.log(specificListing.business)
-   const deleted = await dispatch(deleteSpecificListing(listingId))
-   //console.log(deleted)
+    const business = specificListing.business
+    try {
+     const deleted = await dispatch(deleteSpecificListing(listingId, business))
+      if(deleted.payload ==='') {
+      toast.success('Listing deleted')
+      navigate('/listing')
+    } else {
+      return toast.error('Listing could not be deleted')
+    }
+    } catch (error) {
+      return toast.error(error.message)
+    }
+
   }
 
   return (
