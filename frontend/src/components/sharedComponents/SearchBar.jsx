@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaArrowDown } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import {toast} from 'react-toastify'
 import { searchListings, getAllListings } from '../../features/listings/listingSlice'
@@ -22,7 +22,7 @@ const SearchBar = () => {
       distance,
       query
     }
-    if(!query || !postcode) {
+    if(!query && !postcode) {
       return await dispatch(getAllListings())
     }
     try {
@@ -41,24 +41,26 @@ const SearchBar = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="relative w-2/3 mr-2">
+      <div className="relative w-1/3 mr-2">
+        <label htmlFor="query" className="sr-only">Query</label>
         <input
           type="text"
           id="query"
           name="query"
           value={query}
           onChange={(e)=>{setQuery(e.target.value)}}
-          placeholder="Search..."
+          placeholder="Search... boxes, stationary etc"
           className="py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
         />
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <FaSearch className="text-gray-400" />
         </div>
       </div>
-      <div className="relative w-1/6 mr-2">
+      <div className="relative w-1/3 mr-2">
+        <label htmlFor="postcode" className="sr-only">Postcode or Town:</label>
         <input
           type="text"
-          placeholder="Postcode"
+          placeholder="Postcode or Town"
           id="postcode"
           name="postcode"
           value={postcode}
@@ -67,6 +69,7 @@ const SearchBar = () => {
         />
       </div>
       <div className="relative w-1/6">
+        <label htmlFor="distance" className="sr-only">Distance</label>
         <select
           className="block w-full py-2 px-4 pr-8 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out sm:text-sm sm:leading-5"
           onChange={(e) => setDistance(e.target.value)}
@@ -79,16 +82,8 @@ const SearchBar = () => {
           <option value={50}>50km</option>
           <option value={100}>100km</option>
         </select>
-        <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-          <svg
-            className="w-4 h-4 fill-current"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M14.707,8.293c0.391,0.391,0.391,1.023,0,1.414l-5.999,5.999c-0.391,0.391-1.023,0.391-1.414,0l-5.999-5.999 c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0L9,12.586L14.293,7.293C14.488,7.098,14.744,7,15,7S15.512,7.098,15.707,7.293 C16.098,7.684,16.098,8.316,15.707,8.707L14.707,8.293z"
-            />
-          </svg>
+        <div className="absolute  flex items-center px-2 pointer-events-none">
+         
         </div>
       </div>
       <button  onClick={handleSearch}
