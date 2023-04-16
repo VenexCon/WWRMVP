@@ -47,10 +47,25 @@ const editSpecificListing = async (listingId, listingData, token) => {
 };
 
 export const searchListings = async (searchParams) => {
-  const { latitude, longitude, distance } = searchParams;
+  const { latitude, longitude, distance, query } = searchParams;
+
+  //If users just search by key word
+  if (!latitude && !longitude) {
+    try {
+      const response = await axios.get(
+        `/api/listing/search?distance=${distance}&query=${query}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error searching listings");
+    }
+  }
+
+  //for all other querys, add in full params.
   try {
     const response = await axios.get(
-      `/api/listing/search?latitude=${latitude}&longitude=${longitude}&distance=${distance}`
+      `/api/listing/search?latitude=${latitude}&longitude=${longitude}&distance=${distance}&query=${query}`
     );
     return response.data;
   } catch (error) {

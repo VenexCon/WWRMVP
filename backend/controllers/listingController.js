@@ -146,26 +146,69 @@ const editListing = asyncHandler(async (req, res) => {
 // @access  Public
 
 const searchListings = asyncHandler(async (req, res) => {
-  const { latitude, longitude, distance } = req.query;
-  const maxDistanceMeters = distance * 1000; //distance in km
-  try {
-    const listings = await Listing.aggregate([
-      {
-        $geoNear: {
-          near: {
-            type: "Point",
-            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+  const { latitude, longitude, distance, query } = req.query;
+  const maxDistanceMeters = distance * 1000; // distance in km
+
+  if (!latitude && !longitude && query) {
+    try {
+      // search listings with query
+      const listings = await Listing.find({
+        listingTitle: { $regex: new RegExp(query, "i") },
+      });
+      res.status(200).json(listings);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "server Error" });
+    }
+  } else if (latitude && longitude && !query) {
+    try {
+      // search listings within distance
+      const listings = await Listing.aggregate([
+        {
+          $geoNear: {
+            near: {
+              type: "Point",
+              coordinates: [parseFloat(longitude), parseFloat(latitude)],
+            },
+            distanceField: "distance",
+            maxDistance: maxDistanceMeters,
+            spherical: true,
           },
-          distanceField: "distance",
-          maxDistance: maxDistanceMeters,
-          spherical: true,
         },
-      },
-    ]);
-    console.log(listings);
-    res.status(200).json(listings);
-  } catch (error) {
-    res.status(500).json({ error: "server Error" });
+      ]);
+      res.status(200).json(listings);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "server Error" });
+    }
+  } else if (latitude && longitude && query) {
+    try {
+      // search listings within distance and with query
+      const listings = await Listing.aggregate([
+        {
+          $geoNear: {
+            near: {
+              type: "Point",
+              coordinates: [parseFloat(longitude), parseFloat(latitude)],
+            },
+            distanceField: "distance",
+            maxDistance: maxDistanceMeters,
+            spherical: true,
+          },
+        },
+        {
+          $match: {
+            listingTitle: { $regex: new RegExp(query, "i") },
+          },
+        },
+      ]);
+      res.status(200).json(listings);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "server Error" });
+    }
+  } else {
+    res.status(400).json({ error: "Invalid search parameters" });
   }
 });
 

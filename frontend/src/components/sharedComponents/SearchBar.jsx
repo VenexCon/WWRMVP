@@ -25,6 +25,15 @@ const SearchBar = () => {
     if(!query && !postcode) {
       return await dispatch(getAllListings())
     }
+
+    if(!postcode) {
+      try {
+        return await dispatch(searchListings(searchParams))
+      } catch (error) {
+        toast.error(error.message)
+      }
+    }
+
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
       const data = response.data
