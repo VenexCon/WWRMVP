@@ -149,73 +149,107 @@ const searchListings = asyncHandler(async (req, res) => {
   const { latitude, longitude, distance, query } = req.query;
   const maxDistanceMeters = distance * 1000; // distance in km
 
+  let listings;
+
   if (!latitude && !longitude && query) {
-    try {
-      // search listings with query
-      const listings = await Listing.find({
-        listingTitle: { $regex: new RegExp(query, "i") },
-      });
-      res.status(200).json(listings);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "server Error" });
-    }
+    // search listings by keyword
+    listings = await searchListingsByKeyword(query);
   } else if (latitude && longitude && !query) {
-    try {
-      // search listings within distance
-      const listings = await Listing.aggregate([
-        {
-          $geoNear: {
-            near: {
-              type: "Point",
-              coordinates: [parseFloat(longitude), parseFloat(latitude)],
-            },
-            distanceField: "distance",
-            maxDistance: maxDistanceMeters,
-            spherical: true,
-          },
-        },
-      ]);
-      res.status(200).json(listings);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "server Error" });
-    }
+    // search listings by location
+    listings = await searchListingsByLocation(
+      latitude,
+      longitude,
+      maxDistanceMeters
+    );
   } else if (latitude && longitude && query) {
-    try {
-      // search listings within distance and with query
-      const listings = await Listing.aggregate([
-        {
-          $geoNear: {
-            near: {
-              type: "Point",
-              coordinates: [parseFloat(longitude), parseFloat(latitude)],
-            },
-            distanceField: "distance",
-            maxDistance: maxDistanceMeters,
-            spherical: true,
-          },
-        },
-        {
-          $match: {
-            listingTitle: { $regex: new RegExp(query, "i") },
-          },
-        },
-      ]);
-      res.status(200).json(listings);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "server Error" });
-    }
+    // search listings by location and keyword
+    listings = await searchListingsByLocationAndKeyword(
+      latitude,
+      longitude,
+      maxDistanceMeters,
+      query
+    );
   } else {
-    res.status(400).json({ error: "Invalid search parameters" });
+    // handle invalid or missing parameters
+    return res.status(400).json({ error: "Invalid or missing parameters" });
   }
+
+  res.status(200).json(listings);
 });
+
+const searchListingsByKeyword = async (query) => {
+  try {
+    const listings = await Listing.find({
+      listingTitle: { $regex: new RegExp(query, "i") },
+    });
+    return listings;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error searching listings");
+  }
+};
+
+const searchListingsByLocation = async (
+  latitude,
+  longitude,
+  maxDistanceMeters
+) => {
+  try {
+    const listings = await Listing.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+          },
+          distanceField: "distance",
+          maxDistance: maxDistanceMeters,
+          spherical: true,
+        },
+      },
+    ]);
+    return listings;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error searching listings");
+  }
+};
+
+const searchListingsByLocationAndKeyword = async (
+  latitude,
+  longitude,
+  maxDistanceMeters,
+  query
+) => {
+  try {
+    const listings = await Listing.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+          },
+          distanceField: "distance",
+          maxDistance: maxDistanceMeters,
+          spherical: true,
+        },
+      },
+      {
+        $match: {
+          listingTitle: { $regex: new RegExp(query, "i") },
+        },
+      },
+    ]);
+    return listings;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error searching listings");
+  }
+};
 
 // @desc    Delete Listing
 // @route   delete /api/listing/:id
 // @access  Private
-
 const deleteListing = async (req, res) => {
   const { id, business } = req.params;
   const { _id } = req.business;
