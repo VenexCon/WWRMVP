@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { FaSearch } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import {toast} from 'react-toastify'
-import { searchListings } from '../../features/listings/listingSlice'
+import { searchListings, getAllListings } from '../../features/listings/listingSlice'
 import axios from "axios";
 
 const SearchBar = () => {
@@ -21,6 +21,9 @@ const SearchBar = () => {
       postcode,
       distance,
       query
+    }
+    if(!query || !postcode) {
+      return await dispatch(getAllListings())
     }
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
