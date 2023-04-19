@@ -6,6 +6,8 @@ import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaUser, FaArrowCircleRight, FaWarehouse } from 'react-icons/fa'
+import {ReactComponent as WWWLogo} from '../assets/logos/WWWSVGLogo.svg'
+
 import navBarBanner from '../assets/png/navBarBanner.png'
 
 const navigation = [
@@ -59,8 +61,8 @@ export default function Navbar() {
               </div>
               <div className="flex  flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center align-middle">
-                  <img className=" h-10 w-auto hidden lg:block rounded" src ={navBarBanner} alt ='Who Wants Rubbish Banner' />
-                  <FaWarehouse className='h-12 auto lg:hidden sm:block text-white text-4xl'  />
+                  <WWWLogo className=" h-10 w-auto hidden lg:block rounded" style={{ fill: 'white' }}/>
+                  <WWWLogo className='h-12 auto lg:hidden sm:block text-white text-4xl' style={{ fill: 'white' }}  />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
