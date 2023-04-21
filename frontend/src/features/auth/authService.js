@@ -29,6 +29,36 @@ const login = async (userData) => {
   return response.data;
 };
 
+//get latest User
+// private Route
+//may need amending to ensure user.state is the latest user.
+const getUser = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const API_USER = "/api/users/profile";
+  const response = await axios.get(API_USER, config);
+  return response.data;
+};
+
+//edits users
+//private route
+// place tokens not in the front end! This will edit the user
+const editUser = async (userData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const API_EDIT = "/api/users/profile";
+  const response = await axios.put(API_EDIT, userData, config);
+
+  return response.data;
+};
+
+// name omn the tin innit
 const logout = () => {
   localStorage.removeItem("user");
 };
@@ -37,6 +67,8 @@ const authService = {
   register,
   logout,
   login,
+  editUser,
+  getUser,
 };
 
 export default authService;

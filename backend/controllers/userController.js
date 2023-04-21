@@ -12,8 +12,20 @@ const generateToken = (id) => {
   });
 };
 
+//validation functions
+const checkIfUserOrBusinessExists = async (email) => {
+  const userExists = await User.findOne({ email: email });
+  const businessExists = await Business.findOne({ businessEmail: email });
+
+  if (userExists || businessExists) {
+    return true;
+  }
+
+  return false;
+};
+
 //@desc Register new User
-//@route /users
+//@route /api/users
 //@access public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, terms } = req.body;
@@ -41,20 +53,11 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   //find if user already exists
-  const userExists = await User.findOne({ email: email });
+  const exists = await checkIfUserOrBusinessExists(email);
 
-  //check for existing user
-  if (userExists) {
+  if (exists) {
     res.status(400);
-    throw new Error("User already exists");
-  }
-
-  //check to see if a business is already registered with that email address
-  const businessExists = await Business.findOne({ businessEmail: email });
-
-  if (businessExists) {
-    res.status(400);
-    throw new Error("Business account already exists with that E-Mail");
+    throw new Error("User or business already exists");
   }
 
   //Hash password - recommended 10 salts
@@ -87,38 +90,43 @@ const registerUser = asyncHandler(async (req, res) => {
 //@route /users/login
 //@access private
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  //check if passwords match
-  if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-    });
-  } else {
-    res.status(401);
-    throw new Error("Invalid Credentials");
+    //check if passwords match
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(401);
+      throw new Error("Invalid Credentials");
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
 //@desc Return user profile
-//@route /users/me
+//@route /api/users/profile
 //@access private
-const getMe = (req, res) => {
-  const user = {
-    id: req.user._id, // because of the mongoose schema storing id as ._id
-    email: req.user.email,
-    name: req.user.name,
-  };
+const getMe = asyncHandler(async (req, res) => {
+  const { id, email, name } = req.user;
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
   res.status(200).json(user);
-};
+});
 
 //@desc Delete User Profile
-//@route /users/me
+//@route /api/users/profile
 //@access Private
 const deleteMe = asyncHandler(async (req, res) => {
   try {
@@ -132,9 +140,62 @@ const deleteMe = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Update User Profile
+//@route /api/users/profile
+//@access Private
+
+const editUser = asyncHandler(async (req, res) => {
+  const { email, name, userId } = req.body;
+  // Validate user ID
+  if (userId.toString() !== req.user._id.toString()) {
+    res.status(400);
+    throw new Error("You are not allowed to edit this user");
+  }
+
+  // Validate email format
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    res.status(400);
+    throw new Error("Invalid email format");
+  }
+
+  // Validate name format
+  if (name.trim().length === 0) {
+    res.status(400);
+    throw new Error("Name cannot be empty");
+  }
+
+  /* //find if the business/user already exists
+  const exists = await checkIfUserOrBusinessExists(email);
+
+  if (exists.) {
+    res.status(400);
+    throw new Error("User or business already exists");
+  } */
+
+  try {
+    //check that the user exists...again
+    const originalUser = await User.findById(userId);
+
+    if (!originalUser) {
+      res.status(400);
+      throw new Error("No user found");
+    }
+
+    originalUser.name = name.trim();
+    originalUser.email = email;
+
+    const savedUser = await originalUser.save();
+    console.log(savedUser);
+    res.status(200).json(savedUser);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
   getMe,
   deleteMe,
+  editUser,
 };

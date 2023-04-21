@@ -46,6 +46,31 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   }
 });
 
+//edit/update user
+//async thunk required
+export const editUser = createAsyncThunk(
+  "auth/update",
+  async (userData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await authService.editUser(userData, token);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
+//get latest user form DB
+//async
+export const getUser = createAsyncThunk("auth/getUser", async (_, thunkAPI) => {
+  try {
+    const token = await thunkAPI.getState().auth.user.token;
+    return await authService.getUser(token);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(extractErrorMessage(error));
+  }
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -76,6 +101,23 @@ export const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.isPending = false;
+      })
+      .addCase(editUser.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.user = action.payload;
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.isPending = false;
+      })
+      .addCase(getUser.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.fulfilled = action.payload;
       });
   },
 });

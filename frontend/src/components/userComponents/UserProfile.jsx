@@ -2,26 +2,49 @@ import React, {useState, useEffect} from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
-import { FaUser, FaArrowCircleRight, FaEnvelope, FaPhone, FaLock,  } from 'react-icons/fa'
+import { editUser, getUser } from '../../features/auth/authSlice'
+import { FaUser, FaArrowCircleRight, FaEnvelope, FaPhone, FaLock, FaEdit,  } from 'react-icons/fa'
 
 function UserProfile() {
-  
-  //to ensure no crafty states
-  useEffect(() => {
-    return () => {
-      setEdit(false)
-    }
-  }, [])
 
   const {user} = useSelector((state) => state.auth)
   const [name, setName] = useState(user ? user.name : '');
   const [email, setEmail] = useState(user? user.email: '');
   //const [phone, setPhone] = useState(user ? user.phone: '');
   const [edit, setEdit] =useState(false)
+  const dispatch = useDispatch()
+
+  //to ensure no crafty states
+  useEffect( () => {
+    const fetchUser = async () => {
+      return dispatch(getUser())
+    }
+    return () => {
+      setEdit(false)
+    }
+  }, [user,dispatch])
+
+
 
   const selectEdit = (() => {
     setEdit((prevState) => !prevState)
   })
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    selectEdit()
+    const updatedData = {
+      email,
+      name,
+      userId:user._id
+    }
+
+    return await dispatch(editUser(updatedData))
+  }
+
+
 
   return (
      <>
@@ -68,6 +91,7 @@ function UserProfile() {
           className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200 dark:bg-gray-700 dark:border-gray-700 dark:text-white"
         />
       </div> */}
+      {/* Place button here that follows the github way of working.*/}
      {/*  <div className="flex flex-col space-y-2">
         <div className="flex items-center space-x-2">
           <FaLock />
@@ -82,6 +106,7 @@ function UserProfile() {
           className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200 dark:bg-gray-700 dark:border-gray-700 dark:text-white"
         />
       </div> */}
+      {/* Buttons, show or hidden based on edit state. */}
       <div className="mt-10 flex flex-col space-y-4 w-full">
         {!edit && (
           <button onClick={selectEdit}
@@ -90,7 +115,7 @@ function UserProfile() {
           </button>
         )}
         {edit && (
-          <button onClick={selectEdit}
+          <button onClick={handleSubmit}
            className="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300">
           <FaLock className="mr-2" /> Confirm Profile
         </button>

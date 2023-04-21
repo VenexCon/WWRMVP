@@ -6,12 +6,16 @@ const {
   loginUser,
   getMe,
   deleteMe,
+  editUser,
 } = require("../controllers/userController");
 
 //@To-do create protect function to check JWT
 router.post("/", registerUser);
 router.post("/login", loginUser);
-router.get("/profile", protect, getMe);
-router.delete("/profile", protect, deleteMe);
+router
+  .route("/profile")
+  .get(protect, getMe)
+  .delete(protect, deleteMe)
+  .put(protect, editUser);
 
 module.exports = router;
