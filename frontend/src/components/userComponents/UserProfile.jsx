@@ -16,9 +16,6 @@ function UserProfile() {
 
   //to ensure no crafty states
   useEffect( () => {
-    const fetchUser = async () => {
-      return dispatch(getUser())
-    }
     return () => {
       setEdit(false)
     }

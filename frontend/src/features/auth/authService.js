@@ -54,7 +54,8 @@ const editUser = async (userData, token) => {
   };
   const API_EDIT = "/api/users/profile";
   const response = await axios.put(API_EDIT, userData, config);
-
+  if (response.data)
+    localStorage.setItem("user", JSON.stringify(response.data));
   return response.data;
 };
 

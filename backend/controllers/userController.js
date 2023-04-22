@@ -185,8 +185,13 @@ const editUser = asyncHandler(async (req, res) => {
     originalUser.email = email;
 
     const savedUser = await originalUser.save();
-    console.log(savedUser);
-    res.status(200).json(savedUser);
+    const response = {
+      _id: savedUser._id,
+      name: savedUser.name,
+      email: savedUser.email,
+      token: generateToken(savedUser._id),
+    };
+    res.status(200).json(response);
   } catch (error) {
     throw new Error(error);
   }
