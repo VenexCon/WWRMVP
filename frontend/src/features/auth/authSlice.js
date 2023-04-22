@@ -117,7 +117,7 @@ export const authSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.isPending = false;
-        state.user = { user: action.payload };
+        state.user = action.payload;
       });
   },
 });
