@@ -4,6 +4,7 @@ import authService from "./authService";
 //allows us to use the redux Async life cycles with sync code.
 import { extractErrorMessage } from "../../utils";
 
+//profile is grabbed from LS, token will be placed in cookies prior to launch...should probably do this now.
 const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
@@ -25,6 +26,7 @@ export const registerUser = createAsyncThunk(
 //logout user
 //NOTE: we do not need the asyncThunk as we are not doing any async code
 // we create an action as the reducer creates a list of actions, and this is an action
+// state should be updated and the ls removed at the same time.
 export const logout = createAction("auth/logout", () => {
   authService.logout();
   return {
@@ -37,7 +39,6 @@ export const logout = createAction("auth/logout", () => {
 
 //login user
 //async, so we require the createAsyncThunkAPI
-
 export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   try {
     return await authService.login(user);
@@ -48,6 +49,7 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
 
 //edit/update user
 //async thunk required
+//The service places the object into LS, including the cookies.
 export const editUser = createAsyncThunk(
   "auth/update",
   async (userData, thunkAPI) => {
@@ -60,8 +62,8 @@ export const editUser = createAsyncThunk(
   }
 );
 
-//get latest user form DB
-//async
+//get latest user from DB
+//async as we want the thunkAPI.
 export const getUser = createAsyncThunk("auth/getUser", async (_, thunkAPI) => {
   try {
     const token = await thunkAPI.getState().auth.user.token;

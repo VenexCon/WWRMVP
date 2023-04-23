@@ -19,6 +19,12 @@ const userSchema = new Schema({
     required: [true, "Please agree to terms"],
     default: false,
   },
+  resetToken: {
+    type: String,
+  },
+  resetTokenExpiration: {
+    type: Date,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

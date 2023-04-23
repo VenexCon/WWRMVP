@@ -46,6 +46,7 @@ const getUser = async (token) => {
 //edits users
 //private route
 // place tokens not in the front end! This will edit the user
+// currently the userProfile subscribes to this state, but the profile loads the user from LS, hence placing the object on LS is required.
 const editUser = async (userData, token) => {
   const config = {
     headers: {
