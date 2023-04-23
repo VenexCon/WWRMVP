@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/business", require("./routes/businessRoutes"));
 app.use("/api/listing", require("./routes/listingRoutes"));
+app.use("/api/passwordReset", require("./routes/passwordResetRoutes"));
 //errorhandler
 app.use(errorHandler);
 
