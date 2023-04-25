@@ -57,7 +57,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     text:
       "We received a request to reset your password. Please click the following link to reset your password: http://localhost:3000/reset-password/" +
       token,
-    html: `<p>We received a request to reset your password. Please click the following link to reset your password: <a href="http://localhost:3000/reset-password/${token}">Reset Password</a></p>`,
+    html: `<p>We received a request to reset your password. Please click the following link to reset your password: <a href="http://localhost:3000/passwordUpdate/${token}">Reset Password</a></p>`,
     reply_to: "admin@whowantsrubbish.com",
   };
 

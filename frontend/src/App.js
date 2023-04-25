@@ -14,6 +14,8 @@ import ListingsPage from "./pages/ListingsPage";
 import Listing from "./pages/Listing";
 import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
+import PasswordReset from "./pages/PasswordReset";
+import PasswordUpdate from "./pages/PasswordUpdate";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
             {/* Instead of having /users/register & /business/register */}
             <Route path="/login" element={<Login />} />
             <Route path="/listing/new" element={<CreateListing />} />
+            <Route path="/passwordReset" element={<PasswordReset />} />
+            <Route path="/passwordUpdate/:token" element={<PasswordUpdate />} />
             <Route
               path="/profile"
               element={
