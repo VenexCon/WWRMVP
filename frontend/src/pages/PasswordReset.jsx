@@ -1,13 +1,14 @@
-
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
+import {toast} from 'react-toastify'
 
 function PasswordReset() {
-   const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [emailSent, setEmailSent] = useState(false)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (email === "") {
       setError("Please enter your email address");
@@ -17,22 +18,21 @@ function PasswordReset() {
       setError("Please enter a valid email address");
       return;
     }
+    try {
+      const response = await axios.post('/api/passwordReset', {email})
 
-    axios
-      .post("/api/reset-password", { email })
-      .then((response) => {
-        // Handle success response
-        console.log(response.data);
-      })
-      .catch((error) => {
-        // Handle error response
-        console.log(error.response.data);
-      });
-  };
+      if(response.data.message === 'Email sent') {
+        toast.success('Email Sent')
+        setEmailSent(true)
+        return response.data
+      }
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-    setError("");
+      return response.data
+    } catch (error) {
+      console.error(error)
+      return toast.error('Email not found')
+    }
+    
   };
 
   const validateEmail = (email) => {
@@ -44,7 +44,8 @@ function PasswordReset() {
     <div className="bg-gray-600 h-screen w-screen flex ">
     <div className="bg-gray-800 w-full h-fit md:w-1/3 mx-auto mt-10 rounded-lg p-8">
       <h2 className="text-white text-2xl font-bold mb-6">RESET PASSWORD</h2>
-      <form onSubmit={handleSubmit}>
+      {!emailSent && (
+        <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-white font-bold mb-2" htmlFor="email">
             Enter Your E-Mail
@@ -63,6 +64,13 @@ function PasswordReset() {
           SUBMIT
         </button>
       </form>
+      )}
+      {emailSent && (
+        <>
+        <p className="block text-white font-bold mb-2"> Reset Email Link Sent</p>
+        <p  className="block text-white mt-3 mb-2">Please follow the instructions on the email</p>
+        </>
+      )}
     </div>
     </div>
   );
