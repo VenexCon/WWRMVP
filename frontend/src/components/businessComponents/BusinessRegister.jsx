@@ -48,7 +48,7 @@ function BusinessRegister() {
     if(!businessTerms) return toast.error('You must agree to the Terms and Conditions')
     if(!businessAddress || businessAddress.includes('undefined')){toast.error('Please enter correct address')}
     
-    if(businessPassword !== businessPassword2) {toast.error('Passwords do not match')}  
+    if(businessPassword !== businessPassword2) {return toast.error('Passwords do not match')}  
 
 
       try {

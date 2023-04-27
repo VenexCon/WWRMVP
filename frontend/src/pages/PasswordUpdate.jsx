@@ -9,6 +9,7 @@ function PasswordUpdate() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [passChanged, setPassChanged] = useState(false)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,7 +51,8 @@ function PasswordUpdate() {
     <div className="bg-gray-600 h-screen flex  justify-center">
       <div className="bg-gray-800 w-full max-w-md mx-auto p-8 rounded-lg">
         <h2 className="text-white text-2xl font-bold mb-6">UPDATE PASSWORD</h2>
-        <form onSubmit={handleSubmit}>
+        {!passChanged && (
+          <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-white font-bold mb-2" htmlFor="password">
               Password
@@ -83,6 +85,13 @@ function PasswordUpdate() {
             </button>
           </div>
         </form>
+        )}
+        {passChanged && (
+        <>
+        <p className="block text-white font-bold mb-2"> Password Updated</p>
+        <p  className="block text-white mt-3 mb-2">Please Login to your account</p>
+        </>
+      )}
       </div>
     </div>
   );

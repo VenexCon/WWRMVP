@@ -46,7 +46,7 @@ function UserRegister() {
     if(!terms) return toast.error('You must agree to the Terms and Conditions')
     
     if(password !== password2) {
-      toast.error('Passwords do not match')
+      return toast.error('Passwords do not match')
     } else {
 
       const userData = {

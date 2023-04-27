@@ -81,6 +81,8 @@ const updateTokenAccount = asyncHandler(async (req, res) => {
   const { password } = req.body;
   const user = await User.findOne({ resetToken: token });
   const business = await Business.findOne({ businessResetToken: token });
+  console.log(user);
+  console.log(business);
   //checks if an account exists
   if (!user && !business) {
     res.status(404);
@@ -88,8 +90,8 @@ const updateTokenAccount = asyncHandler(async (req, res) => {
   }
   //checks to see if the expiry time of 10 minutes is up
   const expiryTime = user
-    ? user.resetTokenExpiry
-    : business.businessResetTokenExpiry;
+    ? user.resetTokenExpiration
+    : business.businessResetTokenExpiration;
   if (new Date() > new Date(expiryTime)) {
     res.status(401);
     throw new Error("Reset token has expired");
@@ -101,6 +103,7 @@ const updateTokenAccount = asyncHandler(async (req, res) => {
     )
   ) {
     res.status(404);
+    console.log("password no good");
     throw new Error(
       "Password must contain 8 characters, one uppercase, lowercase and one special character"
     );
@@ -109,14 +112,14 @@ const updateTokenAccount = asyncHandler(async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
   //save the doc
-  if (user) {
+  if (user !== null) {
     user.password = hashedPassword;
     user.resetToken = undefined;
     user.resetTokenExpiry = undefined;
     await user.save();
     return res.status(200).json({ message: "Password updated successfully" });
   } else {
-    business.password = hashedPassword;
+    business.businessPassword = hashedPassword;
     business.businessResetToken = undefined;
     business.businessResetTokenExpiry = undefined;
     await business.save();
