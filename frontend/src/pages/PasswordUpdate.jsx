@@ -27,6 +27,7 @@ function PasswordUpdate() {
       if (response.status === 200) {
         setPassword('');
         setConfirmPassword('');
+        setPassChanged(true)
         toast.success('Password updated successfully. Please try logging in.');
       }
     } catch (error) {

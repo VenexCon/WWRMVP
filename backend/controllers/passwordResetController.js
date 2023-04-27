@@ -121,7 +121,7 @@ const updateTokenAccount = asyncHandler(async (req, res) => {
   } else {
     business.businessPassword = hashedPassword;
     business.businessResetToken = undefined;
-    business.businessResetTokenExpiry = undefined;
+    business.businessResetTokenExpiration = undefined;
     await business.save();
     return res.status(200).json({ message: "Password updated successfully" });
   }
