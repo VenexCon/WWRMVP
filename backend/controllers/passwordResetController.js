@@ -77,7 +77,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 //@route /api/passwordUpdate/:token
 //@access private
 const updateTokenAccount = asyncHandler(async (req, res) => {
-  const { token } = req.params;
+  const { token } = req.body;
   const { password } = req.body;
   const user = await User.findOne({ resetToken: token });
   const business = await Business.findOne({ businessResetToken: token });
