@@ -31,7 +31,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/listing/new" element={<CreateListing />} />
             <Route path="/passwordReset" element={<PasswordReset />} />
-            <Route path="/passwordUpdate/:token" element={<PasswordUpdate />} />
+            <Route
+              path="/passwordReset/passwordUpdate/:token"
+              element={<PasswordUpdate />}
+            />
             <Route
               path="/profile"
               element={
