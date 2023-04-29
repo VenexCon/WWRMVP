@@ -10,48 +10,56 @@ const mongoose = require("mongoose");
 //@access private
 const createListing = asyncHandler(async (req, res) => {
   try {
-    const { businessCoordinates, id, businessAddress, businessEmail } =
-      req.business;
+    const {
+      businessCoordinates,
+      id,
+      businessAddress,
+      businessEmail,
+      businessPhone,
+    } = req.business;
     const {
       title,
       description,
       phoneNumber,
       address,
       useBusAddress,
+      useBusPhone,
       latitude,
       longitude,
     } = req.body;
 
-    if (!title || !description || !phoneNumber) {
+    if (!title || !description) {
       res.status(404);
       throw new Error("Please ensure all fields are completed.");
     }
+
+    let listingLocation = address;
+    let listingCoordinates = {
+      type: "Point",
+      coordinates: [longitude, latitude],
+    };
+    let listingPhone = phoneNumber;
+
     if (useBusAddress) {
-      const newListing = await Listing.create({
-        listingTitle: title,
-        listingDescription: description,
-        listingLocation: businessAddress,
-        listingCoordinates: businessCoordinates,
-        listingEmail: businessEmail,
-        listingPhone: phoneNumber,
-        business: id,
-      });
-      res.status(201).json(newListing);
-    } else {
-      const newListing = await Listing.create({
-        listingTitle: title,
-        listingDescription: description,
-        listingLocation: address,
-        listingCoordinates: {
-          type: "Point",
-          coordinates: [longitude, latitude],
-        },
-        listingEmail: businessEmail,
-        listingPhone: phoneNumber,
-        business: id,
-      });
-      res.status(201).json(newListing);
+      listingLocation = businessAddress;
+      listingCoordinates = businessCoordinates;
     }
+
+    if (useBusPhone) {
+      listingPhone = businessPhone;
+    }
+
+    const newListing = await Listing.create({
+      listingTitle: title,
+      listingDescription: description,
+      listingLocation: listingLocation,
+      listingCoordinates: listingCoordinates,
+      listingEmail: businessEmail,
+      listingPhone: listingPhone,
+      business: id,
+    });
+
+    res.status(201).json(newListing);
   } catch (error) {
     res.status(500);
     throw new Error(`Error creating listing: ${error.message}`);
