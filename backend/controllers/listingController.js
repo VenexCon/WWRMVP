@@ -263,11 +263,14 @@ const deleteListing = async (req, res) => {
   const { id, business } = req.params;
   const { _id } = req.business;
 
-  if (_id.toString() !== business) {
+  //This isnt working currently
+  /*  if (_id.toString() !== business) {
     res
       .status(400)
       .json({ message: "You are not allowed to delete this listing" });
-  }
+  } */
+
+  //get the listing prior to dleteion and then check if it matches the id from the req.business?
 
   try {
     const deletedListing = await Listing.findByIdAndDelete(id);

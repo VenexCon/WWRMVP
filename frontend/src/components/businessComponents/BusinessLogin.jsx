@@ -24,16 +24,20 @@ const navigate = useNavigate()
         }))
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault()
-        dispatch(loginBusiness(loginData)).unwrap().then((business) => {
-          console.log(business)
-          toast.success(`Logged in as ${business.name}`)
-          navigate('/')
-        }).catch(toast.error)
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const {email, password} = loginData
+    try {
+      const userData = {email:email.toLowerCase(), password}
+      const business = await dispatch(loginBusiness(userData)).unwrap();
+      console.log(business);
+      toast.success(`Logged in as ${business.name}`);
+      navigate('/');
+    } catch (error) {
+      toast.error(error);
+    }
+};
 
-    
-    } 
 
          if(isPending) {
     return <Spinner />

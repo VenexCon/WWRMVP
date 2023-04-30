@@ -25,15 +25,18 @@ function UserLogin() {
         }))
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault()
-        dispatch(login(loginData)).unwrap().then((user) => {
-          toast.success(`Logged in as ${user.name}`)
-          navigate('/')
-        }).catch(toast.error)
-
-    
+    const onSubmit = async (e) => {
+    e.preventDefault()
+    const {email, password} = loginData 
+      try {
+      let userData = {email: email.toLowerCase(), password}
+      const user = await dispatch(login(userData)).unwrap()
+      toast.success(`Logged in as ${user.name}`)
+      navigate('/')
+    } catch (error) {
+      toast.error(error)
     }
+}
 
          if(isPending) {
     return <Spinner />

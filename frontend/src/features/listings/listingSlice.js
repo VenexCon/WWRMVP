@@ -102,10 +102,10 @@ export const deleteSpecificListing = createAsyncThunk(
   async (listingId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().businessAuth.business.token;
-      const business = thunkAPI.getState().listing.specificListing.business;
+      const businessId = thunkAPI.getState().listing.specificListing.business;
       return await listingService.deleteSpecificListing(
         listingId,
-        business,
+        businessId,
         token
       );
     } catch (error) {

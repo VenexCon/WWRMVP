@@ -76,6 +76,7 @@ export const searchListings = async (searchParams) => {
 
 const deleteSpecificListing = async (listingId, business, token) => {
   let id = listingId;
+
   const url = `/api/listing/${id}?business=${business}`;
   const config = {
     headers: {
