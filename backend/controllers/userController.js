@@ -175,10 +175,16 @@ const editUser = asyncHandler(async (req, res) => {
   try {
     //check that the user exists...again
     const originalUser = await User.findById(userId);
+    const possibleUser = await User.findOne({ email: email });
 
     if (!originalUser) {
       res.status(400);
       throw new Error("No user found");
+    }
+
+    if (possibleUser) {
+      res.status(400);
+      throw new Error("Email already in use");
     }
 
     originalUser.name = name.trim();

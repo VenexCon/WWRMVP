@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import {  Link } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
-import { editUser, getUser } from '../../features/auth/authSlice'
-import { FaUser, FaArrowCircleRight, FaEnvelope, FaPhone, FaLock, FaEdit,  } from 'react-icons/fa'
+import { editUser } from '../../features/auth/authSlice'
+import { FaUser, FaArrowCircleRight, FaEnvelope,  FaLock,  } from 'react-icons/fa'
 
 function UserProfile() {
 
@@ -32,13 +32,25 @@ function UserProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     selectEdit()
+    try {
     const updatedData = {
-      email,
+      email:email.toLowerCase(),
       name,
       userId:user._id
     }
+    const data = await dispatch(editUser(updatedData))
+     if(data.error) {
+      toast.error('Profile not updated')
+      return setEmail(user.email)
+    } else {
+      return toast.success('Profile Updated')
+    }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
 
-    return await dispatch(editUser(updatedData))
+    return 
   }
 
 
