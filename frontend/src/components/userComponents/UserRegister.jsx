@@ -41,6 +41,7 @@ function UserRegister() {
   const onSubmit = async (e)=> {
     e.preventDefault()
     const {email, name, password, password2, terms} = registerData
+
     if(user || business) {return toast.error('Cannot register a business whilst logged in')}
 
     if(!terms) return toast.error('You must agree to the Terms and Conditions')
@@ -51,7 +52,7 @@ function UserRegister() {
 
       const userData = {
         name,
-        email,
+        email:email.toLowerCase(),
         password,
         terms
       }

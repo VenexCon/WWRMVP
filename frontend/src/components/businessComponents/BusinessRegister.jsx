@@ -53,7 +53,7 @@ function BusinessRegister() {
 
       try {
         let businessData = {
-        businessEmail,
+        businessEmail: businessEmail.toLowerCase(),
         businessName,
         businessPhone,
         businessAddress,
