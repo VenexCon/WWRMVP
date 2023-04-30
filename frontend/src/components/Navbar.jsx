@@ -14,8 +14,7 @@ const navigation = [
 
   { name: 'Home', href: '/', current: false },
   { name: 'Listings', href: '/listing', current: false },
-  { name: 'Profile', href: '/profile', current: false },
-  { name: 'Register', href:'/register', current: false}
+  { name: 'Profile', href: '/profile', current: false }
 ]
 
 function classNames(...classes) {
@@ -106,6 +105,14 @@ export default function Navbar() {
                     <FaArrowCircleRight />
                     <p>Log out</p>
                   </button>
+                </div>
+                )}
+                 {(!user && !business) && (
+                  <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  <Link to='/register' className='flex h-full items-center space-x-2' >
+                    <FaArrowCircleRight />
+                    <p>Register</p>
+                  </Link>
                 </div>
                 )}
               </div>

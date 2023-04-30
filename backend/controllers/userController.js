@@ -164,13 +164,13 @@ const editUser = asyncHandler(async (req, res) => {
     throw new Error("Name cannot be empty");
   }
 
-  /* //find if the business/user already exists
-  const exists = await checkIfUserOrBusinessExists(email);
-
-  if (exists.) {
-    res.status(400);
-    throw new Error("User or business already exists");
-  } */
+  //find if the business/user already exists
+  const businessExists = await Business.findOne({ businessEmail: email });
+  if (businessExists) {
+    res
+      .status(400)
+      .json({ message: "Email already in use by another account" });
+  }
 
   try {
     //check that the user exists...again
