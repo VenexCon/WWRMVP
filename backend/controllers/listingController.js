@@ -59,6 +59,7 @@ const createListing = asyncHandler(async (req, res) => {
       business: id,
     });
 
+    console.log(newListing);
     res.status(201).json(newListing);
   } catch (error) {
     res.status(500);
@@ -263,7 +264,9 @@ const deleteListing = async (req, res) => {
   const { _id } = req.business;
 
   if (_id.toString() !== business) {
-    res.status(400);
+    res
+      .status(400)
+      .json({ message: "You are not allowed to delete this listing" });
   }
 
   try {

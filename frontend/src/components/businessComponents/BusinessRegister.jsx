@@ -62,6 +62,7 @@ function BusinessRegister() {
       }
        const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${businessAddress}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
        const data =await response.json()
+       if(data.results.length === 0) {return toast.error('Address not found')}
        businessData.latitude = data.results[0]?.geometry.location.lat ?? 0
        businessData.longitude = data.results[0]?.geometry.location.lng ?? 0
         const business = await dispatch(registerBusiness(businessData)).unwrap()
@@ -84,6 +85,7 @@ function BusinessRegister() {
      <>
         <form onSubmit={onSubmit} className="space-y-4 md:space-y-6">
           <h1 className='text-xl font-bold leading-tight text-center tracking-tight text-gray-900 md:text-2xl dark:text-white'>Business</h1>
+          <p className='text-md font-bold leading-tight text-center tracking-tight text-gray-900 md:text-md dark:text-white'>Business Accounts can create listings, and browse listings.</p>
                   <div>
                       <label htmlFor="businessName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business Name</label>
                       <input type="name" name="businessName" id="businessName" onChange={onMutate}  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required="" />

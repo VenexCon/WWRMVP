@@ -59,7 +59,7 @@ const CreateListing = () => {
       const listing = await dispatch(createNewListing(listingData));
       if(listing.payload) {
         toast.success('Listing Created')
-        navigate('/')
+        navigate(`/listing/${listing.payload._id}`)
       } else {
         toast.error('Listing could not be created')
       }
