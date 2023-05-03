@@ -39,7 +39,12 @@ const SearchBar = () => {
       const data = response.data
       searchParams.latitude = data.results[0]?.geometry.location.lat ?? 0
       searchParams.longitude = data.results[0]?.geometry.location.lng ?? 0
-      return await dispatch(searchListings(searchParams))
+      const listings = await dispatch(searchListings(searchParams))
+      if(listings.payload.length ===0) {return toast.success('No Listings Found')} 
+      else {
+        return toast.success('listings found')
+      }
+       
     } catch (error) {
       return toast.error(error.message)
     }
