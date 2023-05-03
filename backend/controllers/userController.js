@@ -73,13 +73,20 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    res.status(201).json({
-      _id: user._id, //mongoose assigns a unique id number, if one isn't specified. This grabs that number
-      name: user.name,
-      email: user.email,
-      terms: user.agreedTerms,
-      token: generateToken(user._id),
-    });
+    const cToken = generateToken(user._id);
+    res
+      .status(201)
+      .cookie("token", cToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      })
+      .json({
+        _id: user._id, //mongoose assigns a unique id number, if one isn't specified. This grabs that number
+        name: user.name,
+        email: user.email,
+        terms: user.agreedTerms,
+        token: generateToken(user._id),
+      });
   } else {
     res.sendStatus(400);
     throw new Error("Invalid user data");

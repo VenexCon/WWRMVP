@@ -1,14 +1,23 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 //register users
 
 const register = async (userData) => {
   const response = await axios.post("/api/users", userData);
 
+  Cookies.remove("token");
+
   localStorage.removeItem("user");
   localStorage.removeItem("business");
 
   if (response.data) {
+    Cookies.set("token", response.data.token, {
+      expires: 1,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+    });
     localStorage.setItem("user", JSON.stringify(response.data));
   }
   return response.data;
