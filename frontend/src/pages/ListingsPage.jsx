@@ -6,8 +6,10 @@ import { getAllListings } from "../features/listings/listingSlice"
 
 
 const ListingsPage = () => {
-  const listings = useSelector((state) => state.listing.allListings);
+  const allListings = useSelector((state) => state.listing.allListings);
   const dispatch = useDispatch()
+
+  const listings = allListings? allListings : []
 
   useEffect(()=> {
     const fetchAllListings = async () => {

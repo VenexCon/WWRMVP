@@ -74,10 +74,10 @@ export const searchListings = async (searchParams) => {
   }
 };
 
-const deleteSpecificListing = async (listingId, business, token) => {
+const deleteSpecificListing = async (listingId, businessId, token) => {
   let id = listingId;
 
-  const url = `/api/listing/${id}?business=${business}`;
+  const url = `/api/listing/${id}?business=${businessId}`;
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

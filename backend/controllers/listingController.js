@@ -186,7 +186,7 @@ const searchListings = asyncHandler(async (req, res) => {
   res.status(200).json(listings);
 });
 
-const searchListingsByKeyword = async (query) => {
+const searchListingsByKeyword = asyncHandler(async (query) => {
   try {
     const listings = await Listing.find({
       listingTitle: { $regex: new RegExp(query, "i") },
@@ -196,81 +196,73 @@ const searchListingsByKeyword = async (query) => {
     console.log(error);
     throw new Error("Error searching listings");
   }
-};
+});
 
-const searchListingsByLocation = async (
-  latitude,
-  longitude,
-  maxDistanceMeters
-) => {
-  try {
-    const listings = await Listing.aggregate([
-      {
-        $geoNear: {
-          near: {
-            type: "Point",
-            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+const searchListingsByLocation = asyncHandler(
+  async (latitude, longitude, maxDistanceMeters) => {
+    try {
+      const listings = await Listing.aggregate([
+        {
+          $geoNear: {
+            near: {
+              type: "Point",
+              coordinates: [parseFloat(longitude), parseFloat(latitude)],
+            },
+            distanceField: "distance",
+            maxDistance: maxDistanceMeters,
+            spherical: true,
           },
-          distanceField: "distance",
-          maxDistance: maxDistanceMeters,
-          spherical: true,
         },
-      },
-    ]);
-    return listings;
-  } catch (error) {
-    console.log(error);
-    throw new Error("Error searching listings");
+      ]);
+      return listings;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error searching listings");
+    }
   }
-};
+);
 
-const searchListingsByLocationAndKeyword = async (
-  latitude,
-  longitude,
-  maxDistanceMeters,
-  query
-) => {
-  try {
-    const listings = await Listing.aggregate([
-      {
-        $geoNear: {
-          near: {
-            type: "Point",
-            coordinates: [parseFloat(longitude), parseFloat(latitude)],
+const searchListingsByLocationAndKeyword = asyncHandler(
+  async (latitude, longitude, maxDistanceMeters, query) => {
+    try {
+      const listings = await Listing.aggregate([
+        {
+          $geoNear: {
+            near: {
+              type: "Point",
+              coordinates: [parseFloat(longitude), parseFloat(latitude)],
+            },
+            distanceField: "distance",
+            maxDistance: maxDistanceMeters,
+            spherical: true,
           },
-          distanceField: "distance",
-          maxDistance: maxDistanceMeters,
-          spherical: true,
         },
-      },
-      {
-        $match: {
-          listingTitle: { $regex: new RegExp(query, "i") },
+        {
+          $match: {
+            listingTitle: { $regex: new RegExp(query, "i") },
+          },
         },
-      },
-    ]);
-    return listings;
-  } catch (error) {
-    console.log(error);
-    throw new Error("Error searching listings");
+      ]);
+      return listings;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error searching listings");
+    }
   }
-};
+);
 
 // @desc    Delete Listing
 // @route   delete /api/listing/:id
 // @access  Private
-const deleteListing = async (req, res) => {
-  const { id, business } = req.params;
+const deleteListing = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const business = req.query.business;
   const { _id } = req.business;
 
-  //This isnt working currently
-  /*  if (_id.toString() !== business) {
-    res
-      .status(400)
-      .json({ message: "You are not allowed to delete this listing" });
-  } */
-
-  //get the listing prior to dleteion and then check if it matches the id from the req.business?
+  if (_id.toString() !== business) {
+    res.status(400);
+    throw new Error("You are not allowed to edit this listing");
+  }
 
   try {
     const deletedListing = await Listing.findByIdAndDelete(id);
@@ -281,7 +273,7 @@ const deleteListing = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
-};
+});
 
 module.exports = {
   createListing,
