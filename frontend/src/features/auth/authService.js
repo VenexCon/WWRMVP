@@ -1,6 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
+//set cookie date
+const tenYearsFromNow = new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000);
 //register users
 
 const register = async (userData) => {
@@ -13,7 +15,7 @@ const register = async (userData) => {
 
   if (response.data) {
     Cookies.set("token", response.data.token, {
-      expires: 1,
+      expires: tenYearsFromNow,
       sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,

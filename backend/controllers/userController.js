@@ -12,6 +12,15 @@ const generateToken = (id) => {
   });
 };
 
+//set token cookie to 10 years
+function getDate10YearsFromNow() {
+  const tenYearsFromNow = new Date();
+  tenYearsFromNow.setFullYear(tenYearsFromNow.getFullYear() + 10);
+  return tenYearsFromNow;
+}
+
+const expiryDate = getDate10YearsFromNow();
+
 //validation functions
 const checkIfUserOrBusinessExists = async (email) => {
   const userExists = await User.findOne({ email: email });
@@ -79,13 +88,14 @@ const registerUser = asyncHandler(async (req, res) => {
       .cookie("token", cToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        expires: expiryDate,
       })
       .json({
         _id: user._id, //mongoose assigns a unique id number, if one isn't specified. This grabs that number
         name: user.name,
         email: user.email,
         terms: user.agreedTerms,
-        token: generateToken(user._id),
+        token: cToken, //This needs to be removed once all user routes have been updated. Auth middleware needs revamping
       });
   } else {
     res.sendStatus(400);
@@ -104,12 +114,21 @@ const loginUser = asyncHandler(async (req, res) => {
 
     //check if passwords match
     if (user && (await bcrypt.compare(password, user.password))) {
-      res.status(200).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        token: generateToken(user._id),
-      });
+      const cToken = generateToken(user._id);
+
+      res
+        .status(200)
+        .cookie("token", cToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          expires: expiryDate,
+        })
+        .json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          token: cToken,
+        });
     } else {
       res.status(401);
       throw new Error("Invalid Credentials");
@@ -124,7 +143,7 @@ const loginUser = asyncHandler(async (req, res) => {
 //@access private
 const getMe = asyncHandler(async (req, res) => {
   const { id, email, name } = req.user;
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email: email }).select("-password");
   if (!user) {
     res.status(404);
     throw new Error("User not found");
@@ -182,29 +201,32 @@ const editUser = asyncHandler(async (req, res) => {
   try {
     //check that the user exists...again
     const originalUser = await User.findById(userId);
-    const possibleUser = await User.findOne({ email: email });
 
     if (!originalUser) {
       res.status(400);
       throw new Error("No user found");
     }
 
-    if (possibleUser) {
-      res.status(400);
-      throw new Error("Email already in use");
-    }
-
     originalUser.name = name.trim();
     originalUser.email = email;
 
     const savedUser = await originalUser.save();
+    const cToken = generateToken(savedUser._id);
+
     const response = {
       _id: savedUser._id,
       name: savedUser.name,
       email: savedUser.email,
-      token: generateToken(savedUser._id),
+      token: cToken,
     };
-    res.status(200).json(response);
+    res
+      .status(200)
+      .cookie("token", cToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        expires: expiryDate,
+      })
+      .json(response);
   } catch (error) {
     throw new Error(error);
   }
