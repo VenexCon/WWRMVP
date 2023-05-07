@@ -1,8 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-//set cookie date
-const tenYearsFromNow = new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000);
 //register users
 
 const register = async (userData) => {
@@ -14,12 +12,6 @@ const register = async (userData) => {
   localStorage.removeItem("business");
 
   if (response.data) {
-    Cookies.set("token", response.data.token, {
-      expires: tenYearsFromNow,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-    });
     localStorage.setItem("user", JSON.stringify(response.data));
   }
   return response.data;
@@ -71,9 +63,16 @@ const editUser = async (userData, token) => {
   return response.data;
 };
 
-// name omn the tin innit
-const logout = () => {
-  localStorage.removeItem("user");
+const logout = async () => {
+  const API_LOGOUT = "/api/users/logout";
+  const response = await axios.post(API_LOGOUT);
+  console.log(response);
+
+  if (response.data) {
+    localStorage.removeItem("user");
+  }
+
+  return response;
 };
 
 const authService = {

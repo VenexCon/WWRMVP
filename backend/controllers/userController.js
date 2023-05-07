@@ -138,6 +138,21 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+//@Desc Replace the cookie with null on logout, to ensure all tokens are moved
+//@Route /users/logout
+//@access private
+
+const logoutUser = asyncHandler(async (req, res) => {
+  res
+    .status(200)
+    .clearCookie("token", null, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      expires: expiryDate,
+    })
+    .json({ message: "User Logged out" });
+});
+
 //@desc Return user profile
 //@route /api/users/profile
 //@access private
@@ -238,4 +253,5 @@ module.exports = {
   getMe,
   deleteMe,
   editUser,
+  logoutUser,
 };

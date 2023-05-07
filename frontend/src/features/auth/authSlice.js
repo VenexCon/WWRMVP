@@ -27,14 +27,20 @@ export const registerUser = createAsyncThunk(
 //NOTE: we do not need the asyncThunk as we are not doing any async code
 // we create an action as the reducer creates a list of actions, and this is an action
 // state should be updated and the ls removed at the same time.
-export const logout = createAction("auth/logout", () => {
-  authService.logout();
-  return {
-    payload: {
-      user: null,
-      isPending: false,
-    },
-  };
+export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+  try {
+    const response = await authService.logout();
+    if (!response.error) {
+      return {
+        payload: {
+          user: null,
+          isPending: false,
+        },
+      };
+    }
+  } catch (error) {
+    return thunkAPI.rejectWithValue(extractErrorMessage(error));
+  }
 });
 
 //login user
@@ -120,6 +126,16 @@ export const authSlice = createSlice({
       .addCase(getUser.fulfilled, (state, action) => {
         state.isPending = false;
         state.user = action.payload;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.isPending = false;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.user = action.payload.user;
       });
   },
 });
