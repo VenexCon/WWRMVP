@@ -251,4 +251,5 @@ module.exports = {
   deleteMe,
   editUser,
   logoutUser,
+  checkIfUserOrBusinessExists,
 };
