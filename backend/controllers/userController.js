@@ -170,7 +170,7 @@ const getMe = asyncHandler(async (req, res) => {
 const deleteMe = asyncHandler(async (req, res) => {
   try {
     const deleted = await User.deleteOne({ id: req.user._id });
-    res.status(200).json({
+    res.status(201).json({
       message: "User Deleted",
     });
   } catch (error) {
