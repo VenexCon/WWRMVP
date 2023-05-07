@@ -29,7 +29,6 @@ export const registerBusiness = createAsyncThunk(
 export const loginBusiness = createAsyncThunk(
   "business/login",
   async (business, thunkAPI) => {
-    console.log(business);
     try {
       return await businessService.loginBusiness(business);
     } catch (error) {
@@ -40,16 +39,24 @@ export const loginBusiness = createAsyncThunk(
 
 //logout business
 //return new payload of business: null
-
-export const logoutBusiness = createAction("business/logout", () => {
-  businessService.logoutBusiness();
-  return {
-    payload: {
-      business: null,
-      isPending: false,
-    },
-  };
-});
+export const logoutBusiness = createAsyncThunk(
+  "business/logout",
+  async (_, thunkAPI) => {
+    try {
+      const response = await businessService.logoutBusiness();
+      if (!response.error) {
+        return {
+          payload: {
+            business: null,
+            isPending: false,
+          },
+        };
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
 
 export const businessSlice = createSlice({
   name: "business",

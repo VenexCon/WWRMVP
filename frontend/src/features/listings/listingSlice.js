@@ -5,6 +5,7 @@ import {
   isPending,
 } from "@reduxjs/toolkit";
 import listingService from "./listingService";
+import Cookies from "js-cookie";
 
 import { extractErrorMessage } from "../../utils";
 
@@ -22,8 +23,7 @@ export const createNewListing = createAsyncThunk(
   "listing/create",
   async (listingData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().businessAuth.business.token;
-      return await listingService.createListing(token, listingData);
+      return await listingService.createListing(listingData);
     } catch (error) {
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
     }
@@ -35,8 +35,7 @@ export const getMyListings = createAsyncThunk(
   "listing/myListings",
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().businessAuth.business.token;
-      return await listingService.getBusinessListings(token);
+      return await listingService.getBusinessListings();
     } catch (error) {
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
     }
@@ -72,12 +71,7 @@ export const editSpecificListing = createAsyncThunk(
   "listing/editSpecificListing",
   async ({ listingData, listingId }, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().businessAuth.business.token;
-      return await listingService.editSpecificListing(
-        listingId,
-        listingData,
-        token
-      );
+      return await listingService.editSpecificListing(listingId, listingData);
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
@@ -101,13 +95,8 @@ export const deleteSpecificListing = createAsyncThunk(
   "listing/deleteSpecificListing",
   async (listingId, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().businessAuth.business.token;
       const businessId = thunkAPI.getState().listing.specificListing.business;
-      return await listingService.deleteSpecificListing(
-        listingId,
-        businessId,
-        token
-      );
+      return await listingService.deleteSpecificListing(listingId, businessId);
     } catch (error) {
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
     }

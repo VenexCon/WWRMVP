@@ -32,8 +32,14 @@ const loginBusiness = async (businessData) => {
   return response.data;
 };
 
-const logoutBusiness = () => {
-  localStorage.removeItem("business");
+const logoutBusiness = async () => {
+  const API_LOGOUT = "/api/business/logout";
+  const response = await axios.post(API_LOGOUT);
+
+  if (response.data) {
+    localStorage.removeItem("business");
+    return response;
+  }
 };
 
 const businessService = {

@@ -12,6 +12,15 @@ const generateToken = (id) => {
   });
 };
 
+//set token cookie to 10 years
+function getDate10YearsFromNow() {
+  const tenYearsFromNow = new Date();
+  tenYearsFromNow.setFullYear(tenYearsFromNow.getFullYear() + 10);
+  return tenYearsFromNow;
+}
+
+const expiryDate = getDate10YearsFromNow();
+
 //@desc Register new business
 //@route /register - shared path with user register, due to component load.
 //@access public
@@ -93,15 +102,22 @@ const registerBusiness = asyncHandler(async (req, res) => {
   });
 
   if (newBusiness) {
-    res.status(201).json({
-      _id: newBusiness._id,
-      name: newBusiness.businessName,
-      address: newBusiness.businessAddress,
-      phone: newBusiness.businessPhone,
-      email: newBusiness.businessEmail,
-      businessCoordinates: newBusiness.businessGeolocation,
-      token: generateToken(newBusiness._id),
-    });
+    const cToken = generateToken(newBusiness._id);
+    res
+      .status(201)
+      .cookie("token", cToken, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        expires: expiryDate,
+      })
+      .json({
+        _id: newBusiness._id,
+        name: newBusiness.businessName,
+        address: newBusiness.businessAddress,
+        phone: newBusiness.businessPhone,
+        email: newBusiness.businessEmail,
+        businessCoordinates: newBusiness.businessGeolocation,
+      });
   } else {
     throw new Error("Invalid business data");
   }
@@ -118,15 +134,22 @@ const loginBusiness = asyncHandler(async (req, res) => {
 
   //check if passwords match
   if (business && (await bcrypt.compare(password, business.businessPassword))) {
-    res.status(200).json({
-      _id: business._id,
-      name: business.businessName,
-      email: business.businessEmail,
-      address: business.businessAddress,
-      phone: business.businessPhone,
-      businessCoordinates: business.businessCoordinates,
-      token: generateToken(business._id),
-    });
+    const cToken = generateToken(business._id);
+    res
+      .status(200)
+      .cookie("token", cToken, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        expires: expiryDate,
+      })
+      .json({
+        _id: business._id,
+        name: business.businessName,
+        email: business.businessEmail,
+        address: business.businessAddress,
+        phone: business.businessPhone,
+        businessCoordinates: business.businessCoordinates,
+      });
   } else {
     res.status(400);
     throw new Error("Invalid Credentials");
@@ -148,6 +171,21 @@ const getProfile = (req, res) => {
   res.status(200).json(business);
 };
 
+//@Desc Replace the cookie with null on logout, to ensure all tokens are moved
+//@Route /users/logout
+//@access private
+
+const logoutBusiness = asyncHandler(async (req, res) => {
+  res
+    .status(200)
+    .clearCookie("token", null, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      expires: expiryDate,
+    })
+    .json({ message: "Business Logged out" });
+});
+
 //@desc Delete Business Profile
 //@route /users/me
 //@access Private
@@ -166,6 +204,7 @@ const deleteBusiness = asyncHandler(async (req, res) => {
 module.exports = {
   registerBusiness,
   loginBusiness,
+  logoutBusiness,
   getProfile,
   deleteBusiness,
 };

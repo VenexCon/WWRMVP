@@ -1,8 +1,10 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 //creates new listing, stores info in mongodb
 //API routes are kept internally within functions.
-const createListing = async (token, listingData) => {
+const createListing = async (listingData) => {
+  const token = Cookies.get("token");
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -13,7 +15,8 @@ const createListing = async (token, listingData) => {
 };
 
 //get listings only specific to the logged in business
-const getBusinessListings = async (token) => {
+const getBusinessListings = async () => {
+  const token = Cookies.get("token");
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -35,7 +38,8 @@ const getSpecificListing = async (listingId) => {
   return response.data;
 };
 
-const editSpecificListing = async (listingId, listingData, token) => {
+const editSpecificListing = async (listingId, listingData) => {
+  const token = Cookies.get("token");
   const url = `/api/listing/${listingId}`;
   const config = {
     headers: {
@@ -74,9 +78,9 @@ export const searchListings = async (searchParams) => {
   }
 };
 
-const deleteSpecificListing = async (listingId, businessId, token) => {
+const deleteSpecificListing = async (listingId, businessId) => {
   let id = listingId;
-
+  const token = Cookies.get("token");
   const url = `/api/listing/${id}?business=${businessId}`;
   const config = {
     headers: {

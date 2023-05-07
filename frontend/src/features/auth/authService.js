@@ -6,8 +6,6 @@ import Cookies from "js-cookie";
 const register = async (userData) => {
   const response = await axios.post("/api/users", userData);
 
-  Cookies.remove("token");
-
   localStorage.removeItem("user");
   localStorage.removeItem("business");
 

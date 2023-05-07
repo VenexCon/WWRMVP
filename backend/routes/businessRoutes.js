@@ -6,10 +6,12 @@ const {
   loginBusiness,
   getProfile,
   deleteBusiness,
+  logoutBusiness,
 } = require("../controllers/businessController");
 
 router.post("/", registerBusiness);
 router.post("/login", loginBusiness);
+router.post("/logout", logoutBusiness);
 router.get("/profile", businessProtect, getProfile);
 router.delete("/profile", businessProtect, deleteBusiness);
 
