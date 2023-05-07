@@ -86,7 +86,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res
       .status(201)
       .cookie("token", cToken, {
-        httpOnly: true,
+        httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         expires: expiryDate,
       })
@@ -95,7 +95,6 @@ const registerUser = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         terms: user.agreedTerms,
-        token: cToken, //This needs to be removed once all user routes have been updated. Auth middleware needs revamping
       });
   } else {
     res.sendStatus(400);
@@ -119,7 +118,7 @@ const loginUser = asyncHandler(async (req, res) => {
       res
         .status(200)
         .cookie("token", cToken, {
-          httpOnly: true,
+          httpOnly: false,
           secure: process.env.NODE_ENV === "production",
           expires: expiryDate,
         })
@@ -127,7 +126,6 @@ const loginUser = asyncHandler(async (req, res) => {
           _id: user._id,
           name: user.name,
           email: user.email,
-          token: cToken,
         });
     } else {
       res.status(401);
@@ -146,7 +144,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   res
     .status(200)
     .clearCookie("token", null, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       expires: expiryDate,
     })
@@ -232,12 +230,11 @@ const editUser = asyncHandler(async (req, res) => {
       _id: savedUser._id,
       name: savedUser.name,
       email: savedUser.email,
-      token: cToken,
     };
     res
       .status(200)
       .cookie("token", cToken, {
-        httpOnly: true,
+        httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         expires: expiryDate,
       })
