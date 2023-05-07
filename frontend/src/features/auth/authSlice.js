@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import authService from "./authService";
+import Cookies from "js-cookie";
 
 //allows us to use the redux Async life cycles with sync code.
 import { extractErrorMessage } from "../../utils";
@@ -60,7 +61,8 @@ export const editUser = createAsyncThunk(
   "auth/update",
   async (userData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
+      const token = Cookies.get("token");
+      console.log("Token:", token);
       return await authService.editUser(userData, token);
     } catch (error) {
       return thunkAPI.rejectWithValue(extractErrorMessage(error));
@@ -72,7 +74,7 @@ export const editUser = createAsyncThunk(
 //async as we want the thunkAPI.
 export const getUser = createAsyncThunk("auth/getUser", async (_, thunkAPI) => {
   try {
-    const token = await thunkAPI.getState().auth.user.token;
+    const token = Cookies.get("token");
     return await authService.getUser(token);
   } catch (error) {
     return thunkAPI.rejectWithValue(extractErrorMessage(error));

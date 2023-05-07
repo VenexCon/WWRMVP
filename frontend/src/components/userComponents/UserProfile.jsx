@@ -39,7 +39,6 @@ function UserProfile() {
       userId:user._id
     }
     const data = await dispatch(editUser(updatedData))
-    console.log(data)
      if(data.error) {
       toast.error('Profile not updated')
       return setEmail(user.email)

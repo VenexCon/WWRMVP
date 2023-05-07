@@ -66,13 +66,11 @@ const editUser = async (userData, token) => {
 const logout = async () => {
   const API_LOGOUT = "/api/users/logout";
   const response = await axios.post(API_LOGOUT);
-  console.log(response);
 
   if (response.data) {
     localStorage.removeItem("user");
+    return response;
   }
-
-  return response;
 };
 
 const authService = {
