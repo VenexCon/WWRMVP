@@ -20,7 +20,7 @@ const ListingsPage = () => {
 
 
   return (
-  <div className=" bg-slate-400 min-h-screen mt-0 mb-0 rounded">
+  <div className="  min-h-screen mt-0 mb-0 rounded">
     <div className="container mx-auto px-4 py-8 ">
       <div className="flex flex-col items-center gap-2  justify-between mb-4">
         <h1 className="text-2xl font-bold text-gray-900">Listings</h1>

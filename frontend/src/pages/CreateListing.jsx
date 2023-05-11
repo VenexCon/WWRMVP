@@ -60,7 +60,8 @@ const CreateListing = () => {
       listingData.address = data.results[0]?.formatted_address
       }
       const listing = await dispatch(createNewListing(listingData));
-      if(listing.payload) {
+      console.log(listing)
+      if(!listing.error) {
         toast.success('Listing Created')
         navigate('/listing')
         //navigate(`/listing/${listing.payload._id}`)

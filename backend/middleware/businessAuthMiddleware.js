@@ -16,7 +16,12 @@ const businessProtect = asyncHandler(async (req, res, next) => {
       //get user from token - remove password from returned object.
       req.business = await Business.findById(decoded.id).select("-password");
 
-      next();
+      if (req.business) {
+        next();
+      } else {
+        res.status(401);
+        throw new Error("Business not found, please re-log");
+      }
     } catch (error) {
       res.status(401);
       throw new Error("Not authorized to view this page");

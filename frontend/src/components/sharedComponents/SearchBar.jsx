@@ -54,8 +54,8 @@ const SearchBar = () => {
 
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="relative w-1/3 mr-2">
+    <div className="flex  flex-col sm:flex-row gap-1 align-middle  items-center justify-center">
+      <div className="relative w-full  sm:w-1/3  mr-2">
         <label htmlFor="query" className="sr-only">Query</label>
         <input
           type="text"
@@ -64,13 +64,13 @@ const SearchBar = () => {
           value={query}
           onChange={(e)=>{setQuery(e.target.value)}}
           placeholder="Search... boxes, stationary etc"
-          className="py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+          className="  py-2 pl-10 pr-4 rounded-lg border border-gray-800 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
         />
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <FaSearch className="text-gray-400" />
         </div>
       </div>
-      <div className="relative w-1/3 mr-2">
+      <div className="relative w-full sm:w-1/3 mr-2">
         <label htmlFor="postcode" className="sr-only">Postcode or Town:</label>
         <input
           type="text"
@@ -79,10 +79,10 @@ const SearchBar = () => {
           name="postcode"
           value={postcode}
           onChange={(e)=>{setPostcode(e.target.value)}}
-          className="py-2 px-4 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+          className="py-2 px-4 rounded-lg border border-gray-900 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
         />
       </div>
-      <div className="relative w-1/6">
+      <div className="relative w-full  sm:w-1/6">
         <label htmlFor="distance" className="sr-only">Distance</label>
         <select
           className="block w-full py-2 px-4 pr-8 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out sm:text-sm sm:leading-5"
@@ -101,7 +101,7 @@ const SearchBar = () => {
         </div>
       </div>
       <button  onClick={handleSearch}
-      className=" cursor-pointer bg-blue-500 ml-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
+      className=" w-full  sm:w-1/3 cursor-pointer bg-blue-500 ml-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
     </div>
   );
 };
