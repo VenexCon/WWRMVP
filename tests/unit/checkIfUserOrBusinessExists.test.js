@@ -1,6 +1,7 @@
 const {
   checkIfUserOrBusinessExists,
 } = require("../../backend/controllers/userController");
+
 const Business = require("../../backend/models/businessModel");
 const User = require("../../backend/models/userModel");
 const mongoose = require("mongoose");

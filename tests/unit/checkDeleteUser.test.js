@@ -49,4 +49,25 @@ describe("check if user is deleted from DB", () => {
     const deletedUser = await User.findById(mockUser._id);
     expect(deletedUser).toBeNull();
   });
+
+  it("should return error with invalid id", async () => {
+    //mock mutated request
+    const req = {
+      user: { _id: "Invalid ID" },
+    };
+
+    //mock response
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+
+    await deleteMe(req, res);
+
+    //what is deleteMe error returning?
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Unable to delete user",
+    });
+  });
 });
