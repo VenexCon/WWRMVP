@@ -42,7 +42,8 @@ export default function Navbar() {
 
 
   return (
-    <Disclosure as="nav" className="bg-cyan-600">
+    <header className="sticky top-0 z-10 bg-cyan-600">
+    <Disclosure as="nav" className="bg-cyan-600 sticky ">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -63,7 +64,7 @@ export default function Navbar() {
                   <WWWLogo className=" h-10 w-auto hidden lg:block rounded" style={{ fill: 'white' }}/>
                   <WWWLogo className='h-12 auto lg:hidden sm:block text-white text-4xl' style={{ fill: 'white' }}  />
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                <div className="hidden h-full sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <Link
@@ -89,6 +90,7 @@ export default function Navbar() {
                   </Link>
                 </div>
                 )}
+             
                 {/* If there is a user and no business then call logout User */}
                 {(user && !business) && (
                   <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
@@ -107,14 +109,7 @@ export default function Navbar() {
                   </button>
                 </div>
                 )}
-                 {(!user && !business) && (
-                  <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  <Link to='/register' className='flex h-full items-center space-x-2' >
-                    <FaArrowCircleRight />
-                    <p>Register</p>
-                  </Link>
-                </div>
-                )}
+                 
               </div>
             </div>
           </div>
@@ -158,10 +153,19 @@ export default function Navbar() {
                   </button>
                 </div>
                 )}
+                  {(!user && !business) && (
+                  <div className="space-x-4 hidden align items-center sm:ml-6 sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  <Link to='/register' className='flex h-full items-center space-x-2' >
+                    <FaArrowCircleRight />
+                    <p>Register</p>
+                  </Link>
+                </div>
+                )}
             </div>
           </Disclosure.Panel>
         </>
       )}
     </Disclosure>
+    </header>
   )
 }

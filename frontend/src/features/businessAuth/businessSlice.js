@@ -84,10 +84,12 @@ export const businessSlice = createSlice({
       .addCase(loginBusiness.rejected, (state) => {
         state.isPending = false;
       })
-      .addCase(logoutBusiness, (state, action) => {
-        console.log(state, action);
+      .addCase(logoutBusiness.fulfilled, (state, action) => {
         state.isPending = action.payload.isPending;
         state.business = action.payload.business;
+      })
+      .addCase(logoutBusiness.pending, (state) => {
+        state.isPending = true;
       });
   },
 });

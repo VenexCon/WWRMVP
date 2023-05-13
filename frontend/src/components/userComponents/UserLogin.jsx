@@ -66,6 +66,9 @@ function UserLogin() {
                     <FaLockOpen />
                     </button>
                     </Link>
+                    <Link to={'/register'} className=' flex mt-6 items-center justify-center gap-x-2 focus:ring-4 focus:outline-none focus:ring-primary-300 font-small rounded-lg text-sm px-5 py-2.5 text-center text-white'>
+                     Register for an Account
+                    </Link>
               </form>
   )
 }
