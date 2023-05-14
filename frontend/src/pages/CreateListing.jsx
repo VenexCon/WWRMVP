@@ -89,6 +89,7 @@ const CreateListing = () => {
             name="title"
             value={formData.title}
             onChange={handleChange}
+            maxLength={50}
           />
         </div>
         <div className="mb-4">
@@ -102,12 +103,14 @@ const CreateListing = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
+            maxLength={250}
           ></textarea>
         </div>
         {/* Select box for showing or hiding input.  */}
          <div className="flex items-start mt-4 mb-4">
             <div className="flex items-center h-5">
-              <input id="useBusPhone" aria-describedby="useSamePhoneNumberAsBusiness" type="checkbox" onChange={onPhoneSelect} defaultChecked ={formData.useBusPhone} className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
+              <input id="useBusPhone" aria-describedby="useSamePhoneNumberAsBusiness" type="checkbox" onChange={onPhoneSelect} defaultChecked ={formData.useBusPhone} 
+              className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" />
             </div>
             <div className="ml-3 text-sm">
               <label htmlFor="useBusPhone" className="font-light text-gray-500 dark:text-gray-300">
