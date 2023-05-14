@@ -54,7 +54,7 @@ function Home() {
             reach out to business owners to see if they are interested in accepting your donations with Who Wants Rubbish
           </p>
         </div>
-        <img src={ListingPageImg} alt="listing" className="w-5/6 lg:w-1/3 rounded-md mb-16 lg:mb-0 hover:scale-110 transition duration-300" />
+        <img src={ListingPageImg} alt="listing" className="w-7/8 lg:w-1/3 rounded-md mb-16 lg:mb-0 hover:scale-110 transition duration-300" />
       </section>
       <div className="flex flex-row justify-center items-center mb-8">
         <a href="#" className="mx-2">
