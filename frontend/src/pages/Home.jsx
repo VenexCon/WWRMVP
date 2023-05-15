@@ -5,7 +5,7 @@ import ListingImage from '../assets/png/ListingImage.png';
 import ListingPageImg from '../assets/png/ListingPageImg.png'
 import ProfilePagePic from '../assets/png/ProfilePagePic.png'
 import PricingCard from '../components/sharedComponents/PricingCard';
-import { FaUser, FaArrowCircleRight, FaLockOpen } from 'react-icons/fa'
+import { FaArrowCircleRight, FaTwitter, FaInstagram} from 'react-icons/fa'
 
 function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -87,12 +87,16 @@ function Home() {
         </div>
       </section>
       
-      <div className="flex flex-row justify-center items-center mb-8">
-        Images here
+      {/* Social Media Icons */}
+      <div className="flex flex-row justify-center items-center mb-8 w-full h-10  gap-x-10">
+        <Link  className=" flex justify-center align-middle items-center h-full ">
+          <FaTwitter className='text-blue-400 h-full w-full' /> 
+        </Link>
+        <Link className=" flex justify-center align-middle items-center h-full ">
+          <FaInstagram className='text-purple-400 h-full w-full' /> 
+        </Link>
+       
       </div>
-      <Link to="/register" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Sign Up Now
-      </Link>
     </div>
     </div>
   );
