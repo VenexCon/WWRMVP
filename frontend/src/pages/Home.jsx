@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom'
 import { ReactComponent as WWWLogo } from '../assets/logos/WWWSVGLogo.svg';
 import ListingImage from '../assets/png/ListingImage.png';
 import ListingPageImg from '../assets/png/ListingPageImg.png'
+import ProfilePagePic from '../assets/png/ProfilePagePic.png'
+import PricingCard from '../components/sharedComponents/PricingCard';
 import { FaUser, FaArrowCircleRight, FaLockOpen } from 'react-icons/fa'
 
 function Home() {
@@ -54,18 +56,39 @@ function Home() {
             reach out to business owners to see if they are interested in accepting your donations with Who Wants Rubbish
           </p>
         </div>
-        <img src={ListingPageImg} alt="listing" className="w-7/8 lg:w-1/3 rounded-md mb-16 lg:mb-0 hover:scale-110 transition duration-300" />
+        <img src={ListingPageImg} alt="listing" className="w-full lg:w-1/3 rounded-md mb-16 lg:mb-0 hover:scale-110 transition duration-300" />
       </section>
+
+       <section className='flex flex-col lg:flex-row text-center justify-center align-middle items-center'>
+        <div className="container mb-10">
+          <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center'>
+            Donate With Confidence
+          </h2>
+           <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
+            Don't fret about if you can actually get rid of your items! Search through the listings and find
+            matching listings! Arrange a meeting and donate!
+          </p>
+        </div>
+        <img src={ProfilePagePic} alt="profile Page" className="w-4/5 lg:w-1/3 rounded-md mb-16 lg:mb-0 hover:scale-110 transition duration-300" />
+      </section>
+
+       <section className='flex flex-col lg:flex-row text-center justify-center align-middle items-center'>
+        <div className="container mb-10">
+          <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center'>
+            Pricing and Plans
+          </h2>
+           <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
+            WhoWantsRubbish understands that this WebApp relies on the generosity of those donating, but unfortunately
+            this WebApp is not free to run. 
+          </p>
+        </div>
+        <div className="pricing flex flex-col justify-center items-center align-middle">
+        <PricingCard />
+        </div>
+      </section>
+      
       <div className="flex flex-row justify-center items-center mb-8">
-        <a href="#" className="mx-2">
-          <i className="fab fa-twitter text-2xl text-gray-800 dark:text-white"></i>
-        </a>
-        <a href="#" className="mx-2">
-          <i className="fab fa-instagram text-2xl text-gray-800 dark:text-white"></i>
-        </a>
-        <a href="#" className="mx-2">
-          <i className="fab fa-facebook text-2xl text-gray-800 dark:text-white"></i>
-        </a>
+        Images here
       </div>
       <Link to="/register" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         Sign Up Now
