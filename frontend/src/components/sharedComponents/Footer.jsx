@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaFacebook, FaGlobe, FaInstagram, FaMedal, FaPhone, FaTwitter } from 'react-icons/fa'
+import { FaEnvelope, FaFacebook, FaGlobe, FaInstagram, FaMedal, FaPhone, FaTwitter } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 function Footer() {
@@ -13,15 +13,12 @@ function Footer() {
       <span>Get connected with us on social networks:</span>
     </div>
     {/* <!-- Social network icons container --> */}
-    <div className="flex justify-center">
-      <Link href="#!" className="mr-6 text-neutral-600 dark:text-neutral-200">
-        <FaTwitter />
+    <div className="flex justify-center h-10">
+      <Link to="https://twitter.com/WhoWantsRubbish" target='_blank' className="mr-6  text-neutral-600 dark:text-neutral-200">
+        <FaTwitter className='h-full  w-10' />
       </Link>
-      <Link href="#!" className="mr-6 text-neutral-600 dark:text-neutral-200">
-        <FaFacebook />
-      </Link>
-      <Link href="#!" className="mr-6 text-neutral-600 dark:text-neutral-200">
-       <FaInstagram/>
+      <Link to="https://www.instagram.com/whowantsrubbish/" target='_blank' className="mr-6 text-neutral-600 dark:text-neutral-200">
+       <FaInstagram className='h-full w-10'/>
       </Link>
     
     </div>
@@ -30,100 +27,96 @@ function Footer() {
 {/*   <!-- Main container div: holds the entire content of the footer, including four sections (Tailwind Elements, Products, Useful links, and Contact), with responsive styling and appropriate padding/margins. -->
  */}  <div className="mx-6 py-10 text-center md:text-left">
     <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-     {/*  <!-- Tailwind Elements section --> */}
+        {/* Explanatory section */}
       <div className="">
         <h6
           className="mb-4 flex items-center justify-center font-semibold uppercase md:justify-start">
-          Tailwind ELEMENTS
+          Who Wants Rubbish
         </h6>
         <p>
-          Here you can use rows and columns to organize your footer
-          content. Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit.
+            Thanks for checking us out! Be sure to follow us on our socials, and check out some of the links!
         </p>
       </div>
      {/*  <!-- Products section --> */}
-      <div className="">
+     {/*  <div className="">
         <h6
           className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
           Products
         </h6>
         <p className="mb-4">
-          <Link href="#!" className="text-neutral-600 dark:text-neutral-200">
+          <Link to="#!" className="text-neutral-600 dark:text-neutral-200">
           </Link>
         </p>
         <p className="mb-4">
-          <Link href="#!" className="text-neutral-600 dark:text-neutral-200">
+          <Link to="#!" className="text-neutral-600 dark:text-neutral-200">
             Link 4 
         </Link>
         </p>
         <p className="mb-4">
-          <Link href="#!" className="text-neutral-600 dark:text-neutral-200">
+          <Link to="#!" className="text-neutral-600 dark:text-neutral-200">
             Vue
           </Link>
         </p>
         <p>
-          <Link href="#!" className="text-neutral-600 dark:text-neutral-200">
+          <Link to="#!" className="text-neutral-600 dark:text-neutral-200">
             angular
             </Link>
         </p>
-      </div>
-      {/* <!-- Useful links section --> */}
-      <div className="">
+      </div> */}
+      {/* <!-- Useful links section Not used */}
+      {/* <div className="">
         <h6
           className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
           Useful links
         </h6>
         <p className="mb-4">
-          <Link href="#!" className="text-neutral-600 dark:text-neutral-200"> 
+          <Link to="#!" className="text-neutral-600 dark:text-neutral-200"> 
           Pricing</Link>
         </p>
         <p className="mb-4">
-          <Link href="#!" className="text-neutral-600 dark:text-neutral-200">
+          <Link to="#!" className="text-neutral-600 dark:text-neutral-200">
             Contacts
             </Link>
         </p>
         <p className="mb-4">
-          <Link href="#!" className="text-neutral-600 dark:text-neutral-2"> 
+          <Link to="#!" className="text-neutral-600 dark:text-neutral-2"> 
           Socials</Link>
         </p>
         <p>
-          <Link href="#!" className="text-neutral-600 dark:text-neutral-200">Soehging </Link>
+          <Link to="#!" className="text-neutral-600 dark:text-neutral-200">Soehging </Link>
         </p>
-      </div>
+      </div> */}
     {/*   <!-- Contact section --> */}
       <div>
         <h6
           className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
           Contact
         </h6>
-        <p className="mb-4 flex items-center justify-center md:justify-start">
+       {/*  <p className="mb-4 flex items-center justify-center md:justify-start">
           <FaGlobe />
           New York, NY 10012, US
-        </p>
-        <p className="mb-4 flex items-center justify-center md:justify-start">
-          <FaMedal/>
-          info@example.com
-        </p>
-        <p className="mb-4 flex items-center justify-center md:justify-start">
+        </p> */}
+        <div className="mb-4 gap-2 flex items-center justify-center md:justify-start">
+            <FaEnvelope />
+            <a href="mailto:admin@whowantsrubbish.com">
+            admin@whowantsrubbish.com
+            </a>
+        </div>
+        <a href='tel:+447718081340' className="mb-4 flex gap-2 items-center justify-center md:justify-start">
           <FaPhone />
-          + 01 234 567 88
-        </p>
-        <p className="flex items-center justify-center md:justify-start">
-          <FaPhone />
-          + 01 234 567 89
-        </p>
+          +44 7718081340
+        </a>
       </div>
     </div>
   </div>
 
   {/* <!--Copyright section--> */}
   <div className="bg-neutral-200 p-6 text-center dark:bg-cyan-600">
-    <span>© 2023 Copyright:</span>
-    <Link
+    <span>© 2023 Copyright: WhoWantsRubbish Ltd</span>
+    {/* <Link
       className="font-semibold "
-      href="https://tailwind-elements.com/"
-      > VenexCon</Link>
+      to="https://tailwind-elements.com/"
+      > VenexCon</Link> */}
   </div>
 </footer>
   )

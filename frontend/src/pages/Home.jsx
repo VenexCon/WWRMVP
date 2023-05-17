@@ -17,7 +17,7 @@ function Home() {
   return (
     <div className="w-full justify-center flex bg-gray-100 dark:bg-gray-900  ">
     <div
-      className={`flex flex-col items-center w-5/6 justify-center h-full bg-gray-100 dark:bg-gray-900 ${isLoaded ? 'opacity-100 transition-opacity duration-500 ease-in-out' : 'opacity-0'}`}
+      className={`flex mb-16 flex-col items-center w-5/6 justify-center h-full bg-gray-100 dark:bg-gray-900 ${isLoaded ? 'opacity-100 transition-opacity duration-500 ease-in-out' : 'opacity-0'}`}
     >
       <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-white mt-5 mb-8">
         Who Wants Rubbish
@@ -85,17 +85,6 @@ function Home() {
         <PricingCard />
         </div>
       </section>
-      
-      {/* Social Media Icons */}
-      <div className="flex flex-row justify-center items-center mb-8 mt-8 w-full h-10  gap-x-10">
-        <Link  className=" flex justify-center align-middle items-center h-full ">
-          <FaTwitter className='text-blue-400 h-full w-full' /> 
-        </Link>
-        <Link className=" flex justify-center align-middle items-center h-full ">
-          <FaInstagram className='text-purple-400 h-full w-full' /> 
-        </Link>
-       
-      </div>
     </div>
     </div>
   );
