@@ -5,7 +5,7 @@ import ListingImage from '../assets/png/ListingImage.png';
 import ListingPageImg from '../assets/png/ListingPageImg.png'
 import ProfilePagePic from '../assets/png/ProfilePagePic.png'
 import PricingCard from '../components/sharedComponents/PricingCard';
-import { FaArrowCircleRight, FaTwitter, FaInstagram} from 'react-icons/fa'
+import { FaArrowCircleRight, FaTwitter, FaInstagram, FaHandHoldingHeart, FaDog, FaBuilding} from 'react-icons/fa'
 
 function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -35,7 +35,7 @@ function Home() {
           </button>
           </Link>
       </div>
-      <div className="flex flex-col lg:flex-row justify-center items-center mb-16">
+      <div className="flex flex-col justify-center items-center mb-16">
         <div className="flex justify-center flex-col lg:w-1/2 items-center mb-10">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center">
             No more taking your stuff to the tip!
@@ -45,10 +45,10 @@ function Home() {
             users to browse for places to donate!
           </p>
         </div>
-        <img src={ListingImage} alt="listing" className="w-5/6 lg:w-1/3 rounded-md lg:mb-0 hover:scale-110 transition duration-300" />
+        <img src={ListingImage} alt="listing" className="w-5/6 lg:w-3/6 rounded-md lg:mb-0 transition duration-300" />
       </div>
 
-      <section className='flex flex-col lg:flex-row text-center justify-center align-middle items-center'>
+      <section className='flex flex-col text-center mt-8 mb-24 justify-center align-middle items-center'>
         <div className="container mb-10">
           <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center'>Give Back To Your Community</h2>
            <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
@@ -56,23 +56,49 @@ function Home() {
             reach out to business owners to see if they are interested in accepting your donations with Who Wants Rubbish
           </p>
         </div>
-        <img src={ListingPageImg} alt="listing" className="w-full lg:w-1/3 rounded-md mb-16 lg:mb-0 hover:scale-110 transition duration-300" />
+        <img src={ListingPageImg} alt="listing" className="w-full lg:w-2/3 rounded-md mb-16 lg:mb-24 transition duration-300" />
       </section>
 
-       <section className='flex flex-col lg:flex-row text-center justify-center align-middle items-center'>
+       <section className='flex flex-col  text-center mb-24 justify-center align-middle items-center'>
         <div className="container mb-10">
           <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center'>
             Donate With Confidence
           </h2>
            <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
-            Don't fret about if you can actually get rid of your items! Search through the listings and find
-            matching listings! Arrange a meeting and donate!
+            Don't fret about if you can actually get rid of your items! Search through the listings and find a
+            match then simple arrange a time and date and go donate!
           </p>
         </div>
-        <img src={ProfilePagePic} alt="profile Page" className="w-4/5 lg:w-1/3 rounded-md mb-16 lg:mb-0 hover:scale-110 transition duration-300" />
+        <img src={ProfilePagePic} alt="profile Page" className="w-4/5 lg:w-1/3 rounded-md mb-16 lg:mb-0  transition duration-300" />
       </section>
 
-       <section className='flex flex-col lg:flex-row text-center justify-center align-middle items-center'>
+       <section className='flex flex-col lg:flex-row gap-8 text-center mb-24 justify-between align-middle items-center'>
+        <div className="container w-1/2 h-full ">
+          <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center'>
+            Who Should Join?
+          </h2>
+           <p className="text-lg text-center text-gray-600 dark:text-white mb-4">
+            All businesses should join! Any businesses that can offer items for free, or can accept donations! 
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-col gap-4 align-middle h-full sm: w-2/3 md:w-1/2 justify-between">
+          <div className=" flex flex-row text-white align-middle  min-h-8 gap-4 items-center">
+            <FaHandHoldingHeart className='text-red-400' />
+            <p>Charity Shops in Need of Donations</p>
+          </div>
+          <div className=" flex flex-row text-white align-middle  min-h-8  gap-4 items-center">
+            <FaDog className=' text-green-400' />
+            <p>Shelters in need of supplies!</p>
+          </div>
+          <div className=" flex flex-row text-white align-middle  min-h-8  gap-4 items-center">
+            <FaBuilding className='text-cyan-600' />
+            <p>Social Enterprises looking to upcycle donated items</p>
+          </div>
+          
+        </div>
+      </section>
+
+       <section className='flex flex-col text-center justify-center align-middle items-center'>
         <div className="container mb-10">
           <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center'>
             Pricing and Plans
