@@ -16,6 +16,7 @@ import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
 import PasswordReset from "./pages/PasswordReset";
 import PasswordUpdate from "./pages/PasswordUpdate";
+import Footer from "./components/sharedComponents/Footer";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
               }
             />
           </Routes>
+          <Footer />
         </div>
       </Router>
       <ToastContainer />

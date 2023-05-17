@@ -78,8 +78,7 @@ function Home() {
             Pricing and Plans
           </h2>
            <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
-            WhoWantsRubbish understands that this WebApp relies on the generosity of those donating, but unfortunately
-            this WebApp is not free to run. 
+            Sign up with your business, for unlimited listings for only £7.50 per month.
           </p>
         </div>
         <div className="pricing flex flex-col justify-center items-center align-middle">
@@ -88,7 +87,7 @@ function Home() {
       </section>
       
       {/* Social Media Icons */}
-      <div className="flex flex-row justify-center items-center mb-8 w-full h-10  gap-x-10">
+      <div className="flex flex-row justify-center items-center mb-8 mt-8 w-full h-10  gap-x-10">
         <Link  className=" flex justify-center align-middle items-center h-full ">
           <FaTwitter className='text-blue-400 h-full w-full' /> 
         </Link>
