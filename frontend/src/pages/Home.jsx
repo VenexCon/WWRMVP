@@ -35,7 +35,7 @@ function Home() {
           </button>
           </Link>
       </div>
-      <div className="flex flex-col justify-center items-center mb-16">
+      <div className="flex flex-col justify-center items-center mb-24">
         <div className="flex justify-center flex-col lg:w-1/2 items-center mb-10">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center">
             No more taking your stuff to the tip!
@@ -94,11 +94,10 @@ function Home() {
             <FaBuilding className='text-cyan-600' />
             <p>Social Enterprises looking to upcycle donated items</p>
           </div>
-          
         </div>
       </section>
 
-       <section className='flex flex-col text-center justify-center align-middle items-center'>
+       <section className='flex flex-col text-center mb-24 justify-center align-middle items-center'>
         <div className="container mb-10">
           <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center'>
             Pricing and Plans
