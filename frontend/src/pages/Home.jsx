@@ -14,6 +14,26 @@ function Home() {
     setIsLoaded(true);
   }, []);
 
+  //pricing card data
+
+  const prices = [
+    {
+      title:'Basic',
+      description: 'A plan for small enterprises and businesses that do not require the ability to create many listings',
+      price: '£7.50'
+    },
+    {
+      title:'Pro',
+      description: 'A plan for small enterprises and businesses that do not require the ability to create many listings',
+      price: '£7.50'
+    },
+    {
+      title:'Enterprise',
+      description: 'A plan for small enterprises and businesses that do not require the ability to create many listings',
+      price: '£7.50'
+    },
+  ]
+
   return (
     <div className="w-full justify-center flex bg-gray-100 dark:bg-gray-900  ">
     <div
