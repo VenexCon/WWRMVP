@@ -102,10 +102,10 @@ function Footer() {
             admin@whowantsrubbish.com
             </a>
         </div>
-        <a href='tel:+447718081340' className="mb-4 flex gap-2 items-center justify-center md:justify-start">
+       {/*  <a href='tel:+447718081340' className="mb-4 flex gap-2 items-center justify-center md:justify-start">
           <FaPhone />
           +44 7718081340
-        </a>
+        </a> */}
       </div>
     </div>
   </div>

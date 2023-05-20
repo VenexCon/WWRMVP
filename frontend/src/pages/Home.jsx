@@ -19,18 +19,18 @@ function Home() {
   const prices = [
     {
       title:'Basic',
-      description: 'A plan for small enterprises and businesses that do not require the ability to create many listings',
+      description: 'A perfect choice for small enterprises and businesses operating from domestic premises or a single location. This plan offers essential features to help you establish and grow your business. Unlock the potential of up to 10 listings with ease',
       price: '£7.50'
     },
     {
       title:'Pro',
-      description: 'A plan for small enterprises and businesses that do not require the ability to create many listings',
-      price: '£7.50'
+      description: "Ideal for medium-sized enterprises and businesses with multiple locations, the Pro plan empowers you to expand your presence and reach more customers. Enjoy the benefits of advanced features and take advantage of creating up to 10 listings effortlessly.",
+      price: '£9.99'
     },
     {
       title:'Enterprise',
-      description: 'A plan for small enterprises and businesses that do not require the ability to create many listings',
-      price: '£7.50'
+      description: 'The ultimate solution for large enterprises, store chains, franchise locations, or businesses operating across numerous locations. Our Enterprise plan grants you unlimited opportunities to showcase your offerings and maximize your reach. Create an unlimited number of listings and unlock the full potential of your business.',
+      price: '£50.00'
     },
   ]
 
@@ -123,11 +123,13 @@ function Home() {
             Pricing and Plans
           </h2>
            <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
-            Sign up with your business, for unlimited listings for only £7.50 per month.
+            Sign up with your business, select the most appropriate plan and begin creating listings from only £7.50 per month.
           </p>
         </div>
-        <div className="pricing flex flex-col justify-center items-center align-middle">
-        <PricingCard />
+        <div className="pricing flex flex-col md:flex-row align-bottom  gap-8 justify-end">
+        {prices.map((item) => (
+          <PricingCard title={item.title} description={item.description} price={item.price} />
+        ))}
         </div>
       </section>
     </div>
