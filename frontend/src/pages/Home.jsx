@@ -15,24 +15,35 @@ function Home() {
   }, []);
 
   //pricing card data
-
-  const prices = [
-    {
-      title:'Basic',
-      description: 'A perfect choice for small enterprises and businesses operating from domestic premises or a single location. This plan offers essential features to help you establish and grow your business. Unlock the potential of up to 10 listings with ease',
-      price: '£7.50'
-    },
-    {
-      title:'Pro',
-      description: "Ideal for medium-sized enterprises and businesses with multiple locations, the Pro plan empowers you to expand your presence and reach more customers. Enjoy the benefits of advanced features and take advantage of creating up to 10 listings effortlessly.",
-      price: '£9.99'
-    },
-    {
-      title:'Enterprise',
-      description: 'The ultimate solution for large enterprises, store chains, franchise locations, or businesses operating across numerous locations. Our Enterprise plan grants you unlimited opportunities to showcase your offerings and maximize your reach. Create an unlimited number of listings and unlock the full potential of your business.',
-      price: '£50.00'
-    },
-  ]
+const prices = [
+  {
+    title: 'Basic',
+    targetAudience: 'Ideal for single store locations and small enterprises',
+    price: '£7.50',
+    description: [
+      'Create one listing per month',
+    ],
+  },
+  {
+    title: 'Pro',
+    targetAudience: 'Perfect for businesses with multiple locations and medium-sized enterprises',
+    price: '£9.99',
+    description: [
+      'Create up to 10 listings per month',
+      'Secondary address and contact numbers allotted',
+    ],
+  },
+  {
+    title: 'Enterprise',
+    targetAudience: 'Tailored for large enterprises with extensive store chains or franchise locations',
+    price: '£50',
+    description: ['Create an unlimited amount of listings',
+    'Assign created listings to any store location',
+    'Secondary address and contact numbers allotted',
+  'Priority support'
+    ],
+  },
+];
 
   return (
     <div className="w-full justify-center flex bg-gray-100 dark:bg-gray-900  ">
@@ -127,8 +138,8 @@ function Home() {
           </p>
         </div>
         <div className="pricing flex flex-col md:flex-row align-bottom  gap-8 justify-end">
-        {prices.map((item) => (
-          <PricingCard title={item.title} description={item.description} price={item.price} />
+        {prices.map((item, index) => (
+          <PricingCard key = {index} title={item.title} description={item.description}  targetAudience = {item.targetAudience} price={item.price} />
         ))}
         </div>
       </section>
