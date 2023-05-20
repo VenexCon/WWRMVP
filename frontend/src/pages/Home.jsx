@@ -26,12 +26,12 @@ function Home() {
         Browse listings for businesses who need your old stuff! 
       </p>
       <div className="flex flex-row  mb-10 ">
-         <Link to={'/register'} className='w-full flex items-center justify-center gap-x-2 text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'>
+         <Link to={'/register'} className='w-full flex items-center justify-center gap-x-2 text-white bg-blue-600 hover:text-blue-600 hover:bg-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'>
           <button className="w-full flex items-center align-middle justify-center gap-x-2">
-            <p>
+            <p className='font-bold text-lg'>
               Join For Free
             </p>
-          <FaArrowCircleRight />
+          <FaArrowCircleRight className=' h-full w-1/5' />
           </button>
           </Link>
       </div>
