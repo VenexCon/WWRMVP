@@ -19,7 +19,7 @@ const prices = [
   {
     title: 'Basic',
     targetAudience: 'Ideal for single store locations and small enterprises',
-    price: '£7.50',
+    price: '£0.00',
     description: [
       'Create one listing per month',
     ],

@@ -19,7 +19,7 @@ function PricingCard({ title, targetAudience, price, description }) {
       </div>
       <div className="px-6 pt-4 mt-10 pb-2">
         <span className="inline-block bg-white rounded-full px-3 py-1 text-lg mb-4 font-semibold text-gray-700 mr-2 mb-2">
-          {price}
+          {price}/month
         </span>
       </div>
       <Link
