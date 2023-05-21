@@ -83,7 +83,7 @@ const getMyListings = asyncHandler(async (req, res) => {
 //@access Public
 const getAllListings = asyncHandler(async (req, res) => {
   try {
-    const listings = await Listing.find({}).limit(10).exec();
+    const listings = await Listing.find({}).limit(20).exec();
     res.status(200).json(listings);
   } catch (error) {
     res.status(404);
