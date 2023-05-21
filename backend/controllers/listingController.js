@@ -81,6 +81,8 @@ const getMyListings = asyncHandler(async (req, res) => {
 //@desc get 10 listings
 //route @ GET listings
 //@access Public
+
+// Accept search params for all listings.
 const getAllListings = asyncHandler(async (req, res) => {
   try {
     const listings = await Listing.find({}).limit(20).exec();
