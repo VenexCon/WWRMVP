@@ -27,10 +27,7 @@ function App() {
           <Routes>
             <Route path="/*" element={<Home />} />
             <Route path="/register" element={<Register />} />{" "}
-            <Route
-              path="/listing/search/:latitude?/:longitude?/:distance?/:query?"
-              element={<ListingsPage />}
-            />
+            <Route path="/listing/search" element={<ListingsPage />} />
             {/* Instead of having /users/register & /business/register */}
             <Route path="/login" element={<Login />} />
             <Route path="/listing/new" element={<CreateListing />} />
