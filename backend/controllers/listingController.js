@@ -85,7 +85,10 @@ const getMyListings = asyncHandler(async (req, res) => {
 // Accept search params for all listings.
 const getAllListings = asyncHandler(async (req, res) => {
   try {
-    const listings = await Listing.find({}).limit(20).exec();
+    const listings = await Listing.find({})
+      .sort({ createdAt: -1 }) // Sort in descending order based on createdAt field
+      .limit(20)
+      .exec();
     res.status(200).json(listings);
   } catch (error) {
     res.status(404);
