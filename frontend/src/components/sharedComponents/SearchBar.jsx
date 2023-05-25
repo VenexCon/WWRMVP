@@ -14,13 +14,14 @@ const SearchBar = () => {
   const [postcode, setPostcode] = useState("");
   const [distance, setDistance] = useState(10); // default distance is 10 km
   const [query, setQuery] = useState("");
+ 
 
   const handleSearch = async () => {
     if(!user && !business) {return toast.error('Create an account to filter listings')}
     let searchParams = {
       postcode,
       distance,
-      query
+      query,
     }
     if(!query && !postcode) {
       return await dispatch(getAllListings())
