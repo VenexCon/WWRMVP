@@ -160,20 +160,22 @@ const editListing = asyncHandler(async (req, res) => {
 // @access  Public
 
 const searchListings = asyncHandler(async (req, res) => {
-  const { latitude, longitude, distance, query } = req.query;
+  const { latitude, longitude, distance, query, page, limit } = req.query;
   const maxDistanceMeters = distance * 1000; // distance in km
 
   let listings;
 
   if (!latitude && !longitude && query) {
     // search listings by keyword
-    listings = await searchListingsByKeyword(query);
+    listings = await searchListingsByKeyword(query, page, limit);
   } else if (latitude && longitude && !query) {
     // search listings by location
     listings = await searchListingsByLocation(
       latitude,
       longitude,
-      maxDistanceMeters
+      maxDistanceMeters,
+      page,
+      limit
     );
   } else if (latitude && longitude && query) {
     // search listings by location and keyword
@@ -181,7 +183,9 @@ const searchListings = asyncHandler(async (req, res) => {
       latitude,
       longitude,
       maxDistanceMeters,
-      query
+      query,
+      page,
+      limit
     );
   } else {
     // handle invalid or missing parameters
@@ -191,11 +195,14 @@ const searchListings = asyncHandler(async (req, res) => {
   res.status(200).json(listings);
 });
 
-const searchListingsByKeyword = asyncHandler(async (query) => {
+const searchListingsByKeyword = asyncHandler(async (query, page, limit) => {
   try {
+    const skip = (page - 1) * limit;
     const listings = await Listing.find({
       listingTitle: { $regex: new RegExp(query, "i") },
-    });
+    })
+      .skip(skip)
+      .limit(limit);
     return listings;
   } catch (error) {
     console.log(error);
@@ -204,8 +211,9 @@ const searchListingsByKeyword = asyncHandler(async (query) => {
 });
 
 const searchListingsByLocation = asyncHandler(
-  async (latitude, longitude, maxDistanceMeters) => {
+  async (latitude, longitude, maxDistanceMeters, page, limit) => {
     try {
+      const skip = (page - 1) * limit;
       const listings = await Listing.aggregate([
         {
           $geoNear: {
@@ -218,7 +226,9 @@ const searchListingsByLocation = asyncHandler(
             spherical: true,
           },
         },
-      ]);
+      ])
+        .skip(skip)
+        .limit(limit);
       return listings;
     } catch (error) {
       console.log(error);
@@ -228,8 +238,9 @@ const searchListingsByLocation = asyncHandler(
 );
 
 const searchListingsByLocationAndKeyword = asyncHandler(
-  async (latitude, longitude, maxDistanceMeters, query) => {
+  async (latitude, longitude, maxDistanceMeters, query, page, limit) => {
     try {
+      const skip = (page - 1) * limit;
       const listings = await Listing.aggregate([
         {
           $geoNear: {
@@ -247,7 +258,9 @@ const searchListingsByLocationAndKeyword = asyncHandler(
             listingTitle: { $regex: new RegExp(query, "i") },
           },
         },
-      ]);
+      ])
+        .skip(skip)
+        .limit(limit);
       return listings;
     } catch (error) {
       console.log(error);
