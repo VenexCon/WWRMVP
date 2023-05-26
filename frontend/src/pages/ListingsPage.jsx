@@ -10,22 +10,36 @@ const ListingsPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+ const query = new URLSearchParams(location.search).get('query');
+const latitude = new URLSearchParams(location.search).get('latitude');
+const longitude = new URLSearchParams(location.search).get('longitude');
+const distance = Number(new URLSearchParams(location.search).get('distance')) || 10;
+const page = Number(new URLSearchParams(location.search).get('page')) || 1;
+const limit = 20;
 
   const listings = allListings? allListings : []
 
-  useEffect(()=> {
-    
-    const fetchAllListings = async () => {
-      return await dispatch(getAllListings())
+useEffect(() => {
+  const fetchAllListings = async () => {
+    if (query || latitude || longitude) {
+      const searchParams = {
+        query,
+        latitude,
+        longitude,
+        distance,
+        page,
+        limit,
+      };
+      await dispatch(searchListings(searchParams));
+    } else {
+      await dispatch(getAllListings());
     }
-    fetchAllListings()
-  }, [])
+  };
 
-  const query = new URLSearchParams(location.search).get('query');
-  const page = Number(new URLSearchParams(location.search).get('page')) || 1;
-  const limit = 20
+  fetchAllListings();
+}, [query, latitude, longitude, page, limit, dispatch, distance]);
 
-  console.log(query)
+
 
   const handlePreviousPage = () => {
     const searchParams = new URLSearchParams(location.search);
