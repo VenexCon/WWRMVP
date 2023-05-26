@@ -50,14 +50,17 @@ const editSpecificListing = async (listingId, listingData) => {
   return response.data;
 };
 
+//searching listings takes into account the search params.
+// A use effect on the listingsPage should dispatch this if it detects any params.
 export const searchListings = async (searchParams) => {
-  const { latitude, longitude, distance, query } = searchParams;
+  const { latitude, longitude, distance, query, limit, page } = searchParams;
 
   //If users just search by key word
+  //I dont thick this is required due to backend filtering.
   if (!latitude && !longitude) {
     try {
       const response = await axios.get(
-        `/api/listing/search?distance=${distance}&query=${query}`
+        `/api/listing/search?distance=${distance}&query=${query}&page=${page}&limit=${limit}`
       );
       return response.data;
     } catch (error) {
@@ -69,7 +72,7 @@ export const searchListings = async (searchParams) => {
   //for all other querys, add in full params.
   try {
     const response = await axios.get(
-      `/api/listing/search?latitude=${latitude}&longitude=${longitude}&distance=${distance}&query=${query}`
+      `/api/listing/search?latitude=${latitude}&longitude=${longitude}&distance=${distance}&query=${query}&page=${page}&limit=${limit}`
     );
     return response.data;
   } catch (error) {

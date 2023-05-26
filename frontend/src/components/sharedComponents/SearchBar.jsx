@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaSearch, FaArrowDown } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import {toast} from 'react-toastify'
@@ -7,6 +8,7 @@ import axios from "axios";
 
 const SearchBar = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const {allListings, isPending} = useSelector((state) => state.listing)
   const {user} =useSelector((state) => state.auth)
   const {business} =useSelector((state) => state.businessAuth)
@@ -14,13 +16,18 @@ const SearchBar = () => {
   const [postcode, setPostcode] = useState("");
   const [distance, setDistance] = useState(10); // default distance is 10 km
   const [query, setQuery] = useState("");
+  const page = 1
+  const limit = 5
+ 
 
   const handleSearch = async () => {
     if(!user && !business) {return toast.error('Create an account to filter listings')}
     let searchParams = {
       postcode,
       distance,
-      query
+      query,
+      page,
+      limit
     }
     if(!query && !postcode) {
       return await dispatch(getAllListings())
@@ -39,16 +46,25 @@ const SearchBar = () => {
       const data = response.data
       searchParams.latitude = data.results[0]?.geometry.location.lat ?? 0
       searchParams.longitude = data.results[0]?.geometry.location.lng ?? 0
-      const listings = await dispatch(searchListings(searchParams))
-      if(listings.payload.length ===0) {return toast.success('No Listings Found')} 
-      else {
+      const queryString = new URLSearchParams(searchParams).toString();
+      const newUrl = `/listing/search?${queryString}`;
+      navigate(newUrl, { replace: true });
+      /* const listings = await dispatch(searchListings(searchParams))
+      if(listings.payload.length ===0) {return toast.success('No Listings Found')}  */
+     /*  else {
         return toast.success('listings found')
-      }
+      } */
        
     } catch (error) {
+      console.log(error)
       return toast.error(error.message)
     }
   }
+
+  const handleDistanceChange = (e) => {
+  const value = parseInt(e.target.value, 10); // Parse the value as an integer
+  setDistance(value);
+};
 
 
 
@@ -86,7 +102,7 @@ const SearchBar = () => {
         <label htmlFor="distance" className="sr-only">Distance</label>
         <select
           className="block w-full py-2 px-4 pr-8 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-          onChange={(e) => setDistance(e.target.value)}
+          onChange={handleDistanceChange}
           id="distance"
           value={distance}
         >

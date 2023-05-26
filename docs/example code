@@ -1,0 +1,89 @@
+//new code ofr searching of lisitngs and passing params.
+//question is how to hold the state and reference for page and limit!
+
+const searchListings = asyncHandler(async (req, res) => {
+  const { latitude, longitude, distance, query, page, limit } = req.query;
+  const maxDistanceMeters = distance * 1000; // distance in km
+
+  let listings;
+
+  if (!latitude && !longitude && query) {
+    // search listings by keyword
+    listings = await searchListingsByKeyword(query, page, limit);
+  } else if (latitude && longitude && !query) {
+    // search listings by location
+    listings = await searchListingsByLocation(
+      latitude,
+      longitude,
+      maxDistanceMeters,
+      page,
+      limit
+    );
+  } else if (latitude && longitude && query) {
+    // search listings by location and keyword
+    listings = await searchListingsByLocationAndKeyword(
+      latitude,
+      longitude,
+      maxDistanceMeters,
+      query,
+      page,
+      limit
+    );
+  } else {
+    // handle invalid or missing parameters
+    return res.status(400).json({ error: "Invalid or missing parameters" });
+  }
+
+  res.status(200).json(listings);
+});
+
+//modify all three search funcs
+const searchListingsByKeyword = asyncHandler(async (query, page, limit) => {
+  try {
+    const skip = (page - 1) * limit;
+    const listings = await Listing.find({
+      listingTitle: { $regex: new RegExp(query, "i") },
+    })
+      .skip(skip)
+      .limit(limit);
+    return listings;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error searching listings");
+  }
+});
+
+//FE URL Code and the need or useEffect and redirect when holding pagination states.
+//so where there is no querys then call getAllListings
+//Where there are params, call the relevant search function.
+
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+
+function ListingsPage() {
+  const location = useLocation();
+  const query = new URLSearchParams(location.search).get("query");
+
+  useEffect(() => {
+    // Construct the API request URL
+    const url = `/api/listing/search?query=${query}`;
+
+    // Make the API request using the constructed URL
+    axios
+      .get(url)
+      .then((response) => {
+        // Handle the response data
+        const listings = response.data;
+        // ...
+      })
+      .catch((error) => {
+        // Handle the error
+        // ...
+      });
+  }, [query]);
+
+  return <div>{/* Render your listings */}</div>;
+}
+
+export default ListingsPage;

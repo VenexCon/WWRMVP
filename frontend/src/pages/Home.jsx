@@ -54,7 +54,7 @@ const prices = [
         Who Wants Rubbish
       </h1>
       <p className="text-xl text-gray-600 text-center dark:text-gray-400 mb-10">
-        Browse listings for businesses who need your old stuff! 
+        Find Sustainable Solutions for Your Pre-Loved Items and Help Build a Circular Economy! 
       </p>
       <div className="flex flex-row  mb-10 ">
          <Link to={'/register'} className='w-full flex items-center justify-center gap-x-2 text-white bg-blue-600 hover:text-blue-600 hover:bg-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'>
@@ -72,8 +72,7 @@ const prices = [
             No more taking your stuff to the tip!
           </h2>
           <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
-            Our WebApp helps businesses, charity shops and schools market their needs, and allows our 
-            users to browse for places to donate!
+            Our WebApp connects you with businesses, charity shops, and schools in need of your gently used items. Say goodbye to landfill waste and give your belongings a new purpose!
           </p>
         </div>
         <img src={ListingImage} alt="listing" className="w-5/6 lg:w-3/6 rounded-md lg:mb-0 transition duration-300" />
@@ -83,8 +82,7 @@ const prices = [
         <div className="container mb-10">
           <h2 className='text-2xl font-bold text-gray-800 dark:text-white mb-8 text-center'>Give Back To Your Community</h2>
            <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
-            Connect with local businesses and contribute to your community by donating your items. Browse our listings and 
-            reach out to business owners to see if they are interested in accepting your donations with Who Wants Rubbish
+            Explore listings from local businesses seeking pre-loved items. Discover sustainable opportunities for your pre-loved items and donate to good causes!
           </p>
         </div>
         <img src={ListingPageImg} alt="listing" className="w-full lg:w-2/3 rounded-md mb-16 lg:mb-24 transition duration-300" />
@@ -96,8 +94,7 @@ const prices = [
             Donate With Confidence
           </h2>
            <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
-            Don't fret about if you can actually get rid of your items! Search through the listings and find a
-            match then simple arrange a time and date and go donate!
+           Browse Listings, Connect, and Donate. No complicated processes or forms to fill out, simply contact the listing creator via phone or email.
           </p>
         </div>
         <img src={ProfilePagePic} alt="profile Page" className="w-4/5 lg:w-1/3 rounded-md mb-16 lg:mb-0  transition duration-300" />
@@ -109,7 +106,8 @@ const prices = [
             Who Should Join?
           </h2>
            <p className="text-lg text-center text-gray-600 dark:text-white mb-4">
-            All businesses should join! Any businesses that can offer items for free, or can accept donations! 
+           All businesses should join! Get Involved - Businesses, Charity Shops, and Social Enterprises can all create listings and receive donations, even start-ups can too! 
+           Any business in a position to accept pre-loved goods should join.
           </p>
         </div>
         <div className="flex flex-col sm:flex-col gap-4 align-middle h-full sm: w-2/3 md:w-1/2 justify-between">
@@ -134,7 +132,8 @@ const prices = [
             Pricing and Plans
           </h2>
            <p className="text-lg text-center text-gray-600 dark:text-gray-400 mb-4">
-            Sign up with your business, select the most appropriate plan and begin creating listings from only £7.50 per month.
+            Sustainable Solutions at Affordable Prices. Choose a Plan That Fits Your Business and get started creating listings
+            from Only £7.50 per Month - Start Making a Difference Today.
           </p>
         </div>
         <div className="pricing flex flex-col md:flex-row align-bottom  gap-8 justify-end">
