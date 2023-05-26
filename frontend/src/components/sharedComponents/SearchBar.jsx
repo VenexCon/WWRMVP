@@ -14,6 +14,8 @@ const SearchBar = () => {
   const [postcode, setPostcode] = useState("");
   const [distance, setDistance] = useState(10); // default distance is 10 km
   const [query, setQuery] = useState("");
+  const page = 1
+  const limit = 20
  
 
   const handleSearch = async () => {
@@ -22,6 +24,8 @@ const SearchBar = () => {
       postcode,
       distance,
       query,
+      page,
+      limit
     }
     if(!query && !postcode) {
       return await dispatch(getAllListings())

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ListingItem from '../components/sharedComponents/ListingItem'
 import SearchBar from '../components/sharedComponents/SearchBar'
-import { getAllListings } from "../features/listings/listingSlice"
+import { getAllListings, searchListings } from "../features/listings/listingSlice"
 
 const ListingsPage = () => {
   const allListings = useSelector((state) => state.listing.allListings);
@@ -14,6 +14,7 @@ const ListingsPage = () => {
   const listings = allListings? allListings : []
 
   useEffect(()=> {
+    
     const fetchAllListings = async () => {
       return await dispatch(getAllListings())
     }
@@ -23,6 +24,8 @@ const ListingsPage = () => {
   const query = new URLSearchParams(location.search).get('query');
   const page = Number(new URLSearchParams(location.search).get('page')) || 1;
   const limit = 20
+
+  console.log(query)
 
   const handlePreviousPage = () => {
     const searchParams = new URLSearchParams(location.search);
