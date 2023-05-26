@@ -30,9 +30,9 @@ useEffect(() => {
         page,
         limit,
       };
-      await dispatch(searchListings(searchParams));
+      return await dispatch(searchListings(searchParams));
     } else {
-      await dispatch(getAllListings());
+      return await dispatch(getAllListings());
     }
   };
 
