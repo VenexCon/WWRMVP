@@ -19,6 +19,9 @@ const ListingsPage = () => {
 
   const listings = allListings? allListings : []
 
+  //previous method to update listings was to dispatch actions from the searchBar component.
+  //New method to ensure non-clean URL's is to have the page, get the listings by using the search params. 
+  //On page load it just calls the newest 20 listings from the DB, the filter for newest is in the listingController. 
 useEffect(() => {
   const fetchAllListings = async () => {
     if (query || latitude || longitude) {
@@ -39,8 +42,7 @@ useEffect(() => {
   fetchAllListings();
 }, [query, latitude, longitude, page, limit, dispatch, distance]);
 
-
-
+  //re renders the listingPage on change 
   const handlePreviousPage = () => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set('page', page - 1);
