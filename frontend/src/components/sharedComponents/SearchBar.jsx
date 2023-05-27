@@ -35,12 +35,14 @@ const SearchBar = () => {
 
     if(!postcode) {
       try {
-        return await dispatch(searchListings(searchParams))
-      } catch (error) {
+      const queryString = new URLSearchParams(searchParams).toString();
+      const newUrl = `/listing/search?${queryString}`;
+      return navigate(newUrl, { replace: true });
+      } 
+      catch (error) {
         toast.error(error.message)
       }
     }
-
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${postcode}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
       const data = response.data
@@ -49,12 +51,6 @@ const SearchBar = () => {
       const queryString = new URLSearchParams(searchParams).toString();
       const newUrl = `/listing/search?${queryString}`;
       navigate(newUrl, { replace: true });
-      /* const listings = await dispatch(searchListings(searchParams))
-      if(listings.payload.length ===0) {return toast.success('No Listings Found')}  */
-     /*  else {
-        return toast.success('listings found')
-      } */
-       
     } catch (error) {
       console.log(error)
       return toast.error(error.message)
@@ -64,7 +60,7 @@ const SearchBar = () => {
   const handleDistanceChange = (e) => {
   const value = parseInt(e.target.value, 10); // Parse the value as an integer
   setDistance(value);
-};
+  };
 
 
 

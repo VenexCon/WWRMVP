@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, { useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ListingItem from '../components/sharedComponents/ListingItem'
@@ -10,12 +10,12 @@ const ListingsPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
- const query = new URLSearchParams(location.search).get('query');
-const latitude = new URLSearchParams(location.search).get('latitude');
-const longitude = new URLSearchParams(location.search).get('longitude');
-const distance = Number(new URLSearchParams(location.search).get('distance')) || 10;
-const page = Number(new URLSearchParams(location.search).get('page')) || 1;
-const limit = 20;
+  const query = new URLSearchParams(location.search).get('query');
+  const latitude = new URLSearchParams(location.search).get('latitude');
+  const longitude = new URLSearchParams(location.search).get('longitude');
+  const distance = Number(new URLSearchParams(location.search).get('distance')) || 10;
+  const page = Number(new URLSearchParams(location.search).get('page')) || 1;
+  const limit = 1;
 
   const listings = allListings? allListings : []
 
@@ -71,11 +71,12 @@ useEffect(() => {
   <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handlePreviousPage}>
     Previous
   </button>)}
-  <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleNextPage}>
+ {(query || latitude) && (
+   <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleNextPage}>
     Next
   </button>
-</div>
-
+ )}
+    </div>
     </div>
     </div>
   );
