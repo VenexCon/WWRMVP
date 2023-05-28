@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 //API endpoint fo registering user accounts
 const API_URL = "/api/business";
@@ -42,10 +43,23 @@ const logoutBusiness = async () => {
   }
 };
 
+const deleteBusiness = async () => {
+  const token = Cookies.get("token");
+  const url = `/api/business/profile`;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(url, config);
+  return response.data;
+};
+
 const businessService = {
   registerBusiness,
   loginBusiness,
   logoutBusiness,
+  deleteBusiness,
 };
 
 export default businessService;

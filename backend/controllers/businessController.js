@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const Business = require("../models/businessModel");
 const User = require("../models/userModel");
+const Listing = require("../models/listingModel");
 const jwt = require("jsonwebtoken");
 
 //generate jwt token
@@ -187,11 +188,19 @@ const logoutBusiness = asyncHandler(async (req, res) => {
 });
 
 //@desc Delete Business Profile
-//@route /users/me
+//@route /business/profile
 //@access Private
 const deleteBusiness = asyncHandler(async (req, res) => {
+  const { _id } = req.business;
+  //add in functions to delete the listings associated with the business ID
   try {
-    const deleted = await Business.deleteOne({ id: req.business._id });
+    const deletionPromises = [
+      Business.deleteOne({ _id: _id }),
+      Listing.deleteMany({ business: _id }),
+    ];
+
+    await Promise.all(deletionPromises);
+
     res.status(200).json({
       message: "Business Account Deleted",
     });
