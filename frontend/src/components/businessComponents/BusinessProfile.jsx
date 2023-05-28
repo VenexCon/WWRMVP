@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { getMyListings } from '../../features/listings/listingSlice'
+import { deleteBusiness } from '../../features/businessAuth/businessSlice'
 import ListingItem from '../sharedComponents/ListingItem'
-import { FaUserAlt, FaEnvelope, FaPhoneAlt, FaGlobe, FaWarehouse, FaPlusCircle, FaArrowCircleRight } from 'react-icons/fa'
+import { FaUserAlt, FaEnvelope,FaCog, FaGlobe,FaPlusCircle, FaArrowCircleRight } from 'react-icons/fa'
 
 
 function BusinessProfile() {
@@ -21,7 +22,7 @@ function BusinessProfile() {
 
     useEffect(() => {
       const fetchListings = async () => {
-        const response = await dispatch(getMyListings())
+        return await dispatch(getMyListings())
       }
       fetchListings()
     }, [business, dispatch])
@@ -38,6 +39,8 @@ function BusinessProfile() {
       [e.target.name]: e.target.value
       }))
     }
+
+    const handleDelete = async() => await dispatch(deleteBusiness)
 
 
   return (
@@ -117,6 +120,13 @@ function BusinessProfile() {
               <FaPlusCircle className="mr-2" /> Create New Listing
             </button>
           </Link>
+
+          <button
+            className="w-full flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 transition-colors duration-300"
+            
+          >
+            <FaCog className="mr-2" /> Delete Account
+          </button>
         </div>
     )}
     {accountsListings.length > 0 ? (accountsListings.map((listing) => (

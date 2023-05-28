@@ -37,6 +37,19 @@ export const loginBusiness = createAsyncThunk(
   }
 );
 
+//Delete business
+//
+export const deleteBusiness = createAsyncThunk(
+  "business/delete",
+  async (_, thunkAPI) => {
+    try {
+      return await businessService.deleteBusiness();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
 //logout business
 //return new payload of business: null
 export const logoutBusiness = createAsyncThunk(
@@ -89,6 +102,13 @@ export const businessSlice = createSlice({
         state.business = action.payload.business;
       })
       .addCase(logoutBusiness.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(deleteBusiness.fulfilled, (state, action) => {
+        state.isPending = action.payload.isPending;
+        state.business = null;
+      })
+      .addCase(deleteBusiness.pending, (state) => {
         state.isPending = true;
       });
   },
