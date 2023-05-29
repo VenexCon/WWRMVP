@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { getMyListings } from '../../features/listings/listingSlice'
@@ -11,6 +11,7 @@ import { FaUserAlt, FaEnvelope,FaCog, FaGlobe,FaPlusCircle, FaArrowCircleRight }
 function BusinessProfile() {
     
     const dispatch = useDispatch()
+    const navigate= useNavigate()
     const {business} = useSelector((state)=>state.businessAuth)
     const {accountsListings} = useSelector((state)=>state.listing)
 
@@ -40,7 +41,10 @@ function BusinessProfile() {
       }))
     }
 
-    const handleDelete = async() => await dispatch(deleteBusiness)
+    const handleDelete = async () => {
+      await dispatch(deleteBusiness())
+      navigate('/*')
+    }
 
 
   return (
@@ -123,7 +127,7 @@ function BusinessProfile() {
 
           <button
             className="w-full flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 transition-colors duration-300"
-            
+            onClick={handleDelete}
           >
             <FaCog className="mr-2" /> Delete Account
           </button>

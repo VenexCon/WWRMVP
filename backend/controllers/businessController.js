@@ -178,7 +178,7 @@ const getProfile = (req, res) => {
 
 const logoutBusiness = asyncHandler(async (req, res) => {
   res
-    .status(200)
+    .status(202)
     .clearCookie("token", null, {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
@@ -199,13 +199,24 @@ const deleteBusiness = asyncHandler(async (req, res) => {
       Listing.deleteMany({ business: _id }),
     ];
 
-    await Promise.all(deletionPromises);
+    const promises = await Promise.all(deletionPromises);
 
-    res.status(200).json({
-      message: "Business Account Deleted",
-    });
+    if (promises) {
+      res
+        .status(202)
+        .clearCookie("token", null, {
+          httpOnly: false,
+          secure: process.env.NODE_ENV === "production",
+          expires: expiryDate,
+        })
+        .json({
+          message: "Business Account Deleted",
+        });
+    } else {
+      throw new Error("Unable to delete Account or Listings");
+    }
   } catch (error) {
-    res.status(400);
+    res.status(404);
     throw new Error("Unable to delete business");
   }
 });
