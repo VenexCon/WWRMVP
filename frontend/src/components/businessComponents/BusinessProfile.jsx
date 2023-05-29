@@ -6,6 +6,7 @@ import { getMyListings } from '../../features/listings/listingSlice'
 import { deleteBusiness } from '../../features/businessAuth/businessSlice'
 import ListingItem from '../sharedComponents/ListingItem'
 import { FaUserAlt, FaEnvelope,FaCog, FaGlobe,FaPlusCircle, FaArrowCircleRight } from 'react-icons/fa'
+import DeleteModal from '../sharedComponents/DeleteModal';
 
 
 function BusinessProfile() {
@@ -14,8 +15,10 @@ function BusinessProfile() {
     const navigate= useNavigate()
     const {business} = useSelector((state)=>state.businessAuth)
     const {accountsListings} = useSelector((state)=>state.listing)
-
+    //not currently used due to no 2FA on email confirm.
     const [edit, setEdit] =useState(true)
+    //modal state.
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const selectEdit = () => {
       setEdit((prevState) => !prevState)
@@ -28,12 +31,13 @@ function BusinessProfile() {
       fetchListings()
     }, [business, dispatch])
 
+    //Not currently used, will be used when 2FA is added for confirming email address.
     const [registerData, setRegisterData] = useState({
     businessEmail:'',
     businessName:'',
     businessAddress:'',
     })
-
+    //Not current used, due to above reason.
     const onMutate = (e) => {
       setRegisterData((prevState) => ({
       ...prevState, 
@@ -41,10 +45,19 @@ function BusinessProfile() {
       }))
     }
 
-    const handleDelete = async () => {
-      await dispatch(deleteBusiness())
+
+  //This will display the modal only
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true);
+    };
+
+  //this will dispatch the deleteBusiness action from slice.
+  const handleConfirmDelete = async () => {
+    const deleted = await dispatch(deleteBusiness())
+      setShowDeleteModal(false);
+      toast.success('Account Deleted')
       navigate('/*')
-    }
+  };
 
 
   return (
@@ -127,7 +140,7 @@ function BusinessProfile() {
 
           <button
             className="w-full flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 transition-colors duration-300"
-            onClick={handleDelete}
+            onClick={handleDeleteClick}
           >
             <FaCog className="mr-2" /> Delete Account
           </button>
@@ -136,6 +149,12 @@ function BusinessProfile() {
     {accountsListings.length > 0 ? (accountsListings.map((listing) => (
       <ListingItem key={listing._id} listing = {listing}  />
     ))) : (<p className='text-white w-full items-center flex bg-gray-700 border border-purple-600 p-4 rounded-md'>You have no listings</p>)}
+    <DeleteModal
+      isOpen={showDeleteModal}
+      //in-line func for closing modal. 
+      onClose={() => setShowDeleteModal(false)}
+      onConfirmDelete={handleConfirmDelete}
+    />
     </>
   )
 }

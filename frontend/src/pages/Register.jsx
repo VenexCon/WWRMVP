@@ -1,18 +1,26 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import UserRegister from '../components/userComponents/UserRegister.jsx'
 import BusinessRegister from '../components/businessComponents/BusinessRegister.jsx'
+import GenericConfirmModal from '../components/sharedComponents/GenericConfirmModal.jsx'
 
 
 function Register() {
-
   const navigate = useNavigate()
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  useEffect(()=> {
+    setShowDeleteModal(true)
+  },[])
+
 
   const [page, setPage] = useState({
     user:true,
     business:false
   })
 
+  
+  //we load either the user, or business register component.
   const changePage = (e) => {
     if(e.target.id === 'user') {setPage({
       user:true,
@@ -25,12 +33,9 @@ function Register() {
     }
   }
 
-  //we load either the user, or business page. Once loaded we then use the redux to dispatch the register funcs to the relevant end point
-  //i.e. load UserRegister.jsx, then subscribe to the User State. 
-  // dispatch relevant action to releavnt endpoint etc 
-
-
-
+  const handleConfirmClick = () => {
+    setShowDeleteModal(false);
+    };
 
   return (
     <>
@@ -50,7 +55,12 @@ function Register() {
         </div>
       </div>
     </section>
-    
+    <GenericConfirmModal
+      isOpen={showDeleteModal}
+      //in-line func for closing modal. 
+      onClose={() => setShowDeleteModal(false)}
+      onConfirmDelete={handleConfirmClick}
+    />
     </>
   )
 }
