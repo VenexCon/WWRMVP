@@ -3,7 +3,8 @@ import {  Link } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { editUser } from '../../features/auth/authSlice'
-import { FaUser, FaArrowCircleRight, FaEnvelope,  FaLock,  } from 'react-icons/fa'
+import { FaUser, FaArrowCircleRight, FaEnvelope,  FaLock, FaCog  } from 'react-icons/fa'
+import DeleteModal from '../sharedComponents/DeleteModal'
 
 function UserProfile() {
 
@@ -11,6 +12,7 @@ function UserProfile() {
   const [name, setName] = useState(user ? user.name : '');
   const [email, setEmail] = useState(user? user.email: '');
   //const [phone, setPhone] = useState(user ? user.phone: '');
+   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [edit, setEdit] =useState(false)
   const dispatch = useDispatch()
 
@@ -22,12 +24,12 @@ function UserProfile() {
   }, [user,dispatch])
 
 
-
+// This will be postponed, until 2FA is in-place to check for if the desired email is already in use
+//And, if the email is owned by the user. 
+//This will be after the confirmEmailAddress feature is in-place. 
   const selectEdit = (() => {
     setEdit((prevState) => !prevState)
   })
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -52,6 +54,17 @@ function UserProfile() {
 
     return 
   }
+
+  //Modal Funcs 
+   //This will display the modal only
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true);
+    };
+
+  //this will dispatch the deleteBusiness action from slice.
+  const handleConfirmDelete = async () => {
+    console.log('This will ACTUALLY delete the func')
+  };
 
 
 
@@ -119,7 +132,7 @@ function UserProfile() {
       <div className="mt-10 flex flex-col space-y-4 w-full">
         {!edit && (
           <button onClick={selectEdit}
-          className="w-full flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300">
+          className="w-full flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300">
             <FaUser className="mr-2" /> Edit Profile
           </button>
         )}
@@ -135,7 +148,19 @@ function UserProfile() {
             <FaArrowCircleRight className="mr-2" /> Browse Listings
           </button>
         </Link>)}
+        <button
+            className="w-full flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 transition-colors duration-300"
+            onClick={handleDeleteClick}
+          >
+            <FaCog className="mr-2" /> Delete Account
+          </button>
         </div>
+        <DeleteModal
+      isOpen={showDeleteModal}
+      //in-line func for closing modal. 
+      onClose={() => setShowDeleteModal(false)}
+      onConfirmDelete={handleConfirmDelete}
+    />
     </>
   )
 }

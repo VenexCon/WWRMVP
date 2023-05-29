@@ -19,7 +19,7 @@ const GenericConfirmModal = ({ isOpen, onClose }) => {
           Users can only browse listings
         </p>
          <p className="text-gray-600 mb-2">
-          Businesses can create listings, requesting items and donations.
+          Businesses can create listings for requesting items and donations.
         </p>
         <div className="flex justify-between">
           <button

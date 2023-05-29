@@ -1,12 +1,10 @@
 import {useState, useEffect} from 'react'
-import {useNavigate} from 'react-router-dom'
 import UserRegister from '../components/userComponents/UserRegister.jsx'
 import BusinessRegister from '../components/businessComponents/BusinessRegister.jsx'
 import GenericConfirmModal from '../components/sharedComponents/GenericConfirmModal.jsx'
 
 
 function Register() {
-  const navigate = useNavigate()
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(()=> {
