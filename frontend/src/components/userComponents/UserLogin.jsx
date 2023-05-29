@@ -32,7 +32,7 @@ function UserLogin() {
       let userData = {email: email.toLowerCase(), password}
       const user = await dispatch(login(userData)).unwrap()
       toast.success(`Logged in as ${user.name}`)
-      navigate('/')
+      navigate('/profile')
     } catch (error) {
       toast.error(error)
     }

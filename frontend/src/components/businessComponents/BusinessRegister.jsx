@@ -62,14 +62,13 @@ function BusinessRegister() {
       }
        const response = await fetch (`https://maps.googleapis.com/maps/api/geocode/json?address=${businessAddress}&key=${process.env.REACT_APP_GEOCODING_KEY}`)
        const data = await response.json()
-       console.log(data)
        //if(data.results[0]?.partial_match === true) {return toast.error('Approximate match found, please give your whole address')}
        businessData.latitude = data.results[0]?.geometry.location.lat ?? 0
        businessData.longitude = data.results[0]?.geometry.location.lng ?? 0
        businessData.businessAddress = data.results[0]?.formatted_address
         const business = await dispatch(registerBusiness(businessData)).unwrap()
         toast.success(`Registered new business - ${business.name}`)
-        navigate('/')
+        navigate('/listings')
       } catch (error) {
         return toast.error(error)
       }

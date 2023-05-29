@@ -10,6 +10,7 @@ import { FaArrowCircleRight, FaTwitter, FaInstagram, FaHandHoldingHeart, FaDog, 
 function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
 
+  //Only used for transition style ATM. 
   useEffect(() => {
     setIsLoaded(true);
   }, []);

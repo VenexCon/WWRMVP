@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react'
+import React, { useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ListingItem from '../components/sharedComponents/ListingItem'
@@ -42,6 +42,12 @@ useEffect(() => {
   fetchAllListings();
 }, [query, latitude, longitude, page, limit, dispatch, distance]);
 
+//sweet transition effect state
+const [isLoaded, setIsLoaded] = useState(false)
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
   //re renders the listingPage on change 
   const handlePreviousPage = () => {
     const searchParams = new URLSearchParams(location.search);
@@ -57,7 +63,7 @@ useEffect(() => {
 
 
   return (
-  <div className="  min-h-screen mt-0 mb-0 rounded">
+  <div className={`min-h-screen mt-0 mb-0 rounded  ${isLoaded ? 'opacity-100 transition-opacity duration-400 ease-in-out' : 'opacity-0'}`}>
     <div className="container mx-auto px-4 py-8 ">
       <div className="flex flex-col items-center gap-2  justify-between mb-4">
         <h1 className="text-2xl font-bold text-gray-900">Listings</h1>

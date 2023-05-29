@@ -60,7 +60,7 @@ function UserRegister() {
       try {
         const user = await dispatch(registerUser(userData)).unwrap()
         toast.success(`Registered new user - ${user.name}`)
-        navigate('/')
+        navigate('/listings')
       } catch (error) {
         toast.error(error)
       }
