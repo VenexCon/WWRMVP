@@ -110,6 +110,9 @@ export const businessSlice = createSlice({
       })
       .addCase(deleteBusiness.pending, (state) => {
         state.isPending = true;
+      })
+      .addCase(deleteBusiness.rejected, (state) => {
+        state.isPending = false;
       });
   },
 });

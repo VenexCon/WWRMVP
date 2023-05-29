@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react'
-import {  Link } from 'react-router-dom'
+import {  Link, useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
-import { editUser } from '../../features/auth/authSlice'
+import { deleteUser, editUser } from '../../features/auth/authSlice'
 import { FaUser, FaArrowCircleRight, FaEnvelope,  FaLock, FaCog  } from 'react-icons/fa'
 import DeleteModal from '../sharedComponents/DeleteModal'
 
 function UserProfile() {
-
+  const navigate = useNavigate()
   const {user} = useSelector((state) => state.auth)
   const [name, setName] = useState(user ? user.name : '');
   const [email, setEmail] = useState(user? user.email: '');
@@ -63,7 +63,15 @@ function UserProfile() {
 
   //this will dispatch the deleteBusiness action from slice.
   const handleConfirmDelete = async () => {
-    console.log('This will ACTUALLY delete the func')
+    const deleted = await dispatch(deleteUser())
+    console.log(deleted)
+    if(deleted.error) { 
+      setShowDeleteModal(false)
+      return toast.error('Account could not be deleted')
+    }
+      setShowDeleteModal(false);
+      toast.success('Account Deleted')
+      //navigate('/*')
   };
 
 

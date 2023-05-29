@@ -25,9 +25,7 @@ export const registerUser = createAsyncThunk(
 );
 
 //logout user
-//NOTE: we do not need the asyncThunk as we are not doing any async code
-// we create an action as the reducer creates a list of actions, and this is an action
-// state should be updated and the ls removed at the same time.
+//Async due to need to set cookies in BE.
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     const response = await authService.logout();
@@ -80,6 +78,23 @@ export const getUser = createAsyncThunk("auth/getUser", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(extractErrorMessage(error));
   }
 });
+
+//delete User
+//This function returns an empty cookie from the backend
+//possibly needs additional verification to check that the user has been deleted
+//Backend is in a try catch
+//Delete business
+//
+export const deleteUser = createAsyncThunk(
+  "user/delete",
+  async (_, thunkAPI) => {
+    try {
+      return await authService.deleteUser();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -138,6 +153,16 @@ export const authSlice = createSlice({
       .addCase(logout.fulfilled, (state, action) => {
         state.isPending = false;
         state.user = action.payload.user;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.isPending = action.payload.isPending;
+        state.user = null;
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(deleteUser.rejected, (state) => {
+        state.isPending = false;
       });
   },
 });

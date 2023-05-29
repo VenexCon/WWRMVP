@@ -170,9 +170,14 @@ const getMe = asyncHandler(async (req, res) => {
 const deleteMe = asyncHandler(async (req, res) => {
   try {
     const deleted = await User.deleteOne({ _id: req.user._id });
-    res.status(201).json({
-      message: "User Deleted",
-    });
+    res
+      .status(202)
+      .clearCookie("token", null, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        expires: expiryDate,
+      })
+      .json({ message: "User Deleted" });
   } catch (error) {
     res.status(400).json({
       message: "Unable to delete user",

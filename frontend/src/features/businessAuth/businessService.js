@@ -52,7 +52,6 @@ const deleteBusiness = async () => {
     },
   };
   const response = await axios.delete(url, config);
-  console.log(response);
   if (response.status === 202) {
     localStorage.removeItem("business");
   }

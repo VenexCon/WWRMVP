@@ -71,12 +71,28 @@ const logout = async () => {
   }
 };
 
+const deleteUser = async () => {
+  const token = Cookies.get("token");
+  const url = `/api/users/profile`;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(url, config);
+  if (response.status === 202) {
+    localStorage.removeItem("user");
+  }
+  return response.data;
+};
+
 const authService = {
   register,
   logout,
   login,
   editUser,
   getUser,
+  deleteUser,
 };
 
 export default authService;
