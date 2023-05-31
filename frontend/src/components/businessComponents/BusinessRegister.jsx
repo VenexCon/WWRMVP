@@ -39,15 +39,16 @@ function BusinessRegister() {
   }
 
 
-  //submit user for registration
+  //submit business for registration
+  //add in all validation checks from BE to stop re-inputting of data. 
   const onSubmit = async (e)=> {
      e.preventDefault()
     if(user || business) {return toast.error('Cannot register an account whilst logged in') }
     const {businessEmail, businessPhone, businessName, businessPassword,  businessPassword2, businessTerms, businessAddress} = registerData
     if(businessPhone < 12  ) {return toast.error('Invalid phone number')}
+    if (/\s/.test(businessPassword)) {return toast.error('Password cannot contain empty spaces');}
     if(!businessTerms) return toast.error('You must agree to the Terms and Conditions')
     if(!businessAddress || businessAddress.includes('undefined')){toast.error('Please enter correct address')}
-    
     if(businessPassword !== businessPassword2) {return toast.error('Passwords do not match')}  
 
 

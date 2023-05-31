@@ -38,14 +38,15 @@ function UserRegister() {
   }
 
   //submit user for registration
+  //add in all validation check from the BE to stop re-inputting of data. 
   const onSubmit = async (e)=> {
     e.preventDefault()
     const {email, name, password, password2, terms} = registerData
 
+    if (/\s/.test(password)) {return toast.error('Password cannot contain empty spaces');}
+    if (/\s/.test(name)) {return toast.error('Name cannot contain empty spaces');}
     if(user || business) {return toast.error('Cannot register a business whilst logged in')}
-
     if(!terms) return toast.error('You must agree to the Terms and Conditions')
-    
     if(password !== password2) {
       return toast.error('Passwords do not match')
     } else {
