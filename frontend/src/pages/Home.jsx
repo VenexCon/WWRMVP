@@ -22,7 +22,7 @@ const prices = [
     targetAudience: 'Ideal for single store locations and small enterprises',
     price: '£0.00',
     description: [
-      'Create one listing per month',
+      'Create Ten listings per month',
     ],
   },
   {
@@ -30,7 +30,7 @@ const prices = [
     targetAudience: 'Perfect for businesses with multiple locations and medium-sized enterprises',
     price: '£9.99',
     description: [
-      'Create up to 10 listings per month',
+      'Create up to 50 listings per month',
       'Secondary address and contact numbers allotted',
     ],
   },

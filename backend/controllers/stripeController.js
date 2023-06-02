@@ -14,7 +14,7 @@ const session = asyncHandler(async (req, res) => {
         quantity: 1,
       },
     ],
-    mode: "payment",
+    mode: "subscription",
     success_url: `${YOUR_DOMAIN}?success=true`,
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
   });
