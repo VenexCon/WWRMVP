@@ -5,21 +5,29 @@ const connectDB = require("./config/db");
 const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const { errorHandler } = require("./middleware/errorMiddleware");
-
+const bodyParser = require("body-parser");
 //connect to DB
 connectDB();
 const app = express();
 
+//Requires Raw Body First for stripe webhook.
+app.use(bodyParser.raw({ type: "application/json" })); // Add this line before other middleware
+app.use("/api/stripe", require("./routes/stripeRoutes"));
+
 //allows express to read JSON & requests.
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+app.use(express.static("public"));
 
 /* Routes */
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/business", require("./routes/businessRoutes"));
 app.use("/api/listing", require("./routes/listingRoutes"));
 app.use("/api/passwordReset", require("./routes/passwordResetRoutes"));
-app.use("/api/paymentGateway", require("./routes/stripeRoutes"));
 //errorhandler
 app.use(errorHandler);
 

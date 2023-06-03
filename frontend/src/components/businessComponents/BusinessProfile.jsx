@@ -160,11 +160,11 @@ function BusinessProfile() {
       onConfirmDelete={handleConfirmDelete}
     />
     {/* Testing trial  */}
-        <form action="/api/paymentGateway/create-checkout-session" method="POST">
+        <form action="/api/stripe/create-checkout-session" method="POST">
       {/* Add a hidden field with the lookup_key of your Price */}
       <input type="hidden" name="lookup_key"  />
-      <button id="checkout-and-portal-button" type="submit">
-        Checkout
+      <button id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
+        Subscribe
       </button>
     </form>
     </>

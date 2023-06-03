@@ -39,6 +39,15 @@ const businessSchema = new Schema({
   businessResetTokenExpiration: {
     type: Date,
   },
+  activeSubscription: {
+    type: Boolean,
+  },
+  listingAmount: {
+    type: Number,
+  },
+  businessStripeID: {
+    type: String,
+  },
 });
 
 businessSchema.index({ BusinessCoordinates: "2dsphere" });
