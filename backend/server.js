@@ -19,6 +19,7 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/business", require("./routes/businessRoutes"));
 app.use("/api/listing", require("./routes/listingRoutes"));
 app.use("/api/passwordReset", require("./routes/passwordResetRoutes"));
+app.use("/api/paymentGateway", require("./routes/stripeRoutes"));
 //errorhandler
 app.use(errorHandler);
 
