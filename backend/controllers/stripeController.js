@@ -24,4 +24,8 @@ const session = asyncHandler(async (req, res) => {
   res.redirect(303, session.url);
 });
 
+//checkout gateway customer portal here
+
+//Look into webhooks for monitoring subscriptions.
+
 module.exports = { session };
