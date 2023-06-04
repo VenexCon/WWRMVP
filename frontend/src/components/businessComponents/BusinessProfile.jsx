@@ -7,6 +7,8 @@ import { deleteBusiness } from '../../features/businessAuth/businessSlice'
 import ListingItem from '../sharedComponents/ListingItem'
 import { FaUserAlt, FaEnvelope,FaCog, FaGlobe,FaPlusCircle, FaArrowCircleRight } from 'react-icons/fa'
 import DeleteModal from '../sharedComponents/DeleteModal';
+import Cookies from 'js-cookie';
+import { unwrapResult } from '@reduxjs/toolkit'
 
 
 function BusinessProfile() {
@@ -59,9 +61,26 @@ function BusinessProfile() {
       navigate('/*')
   };
 
-  const handlePaymentCheckout = async () => {
+  const subscribeToCheckoutSession = async () => {
+    const token = Cookies.get('token');
+  try {
+    const response = await fetch('api/stripe/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+         "Authorization": `Bearer ${token}`,
+      },
+    });
 
+    const body = await response.json()
+    console.log(body.url)
+    window.location.href = body.url
+    
+  } catch (error) {
+    // Handle fetch error
+    console.log('Fetch error:', error);
   }
+};
 
 
   return (
@@ -160,13 +179,11 @@ function BusinessProfile() {
       onConfirmDelete={handleConfirmDelete}
     />
     {/* Testing trial  */}
-        <form action="/api/stripe/create-checkout-session" method="POST">
       {/* Add a hidden field with the lookup_key of your Price */}
       <input type="hidden" name="lookup_key"  />
-      <button id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
+      <button onClick={subscribeToCheckoutSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
         Subscribe
       </button>
-    </form>
     </>
   )
 }

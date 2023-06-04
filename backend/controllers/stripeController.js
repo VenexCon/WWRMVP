@@ -14,6 +14,7 @@ const lineItems = [
 
 const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/stripe/payment";
+  console.log(req.business._id);
   //Create checkout session for user.
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,
@@ -21,12 +22,14 @@ const session = asyncHandler(async (req, res) => {
     success_url: `${YOUR_DOMAIN}?success=true?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     //This will be used to update the subscription in the webhook func below.
-    customer_email: "venexcon@outlook.com",
+    customer_email: req.business.businessEmail,
     metadata: {
-      businessId: req.business._id,
+      businessId: `${req.business._id}`,
     },
   });
-  res.redirect(303, session.url);
+  /* res.redirect(303, session.url) */
+  console.log(session);
+  res.json({ url: session.url });
 });
 
 //checkout gateway customer portal here
@@ -58,6 +61,8 @@ const updateBusiness = async (
 ) => {
   try {
     // Find and update the business by its _id
+
+    //This might fail due to the id being a string and not a mongoose objectId
     const business = await Business.findByIdAndUpdate(
       { _id: id }, // Use the email as the _id to match the metadata
       {
@@ -67,7 +72,7 @@ const updateBusiness = async (
         listingAmount: returnedListings,
       },
       { new: true } // To return the updated document
-    );
+    ).select("-password");
 
     if (business) {
       console.log("Business updated:", business);
