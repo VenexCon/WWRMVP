@@ -45,7 +45,10 @@ const businessSchema = new Schema({
   listingAmount: {
     type: Number,
   },
-  businessStripeID: {
+  customerNo: {
+    type: String,
+  },
+  checkoutSessionId: {
     type: String,
   },
   SubscriptionType: {

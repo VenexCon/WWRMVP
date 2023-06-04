@@ -4,31 +4,32 @@ const Business = require("../models/businessModel");
 const jwt = require("jsonwebtoken");
 
 const searchByToken = asyncHandler(async (token) => {});
+const lineItems = [
+  {
+    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+    price: "price_1NEdzYKSsp4mks69QRMKYJQ4",
+    quantity: 1,
+  },
+  {
+    price: "price_1NEe4PKSsp4mks69CTTtSlIG",
+    quantity: 1,
+  },
+  {
+    price: "price_1NEe6RKSsp4mks69DMPSVWgh",
+    quantity: 1,
+  },
+];
 
 const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/stripe/payment";
   //Create checkout session for user.
   const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price: "price_1NEdzYKSsp4mks69QRMKYJQ4",
-        quantity: 1,
-      },
-      {
-        price: "price_1NEe4PKSsp4mks69CTTtSlIG",
-        quantity: 1,
-      },
-      {
-        price: "price_1NEe6RKSsp4mks69DMPSVWgh",
-        quantity: 1,
-      },
-    ],
+    line_items: lineItems,
     mode: "subscription",
     success_url: `${YOUR_DOMAIN}?success=true?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     //This will be used to update the subscription in the webhook func below.
-    customer_email: "connorjobs@hotmail.com",
+    customer_email: "venexcon@outlook.com",
   });
   res.redirect(303, session.url);
 });
@@ -80,10 +81,14 @@ const webhook = asyncHandler(async (req, res) => {
   // Handle the event
   switch (event.type) {
     case "checkout.session.completed":
-      // Payment is successful and the subscription is created.
-      // You should provision the subscription and save the customer ID to your database.
-      const checkoutSession = event.id;
-      console.log(checkoutSession);
+      const checkoutSession = event.data.object;
+      const customerId = checkoutSession.customer;
+      const email = checkoutSession.customer_details.email;
+      const checkoutSessionId = checkoutSession.id;
+      const businessExists = await Business.findOne({
+        businessEmail: email,
+      });
+      console.log(businessExists);
       break;
     case "customer.subscription.trial_will_end":
       subscription = event.data.object;
