@@ -10,14 +10,6 @@ const lineItems = [
     price: "price_1NEdzYKSsp4mks69QRMKYJQ4",
     quantity: 1,
   },
-  {
-    price: "price_1NEe4PKSsp4mks69CTTtSlIG",
-    quantity: 1,
-  },
-  {
-    price: "price_1NEe6RKSsp4mks69DMPSVWgh",
-    quantity: 1,
-  },
 ];
 
 const session = asyncHandler(async (req, res) => {
@@ -30,11 +22,15 @@ const session = asyncHandler(async (req, res) => {
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     //This will be used to update the subscription in the webhook func below.
     customer_email: "venexcon@outlook.com",
+    metadata: {
+      businessId: req.business._id,
+    },
   });
   res.redirect(303, session.url);
 });
 
 //checkout gateway customer portal here
+//Need to replace this with dynamic values from the req.business.
 const createSessionPortal = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/listing/search";
   const session_id =
@@ -52,6 +48,36 @@ const createSessionPortal = asyncHandler(async (req, res) => {
 
   res.redirect(303, portalSession.url);
 });
+
+//Update Business
+const updateBusiness = async (
+  customerId,
+  id,
+  checkoutSessionId,
+  returnedListings
+) => {
+  try {
+    // Find and update the business by its _id
+    const business = await Business.findByIdAndUpdate(
+      { _id: id }, // Use the email as the _id to match the metadata
+      {
+        customerNo: customerId,
+        activeSubscription: true,
+        checkoutSessionId: checkoutSessionId,
+        listingAmount: returnedListings,
+      },
+      { new: true } // To return the updated document
+    );
+
+    if (business) {
+      console.log("Business updated:", business);
+    } else {
+      console.log("Business not found");
+    }
+  } catch (error) {
+    console.log("Error updating business:", error);
+  }
+};
 
 //Look into webhooks for monitoring subscriptions.
 const webhook = asyncHandler(async (req, res) => {
@@ -83,12 +109,10 @@ const webhook = asyncHandler(async (req, res) => {
     case "checkout.session.completed":
       const checkoutSession = event.data.object;
       const customerId = checkoutSession.customer;
-      const email = checkoutSession.customer_details.email;
+      const id = checkoutSession.metadata.businessId;
       const checkoutSessionId = checkoutSession.id;
-      const businessExists = await Business.findOne({
-        businessEmail: email,
-      });
-      console.log(businessExists);
+      const returnedListings = 10;
+      updateBusiness(customerId, id, checkoutSessionId, returnedListings);
       break;
     case "customer.subscription.trial_will_end":
       subscription = event.data.object;
