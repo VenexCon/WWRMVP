@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 //@route /listing/new
 //@access private
 const createListing = asyncHandler(async (req, res) => {
+  console.log(req);
   try {
     const {
       businessCoordinates,

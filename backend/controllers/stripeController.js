@@ -1,7 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const stripe = require("stripe")(
-  "sk_test_51NEH5PKSsp4mks69LdVoEbrEf8CQynvxqcoyiHX1bwO23zTadwsiyenjARzyjd22HJ8rGePY7gkCVcjNwB3cd04i00vu8JVxlh"
-);
+const stripe = require("stripe")(process.env.STRIPE_TEST_KEY);
 
 const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/listing/search";
@@ -27,8 +25,7 @@ const session = asyncHandler(async (req, res) => {
 const webhook = asyncHandler(async (req, res) => {
   let event = req.body;
 
-  const endpointSecret =
-    "whsec_584ba224c4367907bc7ddd5021953b82e8f78d962c40c75489fdda3dc7a154b2";
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
   // Only verify the event if you have an endpoint secret defined.
   // Otherwise use the basic event deserialized with JSON.parse
   if (endpointSecret) {
@@ -39,7 +36,6 @@ const webhook = asyncHandler(async (req, res) => {
         signature,
         endpointSecret
       );
-      console.log(event);
     } catch (err) {
       console.log(`⚠️  Webhook signature verification failed.`, err.message);
       return res.sendStatus(400);
@@ -69,6 +65,7 @@ const webhook = asyncHandler(async (req, res) => {
     case "customer.subscription.created":
       subscription = event.data.object;
       status = subscription.status;
+      console.log(event.data.customer);
       console.log(`Subscription status is ${status}.`);
       // Then define and call a method to handle the subscription created.
       // handleSubscriptionCreated(subscription);
@@ -81,8 +78,8 @@ const webhook = asyncHandler(async (req, res) => {
       // handleSubscriptionUpdated(subscription);
       break;
     default:
-      // Unexpected event type
-      console.log(`Unhandled event type ${event.type}.`);
+    // Unexpected event type
+    //console.log(`Unhandled event type ${event.type}.`);
   }
   // Return a 200 response to acknowledge receipt of the event
   res.send();
