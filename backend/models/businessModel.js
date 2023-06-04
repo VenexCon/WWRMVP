@@ -48,6 +48,9 @@ const businessSchema = new Schema({
   businessStripeID: {
     type: String,
   },
+  SubscriptionType: {
+    type: String,
+  },
 });
 
 businessSchema.index({ BusinessCoordinates: "2dsphere" });

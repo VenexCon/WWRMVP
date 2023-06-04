@@ -9,7 +9,6 @@ const mongoose = require("mongoose");
 //@route /listing/new
 //@access private
 const createListing = asyncHandler(async (req, res) => {
-  console.log(req);
   try {
     const {
       businessCoordinates,
@@ -59,8 +58,6 @@ const createListing = asyncHandler(async (req, res) => {
       listingPhone: listingPhone,
       business: id,
     });
-
-    console.log(newListing);
     res.status(201).json(newListing);
   } catch (error) {
     res.status(500);
