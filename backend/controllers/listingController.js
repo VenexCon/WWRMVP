@@ -66,6 +66,8 @@ const createListing = asyncHandler(async (req, res) => {
       listingPhone: listingPhone,
       business: id,
     });
+    //If the listing is created then it subtracts one from the listings amount.
+    //the listingAmount is refreshed in the stripeController webhook.
     if (newListing) {
       business.listingAmount -= 1;
       await business.save();
