@@ -100,6 +100,9 @@ const registerBusiness = asyncHandler(async (req, res) => {
       coordinates: [longitude, latitude],
     },
     businessTerms: businessTerms,
+    activeSubscription: false,
+    listingAmount: 10,
+    SubscriptionType: null,
   });
 
   if (newBusiness) {
@@ -118,6 +121,8 @@ const registerBusiness = asyncHandler(async (req, res) => {
         phone: newBusiness.businessPhone,
         email: newBusiness.businessEmail,
         businessCoordinates: newBusiness.businessGeolocation,
+        activeSubscription: newBusiness.activeSubscription,
+        listingAmount: newBusiness.listingAmount,
       });
   } else {
     throw new Error("Invalid business data");
@@ -150,6 +155,8 @@ const loginBusiness = asyncHandler(async (req, res) => {
         address: business.businessAddress,
         phone: business.businessPhone,
         businessCoordinates: business.businessCoordinates,
+        activeSubscription: business.activeSubscription,
+        listingAmount: business.listingAmount,
       });
   } else {
     res.status(400);

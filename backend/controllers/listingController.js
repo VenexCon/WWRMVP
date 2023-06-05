@@ -16,6 +16,7 @@ const createListing = asyncHandler(async (req, res) => {
       businessAddress,
       businessEmail,
       businessPhone,
+      listingsAmount,
     } = req.business;
     const {
       title,
@@ -33,6 +34,13 @@ const createListing = asyncHandler(async (req, res) => {
       throw new Error("Please ensure all fields are completed.");
     }
 
+    if (listingsAmount === 0) {
+      res.status(404);
+      throw new Error(
+        "You have used all your listings, please upgrade your plan or wait for the next cycle."
+      );
+    }
+
     let listingLocation = address;
     let listingCoordinates = {
       type: "Point",
@@ -48,7 +56,7 @@ const createListing = asyncHandler(async (req, res) => {
     if (useBusPhone) {
       listingPhone = businessPhone;
     }
-
+    const business = await Business.findById(req.business._id);
     const newListing = await Listing.create({
       listingTitle: title,
       listingDescription: description,
@@ -58,7 +66,11 @@ const createListing = asyncHandler(async (req, res) => {
       listingPhone: listingPhone,
       business: id,
     });
-    res.status(201).json(newListing);
+    if (newListing) {
+      business.listingAmount -= 1;
+      await business.save();
+      res.status(201).json(newListing);
+    }
   } catch (error) {
     res.status(500);
     throw new Error(`Error creating listing: ${error.message}`);

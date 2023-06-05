@@ -36,8 +36,7 @@ const session = asyncHandler(async (req, res) => {
 //Need to replace this with dynamic values from the req.business.
 const createSessionPortal = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/listing/search";
-  const session_id =
-    "cs_test_a116RZaN8jtWnI7A4pxqpsgLoo6HPoQu9VSMvwjdbvdEdATZ5tNlMM8olP";
+  const session_id = req.business.checkoutSessionId;
   const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
 
   // This is the url to which the customer will be redirected when they are done

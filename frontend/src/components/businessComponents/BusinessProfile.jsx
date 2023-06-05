@@ -22,6 +22,9 @@ function BusinessProfile() {
     //modal state.
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+    console.log(business)
+
+    //Not currently used,. 
     const selectEdit = () => {
       setEdit((prevState) => !prevState)
     }
@@ -39,6 +42,7 @@ function BusinessProfile() {
     businessName:'',
     businessAddress:'',
     })
+
     //Not current used, due to above reason.
     const onMutate = (e) => {
       setRegisterData((prevState) => ({
@@ -180,6 +184,7 @@ function BusinessProfile() {
     />
     {/* Testing trial  */}
       {/* Add a hidden field with the lookup_key of your Price */}
+      {/* This needs to be dynamic depending on if the user is subscribed or not. */}
       <input type="hidden" name="lookup_key"  />
       <button onClick={subscribeToCheckoutSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
         Subscribe
