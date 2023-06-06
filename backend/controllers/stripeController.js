@@ -35,8 +35,6 @@ const session = asyncHandler(async (req, res) => {
 const createSessionPortal = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/profile";
   const customerNo = req.business.customerNo;
-  // This is the url to which the customer will be redirected when they are done
-  // managing their billing with the portal.
   const returnUrl = YOUR_DOMAIN;
 
   const portalSession = await stripe.billingPortal.sessions.create({
@@ -49,43 +47,57 @@ const createSessionPortal = asyncHandler(async (req, res) => {
 });
 
 //Update Business
-const updateBusiness = async (
-  customerId,
-  id,
-  checkoutSessionId,
-  returnedListings
-) => {
-  try {
-    // Find and update the business by its _id
-    const business = await Business.findByIdAndUpdate(
-      { _id: id }, // Use the email as the _id to match the metadata
-      {
-        customerNo: customerId,
-        activeSubscription: true,
-        checkoutSessionId: checkoutSessionId,
-        listingAmount: returnedListings,
-      },
-      { new: true } // To return the updated document
-    ).select("-password");
-
-    if (business) {
-      console.log("Business updated:", business);
-    } else {
-      console.log("Business not found");
+const updateBusiness = asyncHandler(
+  async (customerId, id, checkoutSessionId, returnedListings) => {
+    try {
+      // Find and update the business by its _id
+      const business = await Business.findByIdAndUpdate(
+        { _id: id }, // Use the email as the _id to match the metadata
+        {
+          customerNo: customerId,
+          activeSubscription: true,
+          checkoutSessionId: checkoutSessionId,
+          listingAmount: returnedListings,
+        },
+        { new: true } // To return the updated document
+      ).select("-password");
+      //change to return and throw errorss
+      if (business) {
+        console.log("Business updated:", business);
+      } else {
+        console.log("Business not found");
+      }
+    } catch (error) {
+      console.log("Error updating business:", error);
     }
-  } catch (error) {
-    console.log("Error updating business:", error);
   }
-};
+);
+
+//Refresh listing amounts when subscription is updated and paid.
+//updateCustomer - event = invoice.paid
+const updateCustomer = asyncHandler(async (customerId, planType) => {
+  const business = await Business.findOne({ customerNo: customerId });
+  if (!business) return Error("No business found");
+
+  if (planType === "pro") {
+    business.listingAmount = 50;
+    return business.save();
+  }
+
+  if (planType === "enterprise") {
+    business.listingAmount = 20000;
+    return business.save();
+  }
+});
 
 //Update customer metadata with business model ID for retrieval later, and to recognise subscriptions.
-const addMetadataToCustomer = async (customerId, businessId) => {
+const addMetadataToCustomer = asyncHandler(async (customerId, businessId) => {
   await stripe.customers.update(customerId, {
     metadata: {
       businessId: businessId,
     },
   });
-};
+});
 
 //Look into webhooks for monitoring subscriptions.
 const webhook = asyncHandler(async (req, res) => {
@@ -133,7 +145,8 @@ const webhook = asyncHandler(async (req, res) => {
     case "customer.subscription.deleted":
       subscription = event.data.object;
       status = subscription.status;
-      console.log("sUBSCRIPTION CANCELLED");
+
+      //console.log("sUBSCRIPTION CANCELLED");
       break;
     case "customer.subscription.created":
       subscription = event.data.object;
@@ -142,9 +155,19 @@ const webhook = asyncHandler(async (req, res) => {
     case "customer.subscription.updated":
       subscription = event.data.object;
       status = subscription.status;
-      //console.log(`Subscription status is ${status}.`);
+      //console.log(subscription.customer);
       // Then define and call a method to handle the subscription update.
       // handleSubscriptionUpdated(subscription);
+      //Get business,
+      //get type of subscription from metadata.
+      //renew based on enterprise or pro pla e.g. 50 or unlimited.
+      break;
+    case "invoice.paid":
+      console.log(event.data);
+      invoiceObject = event.data.object;
+      customerId = invoiceObject.customer;
+      planType = invoiceObject.metadata.planType;
+      updateCustomer(customerId, planType);
       break;
     default:
     // Unexpected event type
