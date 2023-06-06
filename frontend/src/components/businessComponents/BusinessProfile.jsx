@@ -22,8 +22,6 @@ function BusinessProfile() {
     //modal state.
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    console.log(business)
-
     //Not currently used,. 
     const selectEdit = () => {
       setEdit((prevState) => !prevState)
@@ -65,6 +63,7 @@ function BusinessProfile() {
       navigate('/*')
   };
 
+  //customer checkout
   const subscribeToCheckoutSession = async () => {
     const token = Cookies.get('token');
   try {
@@ -75,7 +74,27 @@ function BusinessProfile() {
          "Authorization": `Bearer ${token}`,
       },
     });
+    const body = await response.json()
+    console.log(body.url)
+    window.location.href = body.url
+    
+  } catch (error) {
+    // Handle fetch error
+    console.log('Fetch error:', error);
+  }
+};
 
+//customer portal session. 
+  const subscribeToPortalSession = async () => {
+    const token = Cookies.get('token');
+  try {
+    const response = await fetch('api/stripe/create-portal-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+         "Authorization": `Bearer ${token}`,
+      },
+    });
     const body = await response.json()
     console.log(body.url)
     window.location.href = body.url
@@ -188,6 +207,10 @@ function BusinessProfile() {
       <input type="hidden" name="lookup_key"  />
       <button onClick={subscribeToCheckoutSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
         Subscribe
+      </button>
+       <input type="hidden" name="lookup_key"  />
+      <button onClick={subscribeToPortalSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
+        Manage Subscription
       </button>
     </>
   )

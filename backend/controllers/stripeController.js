@@ -14,7 +14,6 @@ const lineItems = [
 
 const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/stripe/payment";
-  console.log(req.business._id);
   //Create checkout session for user.
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,
@@ -28,27 +27,25 @@ const session = asyncHandler(async (req, res) => {
     },
   });
   /* res.redirect(303, session.url) */
-  console.log(session);
   res.json({ url: session.url });
 });
 
 //checkout gateway customer portal here
 //Need to replace this with dynamic values from the req.business.
 const createSessionPortal = asyncHandler(async (req, res) => {
-  const YOUR_DOMAIN = "http://localhost:3000/listing/search";
-  const session_id = req.business.checkoutSessionId;
-  const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
-
+  const YOUR_DOMAIN = "http://localhost:3000/profile";
+  const customerNo = req.business.customerNo;
   // This is the url to which the customer will be redirected when they are done
   // managing their billing with the portal.
   const returnUrl = YOUR_DOMAIN;
 
   const portalSession = await stripe.billingPortal.sessions.create({
-    customer: checkoutSession.customer,
+    customer: customerNo,
     return_url: returnUrl,
   });
 
-  res.redirect(303, portalSession.url);
+  /* res.redirect(303, portalSession.url); */
+  res.json({ url: portalSession.url });
 });
 
 //Update Business
@@ -60,8 +57,6 @@ const updateBusiness = async (
 ) => {
   try {
     // Find and update the business by its _id
-
-    //This might fail due to the id being a string and not a mongoose objectId
     const business = await Business.findByIdAndUpdate(
       { _id: id }, // Use the email as the _id to match the metadata
       {
@@ -81,6 +76,15 @@ const updateBusiness = async (
   } catch (error) {
     console.log("Error updating business:", error);
   }
+};
+
+//Update customer metadata with business model ID for retrieval later, and to recognise subscriptions.
+const addMetadataToCustomer = async (customerId, businessId) => {
+  await stripe.customers.update(customerId, {
+    metadata: {
+      businessId: businessId,
+    },
+  });
 };
 
 //Look into webhooks for monitoring subscriptions.
@@ -111,34 +115,29 @@ const webhook = asyncHandler(async (req, res) => {
   // Handle the event
   switch (event.type) {
     case "checkout.session.completed":
-      const checkoutSession = event.data.object;
+      //Blocked to test other events.
+      /*  const checkoutSession = event.data.object;
       const customerId = checkoutSession.customer;
       const id = checkoutSession.metadata.businessId;
       const checkoutSessionId = checkoutSession.id;
       const returnedListings = 10;
-      updateBusiness(customerId, id, checkoutSessionId, returnedListings);
+      await addMetadataToCustomer(customerId, id);
+      await updateBusiness(customerId, id, checkoutSessionId, returnedListings);
+      console.log("Session complete"); */
       break;
     case "customer.subscription.trial_will_end":
       subscription = event.data.object;
       status = subscription.status;
-      //console.log(`Subscription status is ${status}.`);
-      // Then define and call a method to handle the subscription trial ending.
-      // handleSubscriptionTrialEnding(subscription);
+      //free tier means no free trial for more listings.
       break;
     case "customer.subscription.deleted":
       subscription = event.data.object;
       status = subscription.status;
-      //console.log(`Subscription status is ${status}.`);
-      // Then define and call a method to handle the subscription deleted.
-      // handleSubscriptionDeleted(subscriptionDeleted);
+      console.log("sUBSCRIPTION CANCELLED");
       break;
     case "customer.subscription.created":
       subscription = event.data.object;
       status = subscription.status;
-      //console.log(event.data);
-      //console.log(`Subscription status is ${status}.`);
-      // Then define and call a method to handle the subscription created.
-      // handleSubscriptionCreated(subscription);
       break;
     case "customer.subscription.updated":
       subscription = event.data.object;
