@@ -90,7 +90,7 @@ const updateCustomer = asyncHandler(async (customerId, planType) => {
   }
 });
 
-//Update customer metadata with business model ID for retrieval later, and to recognise subscriptions.
+//Update customer metadata with business model ID for retrieval later, and to recognize subscriptions.
 const addMetadataToCustomer = asyncHandler(async (customerId, businessId) => {
   await stripe.customers.update(customerId, {
     metadata: {
@@ -98,6 +98,10 @@ const addMetadataToCustomer = asyncHandler(async (customerId, businessId) => {
     },
   });
 });
+
+//sets businesses plan type to "basic", therefore the CRON will attach 10 basic listings and the customer will no
+//longer have an enterprise or pro plan.
+// Give some thought to how the user will re-subscribe, it should be the same customer number,
 
 //Look into webhooks for monitoring subscriptions.
 const webhook = asyncHandler(async (req, res) => {
@@ -128,14 +132,13 @@ const webhook = asyncHandler(async (req, res) => {
   switch (event.type) {
     case "checkout.session.completed":
       //Blocked to test other events.
-      /*  const checkoutSession = event.data.object;
+      const checkoutSession = event.data.object;
       const customerId = checkoutSession.customer;
       const id = checkoutSession.metadata.businessId;
       const checkoutSessionId = checkoutSession.id;
       const returnedListings = 10;
-      await addMetadataToCustomer(customerId, id);
-      await updateBusiness(customerId, id, checkoutSessionId, returnedListings);
-      console.log("Session complete"); */
+      addMetadataToCustomer(customerId, id);
+      updateBusiness(customerId, id, checkoutSessionId, returnedListings);
       break;
     case "customer.subscription.trial_will_end":
       subscription = event.data.object;
@@ -145,7 +148,6 @@ const webhook = asyncHandler(async (req, res) => {
     case "customer.subscription.deleted":
       subscription = event.data.object;
       status = subscription.status;
-
       //console.log("sUBSCRIPTION CANCELLED");
       break;
     case "customer.subscription.created":
@@ -163,7 +165,6 @@ const webhook = asyncHandler(async (req, res) => {
       //renew based on enterprise or pro pla e.g. 50 or unlimited.
       break;
     case "invoice.paid":
-      console.log(event.data);
       invoiceObject = event.data.object;
       customerId = invoiceObject.customer;
       planType = invoiceObject.metadata.planType;
