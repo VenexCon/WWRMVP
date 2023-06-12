@@ -3,17 +3,24 @@ const stripe = require("stripe")(process.env.STRIPE_TEST_KEY);
 const Business = require("../models/businessModel");
 const jwt = require("jsonwebtoken");
 
+//not used ATM
 const searchByToken = asyncHandler(async (token) => {});
+
 const lineItems = [
   {
     // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-    price: "price_1NEdzYKSsp4mks69QRMKYJQ4",
+    price: "price_1NEe6RKSsp4mks69DMPSVWgh",
     quantity: 1,
   },
 ];
 
+//Initial checkout session, called when first subscribing.
 const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/stripe/payment";
+
+  //get the plan type from another source.
+  const planType = "enterprise";
+
   //Create checkout session for user.
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,
@@ -24,9 +31,9 @@ const session = asyncHandler(async (req, res) => {
     customer_email: req.business.businessEmail,
     metadata: {
       businessId: `${req.business._id}`,
+      planType: planType,
     },
   });
-  /* res.redirect(303, session.url) */
   res.json({ url: session.url });
 });
 
@@ -46,9 +53,9 @@ const createSessionPortal = asyncHandler(async (req, res) => {
   res.json({ url: portalSession.url });
 });
 
-//Update Business
+//Update Business called during the checkout.completed case.
 const updateBusiness = asyncHandler(
-  async (customerId, id, checkoutSessionId, returnedListings) => {
+  async (customerId, id, checkoutSessionId, planType) => {
     try {
       // Find and update the business by its _id
       const business = await Business.findByIdAndUpdate(
@@ -57,13 +64,13 @@ const updateBusiness = asyncHandler(
           customerNo: customerId,
           activeSubscription: true,
           checkoutSessionId: checkoutSessionId,
-          listingAmount: returnedListings,
+          SubscriptionType: planType,
         },
         { new: true } // To return the updated document
       ).select("-password");
-      //change to return and throw errorss
+      //change to return and throw errors
       if (business) {
-        console.log("Business updated:", business);
+        console.log("Business updated");
       } else {
         console.log("Business not found");
       }
@@ -73,18 +80,20 @@ const updateBusiness = asyncHandler(
   }
 );
 
-//Refresh listing amounts when subscription is updated and paid.
-//updateCustomer - event = invoice.paid
-const updateCustomer = asyncHandler(async (customerId, planType) => {
+//updateCustomer is called during the invoice.paid case.
+//This should check what type of subscription the business has and then
+const refreshListings = asyncHandler(async (customerId, planType) => {
   const business = await Business.findOne({ customerNo: customerId });
+  const { SubscriptionType } = business;
+  console.log(SubscriptionType);
   if (!business) return Error("No business found");
 
-  if (planType === "pro") {
+  if (SubscriptionType === "pro") {
     business.listingAmount = 50;
     return business.save();
   }
 
-  if (planType === "enterprise") {
+  if (SubscriptionType === "enterprise") {
     business.listingAmount = 20000;
     return business.save();
   }
@@ -131,14 +140,13 @@ const webhook = asyncHandler(async (req, res) => {
   // Handle the event
   switch (event.type) {
     case "checkout.session.completed":
-      //Blocked to test other events.
       const checkoutSession = event.data.object;
       const customerId = checkoutSession.customer;
       const id = checkoutSession.metadata.businessId;
+      const planType = checkoutSession.metadata.planType;
       const checkoutSessionId = checkoutSession.id;
-      const returnedListings = 10;
       addMetadataToCustomer(customerId, id);
-      updateBusiness(customerId, id, checkoutSessionId, returnedListings);
+      updateBusiness(customerId, id, checkoutSessionId, planType);
       break;
     case "customer.subscription.trial_will_end":
       subscription = event.data.object;
@@ -167,8 +175,7 @@ const webhook = asyncHandler(async (req, res) => {
     case "invoice.paid":
       invoiceObject = event.data.object;
       customerId = invoiceObject.customer;
-      planType = invoiceObject.metadata.planType;
-      updateCustomer(customerId, planType);
+      refreshListings(customerId);
       break;
     default:
     // Unexpected event type

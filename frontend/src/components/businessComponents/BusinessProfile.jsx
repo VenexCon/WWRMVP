@@ -75,7 +75,6 @@ function BusinessProfile() {
       },
     });
     const body = await response.json()
-    console.log(body.url)
     window.location.href = body.url
     
   } catch (error) {
