@@ -175,6 +175,7 @@ const webhook = asyncHandler(async (req, res) => {
     case "customer.subscription.updated":
       subscription = event.data.object;
       status = subscription.status;
+      console.log(subscription);
       break;
     case "invoice.paid":
       //No idea if this works

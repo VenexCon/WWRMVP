@@ -157,6 +157,7 @@ const loginBusiness = asyncHandler(async (req, res) => {
         businessCoordinates: business.businessCoordinates,
         activeSubscription: business.activeSubscription,
         listingAmount: business.listingAmount,
+        subscriptionType: business.SubscriptionType,
       });
   } else {
     res.status(400);
