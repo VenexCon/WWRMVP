@@ -3,9 +3,6 @@ const stripe = require("stripe")(process.env.STRIPE_TEST_KEY);
 const Business = require("../models/businessModel");
 const jwt = require("jsonwebtoken");
 
-//not used ATM
-const searchByToken = asyncHandler(async (token) => {});
-
 const lineItems = [
   {
     // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
@@ -18,7 +15,7 @@ const lineItems = [
 const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/stripe/payment";
 
-  //get the plan type from another source.
+  //get the plan type from another source - Needs to be dynamic.
   const planType = "enterprise";
 
   //Create checkout session for user.
@@ -37,8 +34,7 @@ const session = asyncHandler(async (req, res) => {
   res.json({ url: session.url });
 });
 
-//checkout gateway customer portal here
-//Need to replace this with dynamic values from the req.business.
+//checkout gateway customer portal for subscription management
 const createSessionPortal = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/profile";
   const customerNo = req.business.customerNo;
@@ -48,8 +44,6 @@ const createSessionPortal = asyncHandler(async (req, res) => {
     customer: customerNo,
     return_url: returnUrl,
   });
-
-  /* res.redirect(303, portalSession.url); */
   res.json({ url: portalSession.url });
 });
 
@@ -68,32 +62,31 @@ const updateBusiness = asyncHandler(
         },
         { new: true } // To return the updated document
       ).select("-password");
-      //change to return and throw errors
       if (business) {
-        console.log("Business updated");
+        business.save();
       } else {
         console.log("Business not found");
+        throw new Error("Business does not exist");
       }
     } catch (error) {
       console.log("Error updating business:", error);
+      throw new Error(error.message);
     }
   }
 );
 
-//updateCustomer is called during the invoice.paid case.
+//refresh listings is called during the invoice .paid
 //This should check what type of subscription the business has and then
-const refreshListings = asyncHandler(async (customerId, planType) => {
+const refreshListings = asyncHandler(async (customerId) => {
   const business = await Business.findOne({ customerNo: customerId });
-  const { SubscriptionType } = business;
-  console.log(SubscriptionType);
   if (!business) return Error("No business found");
 
-  if (SubscriptionType === "pro") {
+  if (business.SubscriptionType === "pro") {
     business.listingAmount = 50;
     return business.save();
   }
 
-  if (SubscriptionType === "enterprise") {
+  if (business.SubscriptionType === "enterprise") {
     business.listingAmount = 20000;
     return business.save();
   }
@@ -108,9 +101,25 @@ const addMetadataToCustomer = asyncHandler(async (customerId, businessId) => {
   });
 });
 
-//sets businesses plan type to "basic", therefore the CRON will attach 10 basic listings and the customer will no
-//longer have an enterprise or pro plan.
-// Give some thought to how the user will re-subscribe, it should be the same customer number,
+//sets businesses plan type to "basic",
+//sets listings back to ten.
+const subscriptionCancelled = asyncHandler(async (customerId, status) => {
+  try {
+    const business = await Business.findOne(
+      { customerNo: customerId },
+      {
+        activeSubscription: false,
+        checkoutSessionId: checkoutSessionId,
+        SubscriptionType: "basic",
+        listingAmount: 10,
+      }
+    );
+    return business;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+});
 
 //Look into webhooks for monitoring subscriptions.
 const webhook = asyncHandler(async (req, res) => {
@@ -156,7 +165,8 @@ const webhook = asyncHandler(async (req, res) => {
     case "customer.subscription.deleted":
       subscription = event.data.object;
       status = subscription.status;
-      //console.log("sUBSCRIPTION CANCELLED");
+      console.log("Subscription :", subscription);
+      subscriptionCancelled(subscription.customer);
       break;
     case "customer.subscription.created":
       subscription = event.data.object;
@@ -165,21 +175,15 @@ const webhook = asyncHandler(async (req, res) => {
     case "customer.subscription.updated":
       subscription = event.data.object;
       status = subscription.status;
-      //console.log(subscription.customer);
-      // Then define and call a method to handle the subscription update.
-      // handleSubscriptionUpdated(subscription);
-      //Get business,
-      //get type of subscription from metadata.
-      //renew based on enterprise or pro pla e.g. 50 or unlimited.
       break;
     case "invoice.paid":
+      //No idea if this works
       invoiceObject = event.data.object;
-      customerId = invoiceObject.customer;
-      refreshListings(customerId);
+      refreshListings(invoiceObject.customer);
+      /*  customerId = invoiceObject.customer;
+      refreshListings(customerId); */
       break;
     default:
-    // Unexpected event type
-    //console.log(`Unhandled event type ${event.type}.`);
   }
   // Return a 200 response to acknowledge receipt of the event
   res.send();
