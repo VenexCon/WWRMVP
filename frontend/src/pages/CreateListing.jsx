@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createNewListing } from "../features/listings/listingSlice";
+import { getBusiness } from '../features/businessAuth/businessSlice'
 import {toast} from 'react-toastify'
 import {useNavigate} from 'react-router-dom'
 
@@ -60,8 +61,7 @@ const CreateListing = () => {
       listingData.address = data.results[0]?.formatted_address
       }
       const listing = await dispatch(createNewListing(listingData));
-      console.log(listing)
-      if(!listing.error) {
+      if(listing) {
         toast.success('Listing Created')
         navigate('/listing')
         //navigate(`/listing/${listing.payload._id}`)

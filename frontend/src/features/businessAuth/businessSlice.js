@@ -71,6 +71,19 @@ export const logoutBusiness = createAsyncThunk(
   }
 );
 
+//Get business used for getting latest updates to business model.
+//
+export const getBusiness = createAsyncThunk(
+  "business/getBusiness",
+  async (_, thunkAPI) => {
+    try {
+      return await businessService.getBusiness();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
 export const businessSlice = createSlice({
   name: "business",
   initialState,
@@ -112,6 +125,16 @@ export const businessSlice = createSlice({
         state.isPending = true;
       })
       .addCase(deleteBusiness.rejected, (state) => {
+        state.isPending = false;
+      })
+      .addCase(getBusiness.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.business = action.payload;
+      })
+      .addCase(getBusiness.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(getBusiness.rejected, (state) => {
         state.isPending = false;
       });
   },

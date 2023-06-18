@@ -29,7 +29,21 @@ const loginBusiness = async (businessData) => {
   if (response.data) {
     localStorage.setItem("business", JSON.stringify(response.data));
   }
+  return response.data;
+};
 
+const getBusiness = async () => {
+  const token = Cookies.get("token");
+  const url = "/api/business/profile";
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(url, config);
+  if (response.data) {
+    localStorage.setItem("business", JSON.stringify(response.data));
+  }
   return response.data;
 };
 
@@ -63,6 +77,7 @@ const businessService = {
   loginBusiness,
   logoutBusiness,
   deleteBusiness,
+  getBusiness,
 };
 
 export default businessService;

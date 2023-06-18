@@ -63,7 +63,7 @@ const Listing = () => {
      const deleted = await dispatch(deleteSpecificListing(listingId, business))
       if(!deleted.payload) {
       toast.success('Listing deleted')
-      navigate('/listing')
+      navigate('/listing/search')
     } else {
       return toast.error('Listing could not be deleted')
     }

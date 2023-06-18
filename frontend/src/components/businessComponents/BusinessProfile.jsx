@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { getMyListings } from '../../features/listings/listingSlice'
-import { deleteBusiness } from '../../features/businessAuth/businessSlice'
+import { deleteBusiness, getBusiness } from '../../features/businessAuth/businessSlice'
 import ListingItem from '../sharedComponents/ListingItem'
-import { FaUserAlt, FaEnvelope,FaCog, FaGlobe,FaPlusCircle, FaArrowCircleRight } from 'react-icons/fa'
+import { FaUserAlt, FaEnvelope,FaCog, FaGlobe,FaPlusCircle, FaArrowCircleRight, } from 'react-icons/fa'
 import DeleteModal from '../sharedComponents/DeleteModal';
 import Cookies from 'js-cookie';
 
@@ -34,6 +34,14 @@ function BusinessProfile() {
       fetchListings()
     }, [business, dispatch])
 
+    useEffect(() => {
+      const fetchProfile = async () => {
+        const res =  await dispatch(getBusiness())
+        console.log(res)
+      }
+      fetchProfile()
+    },[])
+
     //Not currently used, will be used when 2FA is added for confirming email address.
     const [registerData, setRegisterData] = useState({
     businessEmail:'',
@@ -57,7 +65,7 @@ function BusinessProfile() {
 
   //this will dispatch the deleteBusiness action from slice.
   const handleConfirmDelete = async () => {
-    const deleted = await dispatch(deleteBusiness())
+      dispatch(deleteBusiness())
       setShowDeleteModal(false);
       toast.success('Account Deleted')
       navigate('/*')
@@ -108,6 +116,18 @@ function BusinessProfile() {
   return (
      <>
       <div className="flex flex-col gap-4 mt-8 mb-8">
+        <div className="flex flex-col sm:flex-row w-full">
+             <div className="w-full flex  flex-row text-white font-semibold  py-1 px-1 rounded-md ">
+              <p className='text-white'>Plan Type :</p>
+              <p className='text-blue-600 px-4'>{business.subscriptionType ? business.subscriptionType : ''}</p>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row w-full">
+             <div className="w-full flex  flex-row text-white font-semibold  py-1 px-1 rounded-md ">
+              <p className='text-white'>Listings Remaining:</p>
+              <p className='text-blue-600 px-4'>{business.listingAmount ? business.listingAmount : 0}</p>
+            </div>
+          </div>
         <div className="flex items-center space-x-2">
           <FaUserAlt className="text-white" />
           <input

@@ -177,14 +177,17 @@ const getProfile = (req, res) => {
     phone: req.business.businessPhone,
     address: req.business.businessAddress,
     businessCoordinates: req.business.businessCoordinates,
+    listingAmount: req.business.listingAmount,
+    subscriptionType: req.business.SubscriptionType,
+    activeSubscription: req.business.activeSubscription,
   };
   res.status(200).json(business);
 };
+//@Desc minus one from listings when listings are created.
 
 //@Desc Replace the cookie with null on logout, to ensure all tokens are moved
 //@Route /users/logout
 //@access private
-
 const logoutBusiness = asyncHandler(async (req, res) => {
   res
     .status(202)
