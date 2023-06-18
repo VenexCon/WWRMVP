@@ -4,7 +4,7 @@ const Business = require("../models/businessModel");
 const User = require("../models/userModel");
 const Listing = require("../models/listingModel");
 const jwt = require("jsonwebtoken");
-
+const cron = require("node-cron");
 //generate jwt token
 //generate token
 const generateToken = (id) => {
@@ -102,7 +102,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
     businessTerms: businessTerms,
     activeSubscription: false,
     listingAmount: 10,
-    SubscriptionType: null,
+    SubscriptionType: "basic",
   });
 
   if (newBusiness) {
@@ -228,6 +228,35 @@ const deleteBusiness = asyncHandler(async (req, res) => {
     throw new Error("Unable to delete business");
   }
 });
+
+//NODE CRON
+//Schedule cron job to run on the first day of every month at 00:00 (midnight)
+//This adds 10 listings to each business without an active subscription.
+cron.schedule(
+  "0 0 1 * *",
+  asyncHandler(async () => {
+    try {
+      // Fetch all business units
+      const businessUnits = await Business.find();
+
+      // Iterate over each business unit
+      businessUnits.forEach(async (businessUnit) => {
+        // Check if the business unit does not have a paid plan
+        if (!businessUnit.activeSubscription) {
+          // Add 10 to the listingsAmount
+          businessUnit.listingsAmount += 10;
+
+          // Save the updated business unit
+          await businessUnit.save();
+        }
+      });
+
+      console.log("Cron job executed successfully.");
+    } catch (error) {
+      console.error("Error executing cron job:", error);
+    }
+  })
+);
 
 module.exports = {
   registerBusiness,

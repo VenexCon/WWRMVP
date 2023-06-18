@@ -31,7 +31,7 @@ const navigate = useNavigate()
       const userData = {email:email.toLowerCase(), password}
       const business = await dispatch(loginBusiness(userData)).unwrap();
       toast.success(`Logged in as ${business.name}`);
-      navigate('/login');
+      navigate('/profile');
     } catch (error) {
       toast.error(error);
     }

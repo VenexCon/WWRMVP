@@ -8,7 +8,7 @@ import ListingItem from '../sharedComponents/ListingItem'
 import { FaUserAlt, FaEnvelope,FaCog, FaGlobe,FaPlusCircle, FaArrowCircleRight } from 'react-icons/fa'
 import DeleteModal from '../sharedComponents/DeleteModal';
 import Cookies from 'js-cookie';
-import { unwrapResult } from '@reduxjs/toolkit'
+
 
 
 function BusinessProfile() {

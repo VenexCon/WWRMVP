@@ -11,7 +11,9 @@ const lineItems = [
   },
 ];
 
-//Initial checkout session, called when first subscribing.
+//@Access - Private
+//@Desc - initalises a checkout session, needs to be dynamic for the line items.
+//@Route '/create-checkout-session'
 const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/stripe/payment";
 
@@ -34,7 +36,9 @@ const session = asyncHandler(async (req, res) => {
   res.json({ url: session.url });
 });
 
-//checkout gateway customer portal for subscription management
+//@DESC - checkout gateway customer portal for subscription management, takes customer ID as attached during checkout session completion.
+//@Access - Private
+//@Route /create-portal-session
 const createSessionPortal = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/profile";
   const customerNo = req.business.customerNo;
@@ -47,7 +51,9 @@ const createSessionPortal = asyncHandler(async (req, res) => {
   res.json({ url: portalSession.url });
 });
 
+//@Switch Case : Checkout.completed
 //Update Business called during the checkout.completed case.
+//handles adding the customerID to the business model.
 const updateBusiness = asyncHandler(
   async (customerId, id, checkoutSessionId, planType) => {
     try {
@@ -75,6 +81,7 @@ const updateBusiness = asyncHandler(
   }
 );
 
+//@Switch Case : Invoice.Paid
 //refresh listings is called during the invoice .paid
 //This should check what type of subscription the business has and then
 const refreshListings = asyncHandler(async (customerId) => {
@@ -92,6 +99,7 @@ const refreshListings = asyncHandler(async (customerId) => {
   }
 });
 
+//@Switch Case - Checkout.session.completed
 //Update customer metadata with business model ID for retrieval later, and to recognize subscriptions.
 const addMetadataToCustomer = asyncHandler(async (customerId, businessId) => {
   await stripe.customers.update(customerId, {
@@ -101,8 +109,9 @@ const addMetadataToCustomer = asyncHandler(async (customerId, businessId) => {
   });
 });
 
+//@Switch Case - Subscription.cancelled.
 //sets businesses plan type to "basic",
-//sets listings back to ten.
+//sets listings back to ten (10).
 const subscriptionCancelled = asyncHandler(async (customerId, status) => {
   try {
     const business = await Business.findOne(
@@ -122,6 +131,8 @@ const subscriptionCancelled = asyncHandler(async (customerId, status) => {
 });
 
 //Look into webhooks for monitoring subscriptions.
+//Seperate routing in server.js for this webhook.
+//@TO-DO- Handle failed payments when invoiced,
 const webhook = asyncHandler(async (req, res) => {
   let event = req.body;
 

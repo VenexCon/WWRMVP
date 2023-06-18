@@ -69,7 +69,7 @@ function BusinessRegister() {
        businessData.businessAddress = data.results[0]?.formatted_address
         const business = await dispatch(registerBusiness(businessData)).unwrap()
         toast.success(`Registered new business - ${business.name}`)
-        navigate('/listings')
+        navigate('/profile')
       } catch (error) {
         return toast.error(error)
       }

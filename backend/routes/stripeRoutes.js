@@ -14,6 +14,7 @@ const app = express();
 const matchRawBodyToJSON = bodyParser.raw({ type: "application/json" });
 router.post("/webhook", matchRawBodyToJSON, webhook);
 
+//JSON Routes - residual routes for web application.
 app.use(express.json());
 app.use(
   express.urlencoded({
