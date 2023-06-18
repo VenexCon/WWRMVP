@@ -123,6 +123,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
         businessCoordinates: newBusiness.businessGeolocation,
         activeSubscription: newBusiness.activeSubscription,
         listingAmount: newBusiness.listingAmount,
+        subscriptionType: newBusiness.SubscriptionType,
       });
   } else {
     throw new Error("Invalid business data");
