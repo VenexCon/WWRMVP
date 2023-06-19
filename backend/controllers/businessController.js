@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const Listing = require("../models/listingModel");
 const jwt = require("jsonwebtoken");
 const cron = require("node-cron");
+
 //generate jwt token
 //generate token
 const generateToken = (id) => {
@@ -171,7 +172,7 @@ const loginBusiness = asyncHandler(async (req, res) => {
 //@access private
 const getProfile = (req, res) => {
   const business = {
-    id: req.business._id, // because of the mongoose schema storing id as ._id
+    _id: req.business._id, // because of the mongoose schema storing id as ._id
     email: req.business.businessEmail,
     name: req.business.businessName,
     phone: req.business.businessPhone,
@@ -184,7 +185,26 @@ const getProfile = (req, res) => {
   res.status(200).json(business);
 };
 //@Desc minus one from listings when listings are created.
+const decrementListing = asyncHandler(async (req, res) => {
+  try {
+    const updated = Business.findByIdAndUpdate(
+      req.business._id,
+      {
+        listingAmount: req.business.listingAmount - 1,
+      },
+      { new: true }
+    )
+      .select("-businessPassword")
+      .exec();
 
+    if (updated) {
+      res.status(201).json(updated);
+    }
+  } catch (error) {
+    res.status(400);
+    throw new Error("Could not update listing Amount");
+  }
+});
 //@Desc Replace the cookie with null on logout, to ensure all tokens are moved
 //@Route /users/logout
 //@access private
@@ -257,6 +277,7 @@ cron.schedule(
 
       console.log("Cron job executed successfully.");
     } catch (error) {
+      res.status(500);
       console.error("Error executing cron job:", error);
     }
   })
@@ -268,4 +289,5 @@ module.exports = {
   logoutBusiness,
   getProfile,
   deleteBusiness,
+  decrementListing,
 };

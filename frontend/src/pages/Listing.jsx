@@ -21,7 +21,7 @@ const Listing = () => {
     const fetchListing = async () => {
       const response =  await dispatch(getSpecificListing(listingId));
       console.log(response.payload.business)
-      if(response.payload.business === business.id) {
+      if(response.payload.business === business._id) {
         setOwnTicket(true)
       } 
     };

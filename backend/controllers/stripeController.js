@@ -75,6 +75,7 @@ const updateBusiness = asyncHandler(
         throw new Error("Business does not exist");
       }
     } catch (error) {
+      res.status(404);
       console.log("Error updating business:", error);
       throw new Error(error.message);
     }
@@ -85,28 +86,38 @@ const updateBusiness = asyncHandler(
 //refresh listings is called during the invoice .paid
 //This should check what type of subscription the business has and then
 const refreshListings = asyncHandler(async (customerId) => {
-  const business = await Business.findOne({ customerNo: customerId });
-  if (!business) return Error("No business found");
+  try {
+    const business = await Business.findOne({ customerNo: customerId });
+    if (!business) return Error("No business found");
 
-  if (business.SubscriptionType === "pro") {
-    business.listingAmount = 50;
-    return business.save();
-  }
+    if (business.SubscriptionType === "pro") {
+      business.listingAmount = 50;
+      return business.save();
+    }
 
-  if (business.SubscriptionType === "enterprise") {
-    business.listingAmount = 20000;
-    return business.save();
+    if (business.SubscriptionType === "enterprise") {
+      business.listingAmount = 20000;
+      return business.save();
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error(error.message);
   }
 });
 
 //@Switch Case - Checkout.session.completed
 //Update customer metadata with business model ID for retrieval later, and to recognize subscriptions.
 const addMetadataToCustomer = asyncHandler(async (customerId, businessId) => {
-  await stripe.customers.update(customerId, {
-    metadata: {
-      businessId: businessId,
-    },
-  });
+  try {
+    await stripe.customers.update(customerId, {
+      metadata: {
+        businessId: businessId,
+      },
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error.message);
+  }
 });
 
 //@Switch Case - Subscription.cancelled.
@@ -125,6 +136,7 @@ const subscriptionCancelled = asyncHandler(async (customerId, status) => {
     );
     return business;
   } catch (error) {
+    res.status(404);
     console.log(error);
     throw new Error(error.message);
   }

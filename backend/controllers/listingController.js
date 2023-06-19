@@ -85,11 +85,16 @@ const createListing = asyncHandler(async (req, res) => {
 // @route   GET /listing/mylistings
 // @access  Private
 const getMyListings = asyncHandler(async (req, res) => {
-  const listings = await Listing.find({ business: req.business._id });
-  if (listings.length === 0) {
-    return res.status(200).json(listings);
+  try {
+    const listings = await Listing.find({ business: req.business._id });
+    if (listings.length === 0) {
+      return res.status(200).json(listings);
+    }
+    res.status(200).json(listings);
+  } catch (error) {
+    res.status(400);
+    throw new Error("Could not get listings.");
   }
-  res.status(200).json(listings);
 });
 
 //@desc get 10 listings
@@ -220,6 +225,7 @@ const searchListingsByKeyword = asyncHandler(async (query, page, limitNum) => {
       .limit(limitNum);
     return listings;
   } catch (error) {
+    res.status(404);
     console.log(error);
     throw new Error("Error searching listings");
   }
@@ -246,6 +252,7 @@ const searchListingsByLocation = asyncHandler(
         .limit(limitNum);
       return listings;
     } catch (error) {
+      res.status(404);
       console.log(error);
       throw new Error("Error searching listings");
     }
@@ -278,6 +285,7 @@ const searchListingsByLocationAndKeyword = asyncHandler(
         .limit(limitNum);
       return listings;
     } catch (error) {
+      res.status(404);
       console.log(error);
       throw new Error("Error searching listings");
     }
