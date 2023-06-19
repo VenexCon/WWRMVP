@@ -34,13 +34,7 @@ function BusinessProfile() {
       fetchListings()
     }, [business, dispatch])
 
-    useEffect(() => {
-      const fetchProfile = async () => {
-        const res =  await dispatch(getBusiness())
-        console.log(res)
-      }
-      fetchProfile()
-    },[])
+  
 
     //Not currently used, will be used when 2FA is added for confirming email address.
     const [registerData, setRegisterData] = useState({

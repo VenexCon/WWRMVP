@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createNewListing } from "../features/listings/listingSlice";
 import { getBusiness } from '../features/businessAuth/businessSlice'
 import {toast} from 'react-toastify'
 import {useNavigate} from 'react-router-dom'
+import Spinner from '../components/Spinner'
 
 const CreateListing = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const {isPending} = useSelector((state)=>state.listing)
 
   const [formData, setFormData] = useState({
     title: "",
@@ -63,7 +65,8 @@ const CreateListing = () => {
       const listing = await dispatch(createNewListing(listingData));
       if(listing) {
         toast.success('Listing Created')
-        navigate('/listing')
+        dispatch(getBusiness())
+        navigate('/listing/search')
         //navigate(`/listing/${listing.payload._id}`)
       } else {
         toast.error('Listing could not be created')
@@ -73,6 +76,10 @@ const CreateListing = () => {
       return toast.error(error.message)
     }
   };
+
+  if(isPending) { return (
+    <Spinner />
+  )}
 
   return (
     <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">

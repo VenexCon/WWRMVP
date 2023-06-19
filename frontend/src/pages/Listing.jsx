@@ -20,12 +20,15 @@ const Listing = () => {
   useEffect(() => {
     const fetchListing = async () => {
       const response =  await dispatch(getSpecificListing(listingId));
-      if(response.payload.business === business._id) {
+      console.log(response.payload.business)
+      if(response.payload.business === business.id) {
         setOwnTicket(true)
       } 
     };
     fetchListing();
-  }, []);
+  }, [business.id, dispatch, listingId]);
+
+  console.log(business._id)
 
   const address = specificListing ? `${specificListing.listingLocation}` : '';
 
