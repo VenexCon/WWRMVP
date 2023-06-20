@@ -10,10 +10,11 @@ const businessProtect = asyncHandler(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
+      console.log(req.headers.authorization);
       //get token from header
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      //get user from token - remove password from returned object.
+      //get use`r from token - remove password from returned object.
       req.business = await Business.findById(decoded.id).select("-password");
 
       if (req.business) {
@@ -30,7 +31,7 @@ const businessProtect = asyncHandler(async (req, res, next) => {
 
   if (!token) {
     res.status(401);
-    throw new Error("Not authorized to access this route");
+    throw new Error("No token found");
   }
 });
 

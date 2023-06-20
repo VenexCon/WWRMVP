@@ -84,6 +84,18 @@ export const getBusiness = createAsyncThunk(
   }
 );
 
+//used to decrement a listing following succesful creation of a listing.
+export const decrementListing = createAsyncThunk(
+  "business/decrementListing",
+  async (_, thunkAPI) => {
+    try {
+      return await businessService.decrementListing();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractErrorMessage(error));
+    }
+  }
+);
+
 export const businessSlice = createSlice({
   name: "business",
   initialState,
@@ -135,6 +147,16 @@ export const businessSlice = createSlice({
         state.isPending = true;
       })
       .addCase(getBusiness.rejected, (state) => {
+        state.isPending = false;
+      })
+      .addCase(decrementListing.fulfilled, (state, action) => {
+        state.isPending = false;
+        state.business = action.payload;
+      })
+      .addCase(decrementListing.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(decrementListing.rejected, (state) => {
         state.isPending = false;
       });
   },

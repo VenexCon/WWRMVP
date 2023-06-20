@@ -20,15 +20,13 @@ const Listing = () => {
   useEffect(() => {
     const fetchListing = async () => {
       const response =  await dispatch(getSpecificListing(listingId));
-      console.log(response.payload.business)
       if(response.payload.business === business._id) {
         setOwnTicket(true)
       } 
     };
     fetchListing();
-  }, [business.id, dispatch, listingId]);
+  }, [business._id, dispatch, listingId]);
 
-  console.log(business._id)
 
   const address = specificListing ? `${specificListing.listingLocation}` : '';
 
@@ -66,7 +64,7 @@ const Listing = () => {
      const deleted = await dispatch(deleteSpecificListing(listingId, business))
       if(!deleted.payload) {
       toast.success('Listing deleted')
-      navigate('/listing/search')
+      return navigate('/listing/search')
     } else {
       return toast.error('Listing could not be deleted')
     }

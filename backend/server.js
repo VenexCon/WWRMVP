@@ -28,6 +28,7 @@ app.use("/api/business", require("./routes/businessRoutes"));
 app.use("/api/listing", require("./routes/listingRoutes"));
 app.use("/api/passwordReset", require("./routes/passwordResetRoutes"));
 //errorhandler
+
 app.use(errorHandler);
 
 //Not needed on live

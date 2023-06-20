@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewListing } from "../features/listings/listingSlice";
-import { getBusiness } from '../features/businessAuth/businessSlice'
+import { decrementListing } from '../features/businessAuth/businessSlice'
 import {toast} from 'react-toastify'
 import {useNavigate} from 'react-router-dom'
 import Spinner from '../components/Spinner'
@@ -62,10 +62,13 @@ const CreateListing = () => {
       listingData.longitude = data.results[0]?.geometry.location.lng ?? 0
       listingData.address = data.results[0]?.formatted_address
       }
+      const updatedAmount = await dispatch(decrementListing())
       const listing = await dispatch(createNewListing(listingData));
-      if(listing) {
+      
+      console.log(updatedAmount)
+
+      if(listing && updatedAmount) {
         toast.success('Listing Created')
-        dispatch(getBusiness())
         navigate('/listing/search')
         //navigate(`/listing/${listing.payload._id}`)
       } else {

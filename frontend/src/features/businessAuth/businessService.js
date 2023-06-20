@@ -47,6 +47,23 @@ const getBusiness = async () => {
   return response.data;
 };
 
+const decrementListing = async () => {
+  const token = Cookies.get("token");
+
+  const url = "/api/business/profile/decrementlisting";
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const data = { decrement: 1 };
+  const response = await axios.put(url, data, config);
+  if (response.data) {
+    localStorage.setItem("business", JSON.stringify(response.data));
+    return response.data;
+  }
+};
+
 const logoutBusiness = async () => {
   const API_LOGOUT = "/api/business/logout";
   const response = await axios.post(API_LOGOUT);
@@ -78,6 +95,7 @@ const businessService = {
   logoutBusiness,
   deleteBusiness,
   getBusiness,
+  decrementListing,
 };
 
 export default businessService;

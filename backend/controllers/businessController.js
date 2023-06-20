@@ -187,15 +187,13 @@ const getProfile = (req, res) => {
 //@Desc minus one from listings when listings are created.
 const decrementListing = asyncHandler(async (req, res) => {
   try {
-    const updated = Business.findByIdAndUpdate(
+    const updated = await Business.findByIdAndUpdate(
       req.business._id,
       {
         listingAmount: req.business.listingAmount - 1,
       },
       { new: true }
-    )
-      .select("-businessPassword")
-      .exec();
+    ).select("-businessPassword");
 
     if (updated) {
       res.status(201).json(updated);
