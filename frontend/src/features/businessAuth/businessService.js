@@ -43,6 +43,7 @@ const getBusiness = async () => {
   const response = await axios.get(url, config);
   if (response.data) {
     localStorage.setItem("business", JSON.stringify(response.data));
+    return response.data;
   }
   return response.data;
 };
@@ -60,8 +61,8 @@ const decrementListing = async () => {
   const response = await axios.put(url, data, config);
   if (response.data) {
     localStorage.setItem("business", JSON.stringify(response.data));
-    return response.data;
   }
+  return response.data;
 };
 
 const logoutBusiness = async () => {

@@ -64,10 +64,10 @@ const CreateListing = () => {
       }
       
       const listing = await dispatch(createNewListing(listingData));
-      
+      console.log(listing.meta.requestStatus)
       
 
-      if(listing.error.message !== 'Rejected') {
+      if(listing.meta.requestStatus ==='fulfilled') {
         toast.success('Listing Created')
         await dispatch(decrementListing())
         navigate('/listing/search')

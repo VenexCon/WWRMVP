@@ -22,6 +22,7 @@ function BusinessProfile() {
     //modal state.
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+    const {SubscriptionType, listingAmount, businessAddress, businessEmail, businessName} = business
     //Not currently used,. 
     const selectEdit = () => {
       setEdit((prevState) => !prevState)
@@ -32,7 +33,7 @@ function BusinessProfile() {
         return await dispatch(getMyListings())
       }
       fetchListings()
-    }, [business, dispatch])
+    }, [])
 
   
 
@@ -113,13 +114,13 @@ function BusinessProfile() {
         <div className="flex flex-col sm:flex-row w-full">
              <div className="w-full flex  flex-row text-white font-semibold  py-1 px-1 rounded-md ">
               <p className='text-white'>Plan Type :</p>
-              <p className='text-blue-600 px-4'>{business.subscriptionType ? business.subscriptionType : ''}</p>
+              <p className='text-blue-600 px-4'>{SubscriptionType}</p>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row w-full">
              <div className="w-full flex  flex-row text-white font-semibold  py-1 px-1 rounded-md ">
               <p className='text-white'>Listings Remaining:</p>
-              <p className='text-blue-600 px-4'>{business.listingAmount ? business.listingAmount : 0}</p>
+              <p className='text-blue-600 px-4'>{listingAmount}</p>
             </div>
           </div>
         <div className="flex items-center space-x-2">
@@ -128,7 +129,7 @@ function BusinessProfile() {
             type="text"
             placeholder="Business Name"
             id='businessName'
-            defaultValue={business.name}
+            defaultValue={businessName}
             name= 'businessName'
             onChange = {onMutate}
             className="bg-white dark:bg-gray-800 border text-white border-gray-400 dark:border-gray-700 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
@@ -140,7 +141,7 @@ function BusinessProfile() {
           <input
             type="email"
             placeholder="Email Address"
-            defaultValue = {business.email}
+            defaultValue = {businessEmail}
             onChange = {onMutate}
             name='businessEmail'
             className="bg-white dark:bg-gray-800 border text-white border-gray-400 dark:border-gray-700 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
@@ -156,7 +157,7 @@ function BusinessProfile() {
           id="businessAddress" 
           disabled = {edit}
           placeholder='Business address' 
-          defaultValue={business.address} 
+          defaultValue={businessAddress} 
           cols="30" rows="10"></textarea>
         </div>
       </div>
