@@ -62,17 +62,18 @@ const CreateListing = () => {
       listingData.longitude = data.results[0]?.geometry.location.lng ?? 0
       listingData.address = data.results[0]?.formatted_address
       }
-      const updatedAmount = await dispatch(decrementListing())
+      
       const listing = await dispatch(createNewListing(listingData));
       
-      console.log(updatedAmount)
+      
 
-      if(listing && updatedAmount) {
+      if(listing.error.message !== 'Rejected') {
         toast.success('Listing Created')
+        await dispatch(decrementListing())
         navigate('/listing/search')
         //navigate(`/listing/${listing.payload._id}`)
       } else {
-        toast.error('Listing could not be created')
+        toast.error(listing.error.message)
       }
       
     } catch (error) {

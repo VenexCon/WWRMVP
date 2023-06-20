@@ -16,7 +16,7 @@ const createListing = asyncHandler(async (req, res) => {
       businessAddress,
       businessEmail,
       businessPhone,
-      listingsAmount,
+      listingAmount,
     } = req.business;
     const {
       title,
@@ -34,7 +34,7 @@ const createListing = asyncHandler(async (req, res) => {
       throw new Error("Please ensure all fields are completed.");
     }
 
-    if (listingsAmount === 0) {
+    if (listingAmount <= 0) {
       res.status(404);
       throw new Error(
         "You have used all your listings, please upgrade your plan or wait for the next cycle."

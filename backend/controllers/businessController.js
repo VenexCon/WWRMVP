@@ -186,6 +186,10 @@ const getProfile = (req, res) => {
 };
 //@Desc minus one from listings when listings are created.
 const decrementListing = asyncHandler(async (req, res) => {
+  if (req.business.listingAmount <= 0) {
+    res.status(404);
+    throw new Error("No listings remaining");
+  }
   try {
     const updated = await Business.findByIdAndUpdate(
       req.business._id,

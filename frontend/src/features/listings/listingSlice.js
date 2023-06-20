@@ -115,6 +115,9 @@ export const listingSlice = createSlice({
       .addCase(createNewListing.fulfilled, (state) => {
         state.isPending = false;
       })
+      .addCase(createNewListing.rejected, (state) => {
+        state.isPending = false;
+      })
       .addCase(getMyListings.pending, (state) => {
         state.isPending = true;
       })
