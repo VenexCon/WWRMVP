@@ -1,11 +1,5 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createAction,
-  isPending,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import listingService from "./listingService";
-import Cookies from "js-cookie";
 
 import { extractErrorMessage } from "../../utils";
 

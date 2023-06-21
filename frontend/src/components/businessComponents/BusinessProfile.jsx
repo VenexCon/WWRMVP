@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { getMyListings } from '../../features/listings/listingSlice'
-import { deleteBusiness, getBusiness } from '../../features/businessAuth/businessSlice'
+import { deleteBusiness,} from '../../features/businessAuth/businessSlice'
 import ListingItem from '../sharedComponents/ListingItem'
-import { FaUserAlt, FaEnvelope,FaCog, FaGlobe,FaPlusCircle, FaArrowCircleRight, } from 'react-icons/fa'
+import { FaUserAlt, FaEnvelope,FaCog, FaWallet,FaPlusCircle, FaArrowCircleRight, FaLocationArrow } from 'react-icons/fa'
 import DeleteModal from '../sharedComponents/DeleteModal';
 import Cookies from 'js-cookie';
 
@@ -22,7 +22,7 @@ function BusinessProfile() {
     //modal state.
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const {SubscriptionType, listingAmount, businessAddress, businessEmail, businessName} = business
+    const {SubscriptionType,activeSubsciption, checkoutSessionId,  listingAmount, businessAddress, businessEmail, businessName} = business
     //Not currently used,. 
     const selectEdit = () => {
       setEdit((prevState) => !prevState)
@@ -33,7 +33,7 @@ function BusinessProfile() {
         return await dispatch(getMyListings())
       }
       fetchListings()
-    }, [])
+    }, [dispatch])
 
   
 
@@ -150,7 +150,7 @@ function BusinessProfile() {
         </div>
         
         <div className="flex items-center w-full h-fit space-x-2">
-          <FaGlobe className="text-white" />
+          <FaLocationArrow className="text-white" />
           <textarea name="businessAddress" 
           className={ 'bg-white dark:bg-gray-800 border text-white border-gray-400 dark:border-gray-700 rounded-lg py-2 px-4 block w-full h-20 appearance-none leading-normal resize-none '} 
           onChange = {onMutate}
@@ -206,6 +206,25 @@ function BusinessProfile() {
           </button>
         </div>
     )}
+     {!checkoutSessionId && (
+        <>
+      <input type="hidden" name="lookup_key"  />
+      <button onClick={subscribeToCheckoutSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
+        <FaWallet className='mr-2' />
+        Subscribe
+      </button> </>)}
+       {checkoutSessionId &&(
+       <>
+       <input type="hidden" name="lookup_key"  />
+      <button onClick={subscribeToPortalSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
+        <FaWallet className='mr-2' />
+        Manage Subscription
+      </button>
+      </>)}
+    <div className="w-full flex  flex-row text-white font-semibold  py-1 px-1 rounded-md ">
+              <p className='text-white'>My Listings :</p>
+
+            </div>
     {accountsListings.length > 0 ? (accountsListings.map((listing) => (
       <ListingItem key={listing._id} listing = {listing}  />
     ))) : (<p className='text-white w-full items-center flex bg-gray-700 border border-purple-600 p-4 rounded-md'>You have no listings</p>)}
@@ -215,17 +234,6 @@ function BusinessProfile() {
       onClose={() => setShowDeleteModal(false)}
       onConfirmDelete={handleConfirmDelete}
     />
-    {/* Testing trial  */}
-      {/* Add a hidden field with the lookup_key of your Price */}
-      {/* This needs to be dynamic depending on if the user is subscribed or not. */}
-      <input type="hidden" name="lookup_key"  />
-      <button onClick={subscribeToCheckoutSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
-        Subscribe
-      </button>
-       <input type="hidden" name="lookup_key"  />
-      <button onClick={subscribeToPortalSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
-        Manage Subscription
-      </button>
     </>
   )
 }
