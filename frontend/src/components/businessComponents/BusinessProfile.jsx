@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { getMyListings } from '../../features/listings/listingSlice'
-import { deleteBusiness,} from '../../features/businessAuth/businessSlice'
+import { deleteBusiness, getBusiness,} from '../../features/businessAuth/businessSlice'
 import ListingItem from '../sharedComponents/ListingItem'
 import { FaUserAlt, FaEnvelope,FaCog, FaWallet,FaPlusCircle, FaArrowCircleRight, FaLocationArrow } from 'react-icons/fa'
 import DeleteModal from '../sharedComponents/DeleteModal';
@@ -22,7 +22,11 @@ function BusinessProfile() {
     //modal state.
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+
     const {SubscriptionType,activeSubsciption, checkoutSessionId,  listingAmount, businessAddress, businessEmail, businessName} = business
+
+   
+
     //Not currently used,. 
     const selectEdit = () => {
       setEdit((prevState) => !prevState)
@@ -34,6 +38,8 @@ function BusinessProfile() {
       }
       fetchListings()
     }, [dispatch])
+
+
 
   
 
@@ -114,7 +120,7 @@ function BusinessProfile() {
         <div className="flex flex-col sm:flex-row w-full">
              <div className="w-full flex  flex-row text-white font-semibold  py-1 px-1 rounded-md ">
               <p className='text-white'>Plan Type :</p>
-              <p className='text-blue-600 px-4'>{SubscriptionType}</p>
+              <p className='text-blue-600 px-4'>{ SubscriptionType}</p>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row w-full">

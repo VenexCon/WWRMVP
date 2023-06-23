@@ -117,10 +117,10 @@ const registerBusiness = asyncHandler(async (req, res) => {
       })
       .json({
         _id: newBusiness._id,
-        name: newBusiness.businessName,
-        address: newBusiness.businessAddress,
-        phone: newBusiness.businessPhone,
-        email: newBusiness.businessEmail,
+        businessName: newBusiness.businessName,
+        businessAddress: newBusiness.businessAddress,
+        businessPhone: newBusiness.businessPhone,
+        businessEmail: newBusiness.businessEmail,
         businessCoordinates: newBusiness.businessGeolocation,
         activeSubscription: newBusiness.activeSubscription,
         listingAmount: newBusiness.listingAmount,
@@ -152,10 +152,10 @@ const loginBusiness = asyncHandler(async (req, res) => {
       })
       .json({
         _id: business._id,
-        name: business.businessName,
-        email: business.businessEmail,
-        address: business.businessAddress,
-        phone: business.businessPhone,
+        businessName: business.businessName,
+        businessEmail: business.businessEmail,
+        businessAddress: business.businessAddress,
+        businessPhone: business.businessPhone,
         businessCoordinates: business.businessCoordinates,
         activeSubscription: business.activeSubscription,
         listingAmount: business.listingAmount,
@@ -173,10 +173,10 @@ const loginBusiness = asyncHandler(async (req, res) => {
 const getProfile = (req, res) => {
   const business = {
     _id: req.business._id, // because of the mongoose schema storing id as ._id
-    email: req.business.businessEmail,
-    name: req.business.businessName,
-    phone: req.business.businessPhone,
-    address: req.business.businessAddress,
+    businessEmail: req.business.businessEmail,
+    businessName: req.business.businessName,
+    businessPhone: req.business.businessPhone,
+    businessAddress: req.business.businessAddress,
     businessCoordinates: req.business.businessCoordinates,
     listingAmount: req.business.listingAmount,
     subscriptionType: req.business.SubscriptionType,
