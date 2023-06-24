@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const { errorHandler } = require("./middleware/errorMiddleware");
+const { monthlyListingUpdate } = require("./controllers/cronController");
 //connect to DB
 connectDB();
 const app = express();
@@ -21,6 +22,9 @@ app.use(
     extended: false,
   })
 );
+
+//Scheduled CRON jobs
+monthlyListingUpdate;
 
 /* Routes */
 app.use("/api/users", require("./routes/userRoutes"));

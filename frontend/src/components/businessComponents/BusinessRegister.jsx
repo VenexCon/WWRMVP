@@ -68,7 +68,7 @@ function BusinessRegister() {
        businessData.longitude = data.results[0]?.geometry.location.lng ?? 0
        businessData.businessAddress = data.results[0]?.formatted_address
         const business = await dispatch(registerBusiness(businessData)).unwrap()
-        toast.success(`Registered new business - ${business.name}`)
+        toast.success(`Registered new business - ${business.businessName}`)
         navigate('/profile')
       } catch (error) {
         return toast.error(error)

@@ -64,7 +64,7 @@ const updateBusiness = asyncHandler(
           customerNo: customerId,
           activeSubscription: true,
           checkoutSessionId: checkoutSessionId,
-          SubscriptionType: planType,
+          subscriptionType: planType,
         },
         { new: true } // To return the updated document
       ).select("-password");
@@ -90,12 +90,12 @@ const refreshListings = asyncHandler(async (customerId) => {
     const business = await Business.findOne({ customerNo: customerId });
     if (!business) return Error("No business found");
 
-    if (business.SubscriptionType === "pro") {
+    if (business.subscriptionType === "pro") {
       business.listingAmount = 50;
       return business.save();
     }
 
-    if (business.SubscriptionType === "enterprise") {
+    if (business.subscriptionType === "enterprise") {
       business.listingAmount = 20000;
       return business.save();
     }
@@ -130,7 +130,7 @@ const subscriptionCancelled = asyncHandler(async (customerId, status) => {
       {
         activeSubscription: false,
         checkoutSessionId: checkoutSessionId,
-        SubscriptionType: "basic",
+        subscriptionType: "basic",
         listingAmount: 10,
       }
     );

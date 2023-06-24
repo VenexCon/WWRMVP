@@ -23,7 +23,7 @@ function BusinessProfile() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 
-    const {SubscriptionType,activeSubsciption, checkoutSessionId,  listingAmount, businessAddress, businessEmail, businessName} = business
+    const {subscriptionType,activeSubsciption, checkoutSessionId,  listingAmount, businessAddress, businessEmail, businessName} = business
 
    
 
@@ -120,7 +120,7 @@ function BusinessProfile() {
         <div className="flex flex-col sm:flex-row w-full">
              <div className="w-full flex  flex-row text-white font-semibold  py-1 px-1 rounded-md ">
               <p className='text-white'>Plan Type :</p>
-              <p className='text-blue-600 px-4'>{ SubscriptionType}</p>
+              <p className='text-blue-600 px-4'>{ subscriptionType ? subscriptionType : 'Basic'}</p>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row w-full">

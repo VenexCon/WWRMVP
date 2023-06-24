@@ -103,7 +103,7 @@ const registerBusiness = asyncHandler(async (req, res) => {
     businessTerms: businessTerms,
     activeSubscription: false,
     listingAmount: 10,
-    SubscriptionType: "basic",
+    subscriptionType: "basic",
   });
 
   if (newBusiness) {
@@ -207,6 +207,7 @@ const decrementListing = asyncHandler(async (req, res) => {
     throw new Error("Could not update listing Amount");
   }
 });
+
 //@Desc Replace the cookie with null on logout, to ensure all tokens are moved
 //@Route /users/logout
 //@access private
@@ -258,12 +259,13 @@ const deleteBusiness = asyncHandler(async (req, res) => {
 //NODE CRON
 //Schedule cron job to run on the first day of every month at 00:00 (midnight)
 //This adds 10 listings to each business without an active subscription.
-cron.schedule(
-  "0 0 1 * *",
+const job = cron.schedule(
+  "0 1 * * * *",
   asyncHandler(async () => {
     try {
       // Fetch all business units
       const businessUnits = await Business.find();
+      console.log("node cron ran");
 
       // Iterate over each business unit
       businessUnits.forEach(async (businessUnit) => {

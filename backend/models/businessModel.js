@@ -51,7 +51,7 @@ const businessSchema = new Schema({
   checkoutSessionId: {
     type: String,
   },
-  SubscriptionType: {
+  subscriptionType: {
     type: String,
   },
 });
