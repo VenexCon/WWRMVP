@@ -69,7 +69,7 @@ const updateBusiness = asyncHandler(
         { new: true } // To return the updated document
       ).select("-password");
       if (business) {
-        business.save();
+        return business.save();
       } else {
         console.log("Business not found");
         throw new Error("Business does not exist");
@@ -123,22 +123,27 @@ const addMetadataToCustomer = asyncHandler(async (customerId, businessId) => {
 //@Switch Case - Subscription.cancelled.
 //sets businesses plan type to "basic",
 //sets listings back to ten (10).
-const subscriptionCancelled = asyncHandler(async (customerId, status) => {
+const subscriptionCancelled = asyncHandler(async (customerId) => {
   try {
-    const business = await Business.findOne(
+    const business = await Business.findOneAndUpdate(
       { customerNo: customerId },
       {
         activeSubscription: false,
-        checkoutSessionId: checkoutSessionId,
+        checkoutSessionId: "",
         subscriptionType: "basic",
         listingAmount: 10,
-      }
+      },
+      { new: true }
     );
+    console.log(business);
+    if (business) return business.save();
+
+    if (!business) {
+      throw new Error("No business found!");
+    }
     return business;
   } catch (error) {
-    res.status(404);
     console.log(error);
-    throw new Error(error.message);
   }
 });
 

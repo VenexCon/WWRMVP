@@ -159,7 +159,7 @@ const loginBusiness = asyncHandler(async (req, res) => {
         businessCoordinates: business.businessCoordinates,
         activeSubscription: business.activeSubscription,
         listingAmount: business.listingAmount,
-        subscriptionType: business.SubscriptionType,
+        subscriptionType: business.subscriptionType,
       });
   } else {
     res.status(400);

@@ -21,11 +21,8 @@ function BusinessProfile() {
     const [edit, setEdit] =useState(true)
     //modal state.
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const {subscriptionType,activeSubscription, checkoutSessionId,  listingAmount, businessAddress, businessEmail, businessName} = business
 
-
-    const {subscriptionType,activeSubsciption, checkoutSessionId,  listingAmount, businessAddress, businessEmail, businessName} = business
-
-   
 
     //Not currently used,. 
     const selectEdit = () => {
@@ -39,9 +36,6 @@ function BusinessProfile() {
       fetchListings()
     }, [dispatch])
 
-
-
-  
 
     //Not currently used, will be used when 2FA is added for confirming email address.
     const [registerData, setRegisterData] = useState({
@@ -74,6 +68,7 @@ function BusinessProfile() {
 
   //customer checkout
   const subscribeToCheckoutSession = async () => {
+    toast.info('Redirecting to Checkout Portal')
     const token = Cookies.get('token');
   try {
     const response = await fetch('api/stripe/create-checkout-session', {
@@ -94,6 +89,7 @@ function BusinessProfile() {
 
 //customer portal session. 
   const subscribeToPortalSession = async () => {
+     toast.info('Redirecting to Customer Portal')
     const token = Cookies.get('token');
   try {
     const response = await fetch('api/stripe/create-portal-session', {
@@ -212,14 +208,14 @@ function BusinessProfile() {
           </button>
         </div>
     )}
-     {!checkoutSessionId && (
+     {(activeSubscription === false) && (
         <>
       <input type="hidden" name="lookup_key"  />
       <button onClick={subscribeToCheckoutSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
         <FaWallet className='mr-2' />
         Subscribe
       </button> </>)}
-       {checkoutSessionId &&(
+       {(activeSubscription === true) &&(
        <>
        <input type="hidden" name="lookup_key"  />
       <button onClick={subscribeToPortalSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
