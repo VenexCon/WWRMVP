@@ -135,7 +135,6 @@ const subscriptionCancelled = asyncHandler(async (customerId) => {
       },
       { new: true }
     );
-    console.log(business);
     if (business) return business.save();
 
     if (!business) {
