@@ -17,7 +17,7 @@ const SearchBar = () => {
   const [distance, setDistance] = useState(10); // default distance is 10 km
   const [query, setQuery] = useState("");
   const page = 1
-  const limit = 5
+  const limit = 10
  
 
   const handleSearch = async () => {
