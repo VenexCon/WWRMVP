@@ -18,8 +18,6 @@ A full-stack MERN application including Stripe payment integration. This applica
 
 ## Screenshots
 
-"C:\Users\conno\OneDrive\Desktop\Coding\WWRMVP\frontend\src\assets\ScreenShots\HomePage SS.png"
-
 ![This is the homepage](/frontend/src/assets/ScreenShots/HomePageSS.png)
 ![Listing Creation](/frontend/src/assets/ScreenShots/ListingCreation.png)
 ![Listing Screenshot](/frontend/src/assets/ScreenShots/listingSS.png)
