@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 
-const PriceModal = ({ isOpen, onClose, onConfirmDelete }) => {
+const PriceModal = ({ isOpen, onClose}) => {
 
   //Maintain own logic for price issues here. 
   //call redux directly do not worry about pasing it to state,. 
   // Will only appear initially either way. 
   //render state will need ot be passed from profile component.
+
+  const handleSubscriptionSelection = async () => {
+    console.log('dispatching Action')
+  }
   return (
     <ReactModal
       isOpen={isOpen}
