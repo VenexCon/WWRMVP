@@ -2,6 +2,11 @@ import React from 'react';
 import ReactModal from 'react-modal';
 
 const PriceModal = ({ isOpen, onClose, onConfirmDelete }) => {
+
+  //Maintain own logic for price issues here. 
+  //call redux directly do not worry about pasing it to state,. 
+  // Will only appear initially either way. 
+  //render state will need ot be passed from profile component.
   return (
     <ReactModal
       isOpen={isOpen}
@@ -22,7 +27,7 @@ const PriceModal = ({ isOpen, onClose, onConfirmDelete }) => {
         <div className="flex justify-between">
           <button
             className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md mr-2"
-            onClick={onConfirmDelete}
+            onClick={(e)=> {console.log('Subscription 1 ')}}
           >
             Delete
           </button>
