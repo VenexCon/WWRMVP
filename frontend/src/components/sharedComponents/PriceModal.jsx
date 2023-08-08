@@ -1,7 +1,33 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import {toast} from 'react-toastify'
+import Cookies from 'js-cookie';
 
 const PriceModal = ({ isOpen, onClose}) => {
+
+   //customer checkout
+  //this needs to be passed into the pricing modal. Or
+  //changed entirely to accept line items from the FE. 
+  //see stripe controller for BE adjustment. 
+  const subscribeToCheckoutSession = async () => {
+    toast.info('Redirecting to Checkout Portal')
+    const token = Cookies.get('token');
+  try {
+    const response = await fetch('api/stripe/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+         "Authorization": `Bearer ${token}`,
+      },
+    });
+    const body = await response.json()
+    window.location.href = body.url
+    
+  } catch (error) {
+    // Handle fetch error
+    console.log('Fetch error:', error);
+  }
+};
 
   //Maintain own logic for price issues here. 
   //call redux directly do not worry about pasing it to state,. 

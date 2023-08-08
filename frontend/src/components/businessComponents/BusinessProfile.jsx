@@ -72,29 +72,7 @@ function BusinessProfile() {
       navigate('/*')
   };
 
-  //customer checkout
-  //this needs to be passed into the pricing modal. Or
-  //changed entirely to accept line items from the FE. 
-  //see stripe ocntroller for BE adjustment. 
-  const subscribeToCheckoutSession = async () => {
-    toast.info('Redirecting to Checkout Portal')
-    const token = Cookies.get('token');
-  try {
-    const response = await fetch('api/stripe/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-         "Authorization": `Bearer ${token}`,
-      },
-    });
-    const body = await response.json()
-    window.location.href = body.url
-    
-  } catch (error) {
-    // Handle fetch error
-    console.log('Fetch error:', error);
-  }
-};
+ 
 
 //customer portal session. 
   const subscribeToPortalSession = async () => {
@@ -117,8 +95,6 @@ function BusinessProfile() {
     console.log('Fetch error:', error);
   }
 };
-
-
 
   return (
      <>
