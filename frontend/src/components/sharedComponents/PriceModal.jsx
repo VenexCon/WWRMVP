@@ -31,9 +31,15 @@ const PriceModal = ({ isOpen, onClose}) => {
         <div className="flex justify-between">
           <button
             className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md mr-2"
-            onClick={(e)=> {console.log('Subscription 1 ')}}
+            onClick={()=> {console.log('Subscription 1 ')}}
           >
-            Delete
+            Subscription plan 1 
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md mr-2"
+            onClick={()=> {console.log('Subscription 2 ')}}
+          >
+            Subscription plan 2 
           </button>
           <button
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-md"
