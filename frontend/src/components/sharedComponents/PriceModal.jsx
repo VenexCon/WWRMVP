@@ -36,17 +36,13 @@ const PriceModal = ({ isOpen, onClose }) => {
     >
       <div className="bg-white rounded-lg p-6 max-w-md mx-auto flex flex-col justify-between min-h-1/2">
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Confirm Plan Type</h2>
-          <p className="text-gray-600 mb-6">
-            Please select from two available plans below.
+          <h2 className="text-xl font-bold text-center mb-4">Select Plan Type</h2>
+          <p className="text-gray-600 mb-6 text-center w-full">
+            Please select from the available plans below
           </p>
-          <p className="text-gray-600 mb-2">
-            Each plan has its own benefits so please select carefully.
-          </p>
-          <p className="text-gray-600 mb-2">Each plan will be billed monthly</p>
-          <div className="flex-col md:flex-row gap-5 border">
+          <div className="flex-col md:flex-row ">
             <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md flex flex-col items-center space-x-1"
+              className="bg-blue-500 hover:bg-blue-600 text-white w-full font-semibold py-2 px-4 rounded-md flex flex-col items-center space-x-1"
               onClick={() => {
                 console.log('Subscription 1 ');
                 subscribeToCheckoutSession(); // Add your logic here
@@ -54,9 +50,10 @@ const PriceModal = ({ isOpen, onClose }) => {
             >
               <h3 className='text-xl'>Pro Plan</h3>
               <span className="text-md">Create 10 listings per month</span>
+              <span className="text-md">£20 Per Month</span>
             </button>
             <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md flex flex-col items-center space-x-1"
+              className="bg-blue-500 hover:bg-blue-600 w-full mt-5 text-white font-semibold py-2 px-4 rounded-md flex flex-col items-center space-x-1"
               onClick={() => {
                 console.log('Subscription 2 ');
                 handleSubscriptionSelection(); // Add your logic here
@@ -64,6 +61,7 @@ const PriceModal = ({ isOpen, onClose }) => {
             >
               <h3 className='text-xl'>Enterprise Plan</h3>
               <span className="text-md">Create 100 listings</span>
+              <span className="text-md">£99 Per Month</span>
             </button>
           </div>
         </div>
