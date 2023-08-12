@@ -20,7 +20,7 @@ const session = asyncHandler(async (req, res) => {
     customer_email: req.business.businessEmail,
     metadata: {
       businessId: `${req.business._id}`,
-      planType: `${req.body.subscriptionType}`,
+      planType: `${req.body.planType}`,
     },
   });
   res.json({ url: session.url });
