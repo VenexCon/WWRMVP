@@ -22,8 +22,6 @@ const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/stripe/payment";
   //get the plan type from another source - Needs to be dynamic.
   //Params or body of request from session.
-  const planType = "enterprise";
-
   //Create checkout session for user.
   const session = await stripe.checkout.sessions.create({
     line_items: [{ price: `${req.body.price}`, quantity: 1 }],
@@ -34,7 +32,7 @@ const session = asyncHandler(async (req, res) => {
     customer_email: req.business.businessEmail,
     metadata: {
       businessId: `${req.business._id}`,
-      planType: req.body.planType,
+      planType: `${req.body.subscriptionType}`,
     },
   });
   res.json({ url: session.url });

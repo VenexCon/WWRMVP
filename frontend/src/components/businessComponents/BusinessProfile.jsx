@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import { getMyListings } from '../../features/listings/listingSlice'
-import { deleteBusiness, getBusiness,} from '../../features/businessAuth/businessSlice'
+import { deleteBusiness,} from '../../features/businessAuth/businessSlice'
 import ListingItem from '../sharedComponents/ListingItem'
 import { FaUserAlt, FaEnvelope,FaCog, FaWallet,FaPlusCircle, FaArrowCircleRight, FaLocationArrow } from 'react-icons/fa'
 import DeleteModal from '../sharedComponents/DeleteModal';
@@ -23,7 +23,7 @@ function BusinessProfile() {
     //modal state.
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showPriceModal, setShowPriceModal] = useState(false);
-    const {subscriptionType,activeSubscription, checkoutSessionId,  listingAmount, businessAddress, businessEmail, businessName} = business
+    const {subscriptionType,activeSubscription,  listingAmount, businessAddress, businessEmail, businessName} = business
 
 
     //Not currently used,. 
