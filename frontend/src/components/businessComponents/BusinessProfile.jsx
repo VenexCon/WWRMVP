@@ -72,9 +72,7 @@ function BusinessProfile() {
       navigate('/*')
   };
 
- 
-
-//customer portal session. 
+  //customer portal session. 
   const subscribeToPortalSession = async () => {
      toast.info('Redirecting to Customer Portal')
     const token = Cookies.get('token');

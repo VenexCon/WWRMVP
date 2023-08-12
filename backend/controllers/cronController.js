@@ -10,21 +10,17 @@ const monthlyListingUpdate = cron.schedule(
     try {
       // Fetch all business units
       const businessUnits = await Business.find();
-      console.log("node cron ran");
 
       // Iterate over each business unit
       businessUnits.forEach(async (businessUnit) => {
         // Check if the business unit does not have a paid plan
         if (!businessUnit.activeSubscription) {
-          // Add 10 to the listingsAmount
-          businessUnit.listingAmount = 10;
-
+          // Add 5 to the listingsAmount
+          businessUnit.listingAmount = 5;
           // Save the updated business unit
           await businessUnit.save();
         }
       });
-
-      console.log("Cron job executed successfully.");
     } catch (error) {
       res.status(500);
       console.error("Error executing cron job:", error);

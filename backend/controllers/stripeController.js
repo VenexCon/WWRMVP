@@ -20,22 +20,21 @@ const lineItems = [
 //@Route '/create-checkout-session'
 const session = asyncHandler(async (req, res) => {
   const YOUR_DOMAIN = "http://localhost:3000/stripe/payment";
-
   //get the plan type from another source - Needs to be dynamic.
   //Params or body of request from session.
   const planType = "enterprise";
 
   //Create checkout session for user.
   const session = await stripe.checkout.sessions.create({
-    line_items: lineItems,
+    line_items: [{ price: `${req.body.price}`, quantity: 1 }],
     mode: "subscription",
     success_url: `${YOUR_DOMAIN}?success=true?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    cancel_url: `http://localhost:3000/profile?canceled=true`,
     //This will be used to update the subscription in the webhook func below.
     customer_email: req.business.businessEmail,
     metadata: {
       businessId: `${req.business._id}`,
-      planType: planType,
+      planType: req.body.planType,
     },
   });
   res.json({ url: session.url });
@@ -101,7 +100,7 @@ const refreshListings = asyncHandler(async (customerId) => {
     }
 
     if (business.subscriptionType === "enterprise") {
-      business.listingAmount = 20000;
+      business.listingAmount = 1000;
       return business.save();
     }
   } catch (error) {

@@ -4,8 +4,12 @@ import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
 const PriceModal = ({ isOpen, onClose }) => {
-  const subscribeToCheckoutSession = async () => {
+
+
+  //subscribe to Checkout Session for initial subscription.
+  const subscribeToCheckoutSession = async (subscriptionType, price,) => {
     toast.info('Redirecting to Checkout Portal');
+    
     const token = Cookies.get('token');
     try {
       const response = await fetch('api/stripe/create-checkout-session', {
@@ -14,17 +18,17 @@ const PriceModal = ({ isOpen, onClose }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+        body:JSON.stringify({subscriptionType, price})
       });
+
       const body = await response.json();
-      window.location.href = body.url;
+      console.log(body)
+     window.location.href = body.url;
     } catch (error) {
       console.log('Fetch error:', error);
     }
   };
 
-  const handleSubscriptionSelection = async () => {
-    console.log('dispatching Action');
-  };
 
   return (
     <ReactModal
@@ -44,19 +48,17 @@ const PriceModal = ({ isOpen, onClose }) => {
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white w-full font-semibold py-2 px-4 rounded-md flex flex-col items-center space-x-1"
               onClick={() => {
-                console.log('Subscription 1 ');
-                subscribeToCheckoutSession(); // Add your logic here
+                subscribeToCheckoutSession('pro', 'price_1NEe4PKSsp4mks69CTTtSlIG');
               }}
             >
               <h3 className='text-xl'>Pro Plan</h3>
               <span className="text-md">Create 10 listings per month</span>
-              <span className="text-md">£20 Per Month</span>
+              <span className="text-md">£9.99 Per Month</span>
             </button>
             <button
               className="bg-blue-500 hover:bg-blue-600 w-full mt-5 text-white font-semibold py-2 px-4 rounded-md flex flex-col items-center space-x-1"
               onClick={() => {
-                console.log('Subscription 2 ');
-                handleSubscriptionSelection(); // Add your logic here
+                subscribeToCheckoutSession('enterprise', "price_1NEe6RKSsp4mks69DMPSVWgh", 1)
               }}
             >
               <h3 className='text-xl'>Enterprise Plan</h3>
