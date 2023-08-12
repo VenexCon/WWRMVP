@@ -8,6 +8,7 @@ import ListingItem from '../sharedComponents/ListingItem'
 import { FaUserAlt, FaEnvelope,FaCog, FaWallet,FaPlusCircle, FaArrowCircleRight, FaLocationArrow } from 'react-icons/fa'
 import DeleteModal from '../sharedComponents/DeleteModal';
 import Cookies from 'js-cookie';
+import PriceModal from '../sharedComponents/PriceModal'
 
 
 
@@ -21,6 +22,7 @@ function BusinessProfile() {
     const [edit, setEdit] =useState(true)
     //modal state.
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showPriceModal, setShowPriceModal] = useState(false);
     const {subscriptionType,activeSubscription, checkoutSessionId,  listingAmount, businessAddress, businessEmail, businessName} = business
 
 
@@ -58,6 +60,10 @@ function BusinessProfile() {
     setShowDeleteModal(true);
     };
 
+  const handleSubscriptionClick = () => {
+    setShowPriceModal(true)
+  }
+
   //this will dispatch the deleteBusiness action from slice.
   const handleConfirmDelete = async () => {
       dispatch(deleteBusiness())
@@ -66,28 +72,7 @@ function BusinessProfile() {
       navigate('/*')
   };
 
-  //customer checkout
-  const subscribeToCheckoutSession = async () => {
-    toast.info('Redirecting to Checkout Portal')
-    const token = Cookies.get('token');
-  try {
-    const response = await fetch('api/stripe/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-         "Authorization": `Bearer ${token}`,
-      },
-    });
-    const body = await response.json()
-    window.location.href = body.url
-    
-  } catch (error) {
-    // Handle fetch error
-    console.log('Fetch error:', error);
-  }
-};
-
-//customer portal session. 
+  //customer portal session. 
   const subscribeToPortalSession = async () => {
      toast.info('Redirecting to Customer Portal')
     const token = Cookies.get('token');
@@ -108,7 +93,6 @@ function BusinessProfile() {
     console.log('Fetch error:', error);
   }
 };
-
 
   return (
      <>
@@ -211,7 +195,7 @@ function BusinessProfile() {
      {(activeSubscription === false) && (
         <>
       <input type="hidden" name="lookup_key"  />
-      <button onClick={subscribeToCheckoutSession} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
+      <button onClick={handleSubscriptionClick} id="checkout-and-portal-button" type="submit" className='w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-300'>
         <FaWallet className='mr-2' />
         Subscribe
       </button> </>)}
@@ -236,6 +220,10 @@ function BusinessProfile() {
       onClose={() => setShowDeleteModal(false)}
       onConfirmDelete={handleConfirmDelete}
     />
+    <PriceModal 
+      isOpen={showPriceModal}
+      onClose={()=> setShowPriceModal(false)}
+      />
     </>
   )
 }

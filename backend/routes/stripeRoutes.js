@@ -8,15 +8,13 @@ const {
 } = require("../controllers/stripeController");
 const bodyParser = require("body-parser");
 
-const app = express();
-
 //webhook signature requires raw body for verification.
 const matchRawBodyToJSON = bodyParser.raw({ type: "application/json" });
 router.post("/webhook", matchRawBodyToJSON, webhook);
 
 //JSON Routes - residual routes for web application.
-app.use(express.json());
-app.use(
+router.use(express.json());
+router.use(
   express.urlencoded({
     extended: false,
   })
