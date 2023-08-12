@@ -7,7 +7,7 @@ const PriceModal = ({ isOpen, onClose }) => {
 
 
   //subscribe to Checkout Session for initial subscription.
-  const subscribeToCheckoutSession = async (subscriptionType, price,) => {
+  const subscribeToCheckoutSession = async (planType, price,) => {
     toast.info('Redirecting to Checkout Portal');
     
     const token = Cookies.get('token');
@@ -18,7 +18,7 @@ const PriceModal = ({ isOpen, onClose }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body:JSON.stringify({subscriptionType, price})
+        body:JSON.stringify({planType, price})
       });
 
       const body = await response.json();

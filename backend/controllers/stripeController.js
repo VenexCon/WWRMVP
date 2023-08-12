@@ -3,18 +3,6 @@ const stripe = require("stripe")(process.env.STRIPE_TEST_KEY);
 const Business = require("../models/businessModel");
 const jwt = require("jsonwebtoken");
 
-const lineItems = [
-  {
-    // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-    //This will need to go onto the frontend and be sent to the BE.
-    // Use forms or similar for each selection.
-    //follow Stripe Subscription integration
-
-    price: "price_1NEe6RKSsp4mks69DMPSVWgh",
-    quantity: 1,
-  },
-];
-
 //@Access - Private
 //@Desc - initalises a checkout session, needs to be dynamic for the line items.
 //@Route '/create-checkout-session'
