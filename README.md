@@ -27,4 +27,24 @@ A full-stack MERN application including Stripe payment integration. This applica
 
 ## Deployment
 
-Link! Currently still under development.
+Due to the various API charges and ongoing development, the release of Who Wants Rubbish is being delayed until the payment system is fully operational. 
+
+To test this locally simply clone repo 
+
+``` git clone <url> ```
+
+Install the required packages 
+
+```npm -i ```
+
+You will also need to install the stripe CLI to manage events and ensure any webhooks work as intended and can detect the triggered events. 
+
+Once you have installed the CLI use the below command 
+
+```stripe listen --forward-to http://localhost:5000/YOUR_WEBHOOK_ENDPOINT ```
+
+You can then launch app by navigating to the BE and FE respectivley and running the following command. 
+
+``` npm run start ```
+
+
